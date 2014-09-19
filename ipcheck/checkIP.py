@@ -11,7 +11,7 @@ import Tkinter
 import tkMessageBox
 
 
-LOG_FILE = "checkIP.log"
+FILE = "checkIP.log"
 URL = "http://checkip.dyndns.org/index.html"
 REGEX = re.compile("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}")
 
@@ -42,10 +42,9 @@ def _check_current_ip():
 
 def _read_previous_ip():
     ip = ""
-    filename = LOG_FILE
     try:
-        if os.path.exists(filename):
-            file = open(filename, "r")
+        if os.path.exists(FILE):
+            file = open(FILE, "r")
             ip = file.readline()
             file.close()
     except:
@@ -54,8 +53,7 @@ def _read_previous_ip():
 
 
 def _write_current_ip(ip):
-    filename = LOG_FILE
-    file = open(filename, "w")
+    file = open(FILE, "w")
     file.write(ip)
     file.close()
 

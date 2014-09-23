@@ -1,6 +1,6 @@
 # Custom sabnzbd post processing script to backup the original tv show name.
 # It stores the original tv show file name in a custom .nfo-sub file and moves it to the backup location.
-# ATTENTION: change the value of BACKUP_LOCATION_PATH to the path of your backup location!
+# CONFIGURATION: change the value of BACKUP_LOCATION_PATH to the path of your backup location!
 
 # sabnzbd parameters passed to the script at startup:
 # %1 - final filename
@@ -17,7 +17,7 @@ import shutil
 
 
 BACKUP_EXTENSION = ".nfo-sub"
-BACKUP_LOCATION_PATH = "<path_to_your_backup_location>"
+BACKUP_LOCATION_PATH = "//HTPC/Verify/Subtitles/"
 
 
 def run():

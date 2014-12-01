@@ -1,4 +1,4 @@
-# Custom sabnzbd post processing script to backup the original tv show name.
+# Custom Sick-Beard post processing script to backup the original tv show name.
 # It stores the original tv show file name in a custom .nfo-sub file and moves it to the backup location.
 # CONFIGURATION: change the value of BACKUP_LOCATION_PATH to the path of your backup location!
 

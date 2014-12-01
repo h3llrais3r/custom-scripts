@@ -20,6 +20,9 @@
 # %L - Label
 # %K - kind of torrent (single|multi)
 # %F - Name of downloaded file (for single file torrents)
+# %S - State of torrent
+#
+# Example: C:\Tools\Scripts\autoProcessTorrent.bat "%D" "%N" "%L" "%K" "%F" "%S"
 
 
 import os
@@ -29,15 +32,14 @@ import shutil
 import logging
 
 
-# Dict with supported labels (regex should not be specified when renaming is not needed)
-# Usage: 'LABEL_KEY' : {'label' : 'label_value', 'destination' : 'destination_path', 'regex' : 'regex_new_filename'}
-LABELS = {
-    'ONEPIECE': {'label': 'Yibis One Piece RSS', 'destination': '//HTPC/Anime/One Piece', 'regex': 'One_Piece.*'},
-    'FAIRYTAIL': {'label': 'HorribleSubs Fairy Tail 2 RSS', 'destination': '//HTPC/Anime/Fairy Tail',
-                  'regex': 'Fairy_Tail.*'}
-}
-
 LOG_FILE = "autoProcessTorrent.log"
+
+# Dict with supported labels
+# Usage: 'LABEL_KEY' : {'label' : 'label_value', 'destination' : 'destination_path'}
+LABELS = {
+    'ONEPIECE': {'label': 'Yibis One Piece RSS', 'destination': '//HTPC/Anime/One Piece'},
+    'FAIRYTAIL': {'label': 'HorribleSubs Fairy Tail 2 RSS', 'destination': '//HTPC/Anime/Fairy Tail'}
+}
 
 # Logging config (change to logging.DEBUG for debug info)
 logging.basicConfig(filename=LOG_FILE, format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)
@@ -101,7 +103,6 @@ def _get_label_specs(label):
             logger.info("Found specs for label '%s'" % (specs['label']))
             logger.debug("Label specs: %s" % specs)
             return specs
-    # No specs found
     return None
 
 
@@ -109,23 +110,7 @@ def _move_file(directory, filename, label_specs):
     try:
         logger.info("Trying to move file '%s'" % filename)
         origin = os.path.join(directory, filename)
-        # Determine destination (check if rename is needed)
-        if label_specs['regex'] is not None:
-            logger.debug("Rename pattern: %s" % (label_specs['regex']))
-            match = re.search(label_specs['regex'], filename)
-            if match:
-                logger.info("Renaming while moving")
-                new_name = match.group(0)
-                logger.debug("Old name: %s" % filename)
-                logger.debug("New name: %s" % new_name)
-                destination = os.path.join(label_specs['destination'], new_name)
-            else:
-                logger.info("Could not match pattern for rename")
-                logger.info("Keeping orginal name")
-                destination = os.path.join(label_specs['destination'], filename)
-        else:
-            destination = os.path.join(label_specs['destination'], filename)
-        # Move
+        destination = os.path.join(label_specs['destination'], filename)
         shutil.move(origin, destination)
         logger.info("Moved file '%s' to '%s'" % (origin, destination))
     except Exception, e:

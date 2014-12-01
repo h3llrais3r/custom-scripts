@@ -33,12 +33,12 @@ import logging
 
 
 LOG_FILE = "autoProcessTorrent.log"
+SICKRAGE_PROCESSING_PATH = "//HTPC/Downloads/complete/sickrage"
 
 # Dict with supported labels
 # Usage: 'LABEL_KEY' : {'label' : 'label_value', 'destination' : 'destination_path'}
 LABELS = {
-    'ONEPIECE': {'label': 'Yibis One Piece RSS', 'destination': '//HTPC/Anime/One Piece'},
-    'FAIRYTAIL': {'label': 'HorribleSubs Fairy Tail 2 RSS', 'destination': '//HTPC/Anime/Fairy Tail'}
+    'SICKRAGE-ANIME': {'label': 'sickrage-anime', 'destination': SICKRAGE_PROCESSING_PATH}
 }
 
 # Logging config (change to logging.DEBUG for debug info)

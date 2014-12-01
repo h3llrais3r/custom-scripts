@@ -25,14 +25,13 @@
 # Example: C:\Tools\Scripts\autoProcessTorrent.bat "%D" "%N" "%L" "%K" "%F" "%S"
 
 
+import logging
 import os
-import re
 import sys
 import shutil
-import logging
 
 
-LOG_FILE = "autoProcessTorrent.log"
+LOG_FILE = os.path.dirname(os.path.realpath(sys.argv[0])) + "/autoProcessTorrent.log"
 SICKRAGE_PROCESSING_PATH = "//HTPC/Downloads/complete/sickrage"
 
 # Dict with supported labels

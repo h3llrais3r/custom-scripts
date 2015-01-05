@@ -1,3 +1,4 @@
-@rem Shutdown the pc without delay from remote desktop
-@rem Run with administrative rights!
-shutdown /t 0
+@rem Shutdown pc without delay
+@rem Run with administrative rights
+@rem Program location: %windir%\system32
+shutdown.exe /t 0

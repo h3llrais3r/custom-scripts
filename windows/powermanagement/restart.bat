@@ -1,3 +1,4 @@
-@rem Restart the pc without delay from remote desktop
-@rem Run with administrative rights!
-shutdown /r /t 0
+@rem Restart pc without delay
+@rem Run with administrative rights
+@rem Program location: %windir%\system32
+shutdown.exe /r /t 0

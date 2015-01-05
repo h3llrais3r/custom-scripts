@@ -1,2 +1,3 @@
 @rem Shutdown the pc without delay from remote desktop
-shutdown -t 0
+@rem Run with administrative rights!
+shutdown /t 0

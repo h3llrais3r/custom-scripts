@@ -1,0 +1,42 @@
+<sources>
+    <programs>
+        <default pathversion="1"></default>
+    </programs>
+    <video>
+        <default pathversion="1"></default>
+        <source>
+            <name>Movies</name>
+            <path pathversion="1">smb://192.168.0.100/Movies/</path>
+            <allowsharing>true</allowsharing>
+        </source>
+        <source>
+            <name>TV Shows</name>
+            <path pathversion="1">smb://192.168.0.100/TV Shows/</path>
+            <allowsharing>true</allowsharing>
+        </source>
+        <source>
+            <name>Anime</name>
+            <path pathversion="1">smb://192.168.0.100/Anime/</path>
+            <allowsharing>true</allowsharing>
+        </source>
+    </video>
+    <music>
+        <default pathversion="1"></default>
+        <source>
+            <name>Music</name>
+            <path pathversion="1">smb://192.168.0.100/Music/</path>
+            <allowsharing>true</allowsharing>
+        </source>
+    </music>
+    <pictures>
+        <default pathversion="1">Pictures</default>
+        <source>
+            <name>Pictures</name>
+            <path pathversion="1">smb://192.168.0.100/Pictures/</path>
+            <allowsharing>true</allowsharing>
+        </source>
+    </pictures>
+    <files>
+        <default pathversion="1"></default>
+    </files>
+</sources>

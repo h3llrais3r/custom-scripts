@@ -32,7 +32,7 @@ import shutil
 
 
 LOG_FILE = os.path.dirname(os.path.realpath(sys.argv[0])) + "/autoProcessTorrent.log"
-SICKRAGE_PROCESSING_PATH = "//HTPC/Downloads/complete/sickrage"
+SICKRAGE_PROCESSING_PATH = "C:/Tools/Downloads/complete/sickrage/"
 
 # Dict with supported labels
 # Usage: 'LABEL_KEY' : {'label' : 'label_value', 'destination' : 'destination_path'}

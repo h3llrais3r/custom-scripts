@@ -17,7 +17,7 @@ import shutil
 
 
 BACKUP_EXTENSION = ".nfo-sub"
-BACKUP_LOCATION_PATH = "//HTPC/Verify/Subtitles/"
+BACKUP_LOCATION_PATH = "C:/Tools/Downloads/subtitles/backup/"
 
 
 def run():

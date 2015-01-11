@@ -13,8 +13,8 @@ import sys
 import shutil
 
 # Paths
-AUTOSUBLIMINAL_PATH = "//HTPC/Downloads/complete/sickbeard-autosubliminal/"
-SICKBEARD_PATH = "//HTPC/Downloads/complete/sickbeard"
+AUTOSUBLIMINAL_PATH = "C:/Tools/Downloads/complete/sickbeard-autosubliminal/"
+SICKBEARD_PATH = "C:/Tools/Downloads/complete/sickbeard/"
 
 # Normalized paths (path and case) because paths are compaired when executing cleanup
 NORM_AUTOSUBLIMINAL_PATH = os.path.normcase(os.path.normpath(AUTOSUBLIMINAL_PATH))

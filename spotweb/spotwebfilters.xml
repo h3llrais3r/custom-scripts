@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="utf-8"?>
+<spotwebfilter>
+  <version>1.0</version>
+  <generator>SpotWeb v0.67.28.31</generator>
+  <filters>
+    <filter>
+      <id>434</id>
+      <title>Image</title>
+      <icon>film</icon>
+      <parent>0</parent>
+      <order>0</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat0_z0</item>
+      </tree>
+    </filter>
+    <filter>
+      <id>450</id>
+      <title>Sounds</title>
+      <icon>music</icon>
+      <parent>0</parent>
+      <order>17</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat1_z0</item>
+        <item type="include">cat1_z1</item>
+        <item type="include">cat1_z2</item>
+        <item type="include">cat1_z3</item>
+      </tree>
+    </filter>
+    <filter>
+      <id>453</id>
+      <title>Games</title>
+      <icon>controller</icon>
+      <parent>0</parent>
+      <order>20</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat2_zz</item>
+      </tree>
+    </filter>
+    <filter>
+      <id>460</id>
+      <title>Applications</title>
+      <icon>application</icon>
+      <parent>0</parent>
+      <order>27</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat3_zz</item>
+      </tree>
+    </filter>
+    <filter>
+      <id>467</id>
+      <title>Dutch</title>
+      <icon>book</icon>
+      <parent>74</parent>
+      <order>0</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat0_z2_c11</item>
+      </tree>
+    </filter>
+    <filter>
+      <id>468</id>
+      <title>English</title>
+      <icon>book</icon>
+      <parent>74</parent>
+      <order>1</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat0_z2_c10</item>
+      </tree>
+    </filter>
+    <filter>
+      <id>469</id>
+      <title>Others</title>
+      <icon>book</icon>
+      <parent>74</parent>
+      <order>2</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat0_z2</item>
+        <item type="strongnot">cat0_z2_c10</item>
+        <item type="strongnot">cat0_z2_c11</item>
+      </tree>
+    </filter>
+    <filter>
+      <id>470</id>
+      <title>Hetero</title>
+      <icon>female</icon>
+      <parent>78</parent>
+      <order>0</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat0_z3_d23</item>
+        <item type="include">cat0_z3_d75</item>
+      </tree>
+    </filter>
+    <filter>
+      <id>471</id>
+      <title>Gay male</title>
+      <icon>female</icon>
+      <parent>78</parent>
+      <order>1</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat0_z3_d24</item>
+        <item type="include">cat0_z3_d74</item>
+      </tree>
+    </filter>
+    <filter>
+      <id>472</id>
+      <title>Gay female</title>
+      <icon>female</icon>
+      <parent>78</parent>
+      <order>2</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat0_z3_d25</item>
+        <item type="include">cat0_z3_d73</item>
+      </tree>
+    </filter>
+    <filter>
+      <id>473</id>
+      <title>Bi</title>
+      <icon>female</icon>
+      <parent>78</parent>
+      <order>3</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat0_z3_d26</item>
+        <item type="include">cat0_z3_d72</item>
+      </tree>
+    </filter>
+    <filter>
+      <id>435</id>
+      <title>DivX</title>
+      <icon>divx</icon>
+      <parent>434</parent>
+      <order>1</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat0_z0_a0</item>
+      </tree>
+    </filter>
+    <filter>
+      <id>436</id>
+      <title>WMV</title>
+      <icon>wmv</icon>
+      <parent>434</parent>
+      <order>2</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat0_z0_a1</item>
+      </tree>
+    </filter>
+    <filter>
+      <id>437</id>
+      <title>MPEG</title>
+      <icon>mpg</icon>
+      <parent>434</parent>
+      <order>3</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat0_z0_a2</item>
+      </tree>
+    </filter>
+    <filter>
+      <id>438</id>
+      <title>DVD</title>
+      <icon>dvd</icon>
+      <parent>434</parent>
+      <order>4</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat0_z0_a3</item>
+        <item type="include">cat0_z0_a10</item>
+      </tree>
+    </filter>
+    <filter>
+      <id>439</id>
+      <title>HD</title>
+      <icon>hd</icon>
+      <parent>434</parent>
+      <order>4</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat0_z0_a4</item>
+        <item type="include">cat0_z0_a6</item>
+        <item type="include">cat0_z0_a7</item>
+        <item type="include">cat0_z0_a8</item>
+        <item type="include">cat0_z0_a9</item>
+      </tree>
+    </filter>
+    <filter>
+      <id>474</id>
+      <title>HD - QoQ</title>
+      <icon>hd</icon>
+      <parent>434</parent>
+      <order>6</order>
+      <enablenotify>0</enablenotify>
+      <tree/>
+      <values>
+        <item>
+          <fieldname>Tag</fieldname>
+          <operator>=</operator>
+          <booloper>DEF</booloper>
+          <value>QoQ</value>
+        </item>
+      </values>
+      <sort>
+        <item>
+          <fieldname>date</fieldname>
+          <direction>desc</direction>
+        </item>
+      </sort>
+    </filter>
+    <filter>
+      <id>440</id>
+      <title>Series</title>
+      <icon>tv</icon>
+      <parent>434</parent>
+      <order>7</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat0_z1</item>
+      </tree>
+    </filter>
+    <filter>
+      <id>441</id>
+      <title>Books</title>
+      <icon>book</icon>
+      <parent>434</parent>
+      <order>8</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat0_z2</item>
+      </tree>
+    </filter>
+    <filter>
+      <id>445</id>
+      <title>Erotica</title>
+      <icon>female</icon>
+      <parent>434</parent>
+      <order>12</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat0_z3</item>
+      </tree>
+    </filter>
+    <filter>
+      <id>442</id>
+      <title>Dutch</title>
+      <icon>book</icon>
+      <parent>441</parent>
+      <order>9</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat0_z2_c11</item>
+      </tree>
+    </filter>
+    <filter>
+      <id>443</id>
+      <title>English</title>
+      <icon>book</icon>
+      <parent>441</parent>
+      <order>10</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat0_z2_c10</item>
+      </tree>
+    </filter>
+    <filter>
+      <id>444</id>
+      <title>Others</title>
+      <icon>book</icon>
+      <parent>441</parent>
+      <order>11</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat0_z2</item>
+        <item type="strongnot">cat0_z2_c10</item>
+        <item type="strongnot">cat0_z2_c11</item>
+      </tree>
+    </filter>
+    <filter>
+      <id>451</id>
+      <title>Compressed</title>
+      <icon>music</icon>
+      <parent>450</parent>
+      <order>18</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat1_z0_a0</item>
+        <item type="include">cat1_z0_a3</item>
+        <item type="include">cat1_z0_a5</item>
+        <item type="include">cat1_z0_a6</item>
+        <item type="include">cat1_z1_a0</item>
+        <item type="include">cat1_z1_a3</item>
+        <item type="include">cat1_z1_a5</item>
+        <item type="include">cat1_z1_a6</item>
+        <item type="include">cat1_z2_a0</item>
+        <item type="include">cat1_z2_a3</item>
+        <item type="include">cat1_z2_a5</item>
+        <item type="include">cat1_z2_a6</item>
+        <item type="include">cat1_z3_a0</item>
+        <item type="include">cat1_z3_a3</item>
+        <item type="include">cat1_z3_a5</item>
+        <item type="include">cat1_z3_a6</item>
+      </tree>
+    </filter>
+    <filter>
+      <id>452</id>
+      <title>Lossless</title>
+      <icon>music</icon>
+      <parent>450</parent>
+      <order>19</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat1_z0_a2</item>
+        <item type="include">cat1_z0_a4</item>
+        <item type="include">cat1_z0_a7</item>
+        <item type="include">cat1_z0_a8</item>
+        <item type="include">cat1_z1_a2</item>
+        <item type="include">cat1_z1_a4</item>
+        <item type="include">cat1_z1_a7</item>
+        <item type="include">cat1_z1_a8</item>
+        <item type="include">cat1_z2_a2</item>
+        <item type="include">cat1_z2_a4</item>
+        <item type="include">cat1_z2_a7</item>
+        <item type="include">cat1_z2_a8</item>
+        <item type="include">cat1_z3_a2</item>
+        <item type="include">cat1_z3_a4</item>
+        <item type="include">cat1_z3_a7</item>
+        <item type="include">cat1_z3_a8</item>
+      </tree>
+    </filter>
+    <filter>
+      <id>454</id>
+      <title>Windows</title>
+      <icon>windows</icon>
+      <parent>453</parent>
+      <order>21</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat2_zz_a0</item>
+      </tree>
+    </filter>
+    <filter>
+      <id>455</id>
+      <title>Mac / Linux</title>
+      <icon>linux</icon>
+      <parent>453</parent>
+      <order>22</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat2_zz_a1</item>
+        <item type="include">cat2_zz_a2</item>
+      </tree>
+    </filter>
+    <filter>
+      <id>456</id>
+      <title>Playstation</title>
+      <icon>playstation</icon>
+      <parent>453</parent>
+      <order>23</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat2_zz_a3</item>
+        <item type="include">cat2_zz_a4</item>
+        <item type="include">cat2_zz_a5</item>
+        <item type="include">cat2_zz_a12</item>
+      </tree>
+    </filter>
+    <filter>
+      <id>457</id>
+      <title>XBox</title>
+      <icon>xbox</icon>
+      <parent>453</parent>
+      <order>24</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat2_zz_a6</item>
+        <item type="include">cat2_zz_a7</item>
+      </tree>
+    </filter>
+    <filter>
+      <id>458</id>
+      <title>Nintendo</title>
+      <icon>nintendo_ds</icon>
+      <parent>453</parent>
+      <order>25</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat2_zz_a8</item>
+        <item type="include">cat2_zz_a9</item>
+        <item type="include">cat2_zz_a10</item>
+        <item type="include">cat2_zz_a11</item>
+      </tree>
+    </filter>
+    <filter>
+      <id>459</id>
+      <title>Smartphone / PDA</title>
+      <icon>pda</icon>
+      <parent>453</parent>
+      <order>26</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat2_zz_a13</item>
+        <item type="include">cat2_zz_a14</item>
+        <item type="include">cat2_zz_a15</item>
+      </tree>
+    </filter>
+    <filter>
+      <id>461</id>
+      <title>Windows</title>
+      <icon>vista</icon>
+      <parent>460</parent>
+      <order>28</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat3_zz_a0</item>
+      </tree>
+    </filter>
+    <filter>
+      <id>462</id>
+      <title>Mac / Linux / OS2</title>
+      <icon>linux</icon>
+      <parent>460</parent>
+      <order>29</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat3_zz_a1</item>
+        <item type="include">cat3_zz_a2</item>
+        <item type="include">cat3_zz_a3</item>
+      </tree>
+    </filter>
+    <filter>
+      <id>463</id>
+      <title>Navigation</title>
+      <icon>ipod</icon>
+      <parent>460</parent>
+      <order>30</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat3_zz_a5</item>
+      </tree>
+    </filter>
+    <filter>
+      <id>464</id>
+      <title>Windows Phone</title>
+      <icon>pda</icon>
+      <parent>460</parent>
+      <order>31</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat3_zz_a4</item>
+      </tree>
+    </filter>
+    <filter>
+      <id>465</id>
+      <title>Apple iOS</title>
+      <icon>mac</icon>
+      <parent>460</parent>
+      <order>32</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat3_zz_a6</item>
+      </tree>
+    </filter>
+    <filter>
+      <id>466</id>
+      <title>Android</title>
+      <icon>phone</icon>
+      <parent>460</parent>
+      <order>33</order>
+      <enablenotify>0</enablenotify>
+      <tree>
+        <item type="include">cat3_zz_a7</item>
+      </tree>
+    </filter>
+  </filters>
+</spotwebfilter>

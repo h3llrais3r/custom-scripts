@@ -1,0 +1,10 @@
+<keymap>
+    <global>
+        <keyboard>
+            <left mod="ctrl">subtitledelayminus</left>
+            <right mod="ctrl">subtitledelayplus</right>
+            <left mod="ctrl,shift">audiodelayminus</left>
+            <right mod="ctrl,shift">audiodelayplus</right>
+        </keyboard>
+    </global>
+</keymap>

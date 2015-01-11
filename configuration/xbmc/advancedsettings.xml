@@ -1,0 +1,35 @@
+<!-- Custom advanced settings -->
+<advancedsettings>
+    <!-- Mysql db -->
+    <videodatabase>
+        <type>mysql</type>
+        <host>192.168.0.100</host>
+        <port>3306</port>
+        <user>kodi</user>
+        <pass>kodi</pass>
+    </videodatabase>
+    <musicdatabase>
+        <type>mysql</type>
+        <host>192.168.0.100</host>
+        <port>3306</port>
+        <user>kodi</user>
+        <pass>kodi</pass>
+    </musicdatabase>
+    <videolibrary>
+        <!-- NOTE: To get this working properly, you have to do a 'Clean Library' in settings the first time after you enable the setting. -->
+        <!-- default set to false to prevent kodi from removing items from the database while updating.  -->
+        <!-- set to false to prevent cleaning when network drive is not available -->
+        <cleanonupdate>false</cleanonupdate>
+        <!-- keep watched state when importing -->
+        <importwatchedstate>true</importwatchedstate>
+        <!-- keep resume point when importing -->
+        <importresumepoint>true</importresumepoint>
+    </videolibrary>
+    <!-- tv show matching for continuous numbering with multi episode support (for anime) -->
+    <!-- currently not used anymore - we just keep it here in case we need an example again -->
+    <!--
+    <tvshowmatching action="prepend">
+        <regexp>One_Piece()[/\._ \-]([0-9]+)(-[0-9]+)?[/\._ \-]</regexp>
+    </tvshowmatching>
+    -->
+</advancedsettings>

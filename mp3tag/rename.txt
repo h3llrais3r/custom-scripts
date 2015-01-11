@@ -1,0 +1,3 @@
+Rename pattern for mp3tag
+-------------------------
+\\SERVER\Music\$if2(%albumartist%,%artist%)\%album%\$if($gt(%totaldiscs%,1),%discnumber%-,)$num(%track%,2) %title%

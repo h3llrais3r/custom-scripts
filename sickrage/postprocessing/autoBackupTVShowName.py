@@ -67,6 +67,12 @@ def _move_backup_file(backup_file_path):
     location = os.path.join(BACKUP_LOCATION_PATH)
     backup = os.path.join(backup_file_path)
     try:
+        os.remove(os.path.join(location, backup))
+        print "autoBackupTVShowName: backup already exists, deleting old backup from %s" % location
+    except OSError:
+        # Backup does not exist yet, continue
+        pass
+    try:
         shutil.move(backup, location)
         print "autoBackupTVShowName: moved backup file %s to the backup location %s" % (backup, location)
     except Exception, e:

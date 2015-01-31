@@ -66,11 +66,12 @@ def _backup_tvshow_name(full_final_name, full_original_name, tvdb_id, season, ep
 def _move_backup_file(backup_file_path):
     location = os.path.join(BACKUP_LOCATION_PATH)
     backup = os.path.join(backup_file_path)
+    backup_file = os.path.join(BACKUP_LOCATION_PATH, os.path.basename(backup_file_path))
     try:
-        os.remove(os.path.join(location, backup))
-        print "autoBackupTVShowName: backup already exists, deleting old backup from %s" % location
+        os.remove(backup_file)
+        print "autoBackupTVShowName: backup already exists, deleting old backup %s" % backup_file
     except OSError:
-        # Backup does not exist yet, continue
+        # Backup file does not exist yet, continue
         pass
     try:
         shutil.move(backup, location)

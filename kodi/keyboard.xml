@@ -1,10 +1,18 @@
 <keymap>
     <global>
         <keyboard>
-            <left mod="ctrl">subtitledelayminus</left>
-            <right mod="ctrl">subtitledelayplus</right>
-            <left mod="ctrl,shift">audiodelayminus</left>
-            <right mod="ctrl,shift">audiodelayplus</right>
+            <!-- keyboard - subtitle shift -->
+            <left mod="ctrl">SubtitleDelayMinus</left>
+            <right mod="ctrl">SubtitleDelayPlus</right>
+            <!-- keyboard - audio shift -->
+            <left mod="ctrl,shift">AudioDelayMinus</left>
+            <right mod="ctrl,shift">AudioDelayPlus</right>
+			<!-- remote control - menu button -->
+            <pipe mod="ctrl,alt">ContextMenu</pipe>
+            <!-- remote control - info button -->
+			<hash mod="ctrl,alt">Info</hash>
+			<!-- remote control - guide button -->
+            <at mod="ctrl,alt">ActivateWindow(Home)</at>
         </keyboard>
     </global>
 </keymap>

@@ -11,12 +11,18 @@
 # %7 - status
 
 
-import sys
+import logging
 import os
+import sys
 
 
 # Extension for the backup file
 BACKUP_EXTENSION = ".nfo-sub"
+LOG_FILE = os.path.dirname(os.path.realpath(sys.argv[0])) + "/autoBackupMovieName.log"
+
+# Logging config (change to logging.DEBUG for debug info)
+logging.basicConfig(filename=LOG_FILE, format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)
+logger = logging.getLogger("autoBackupMovieName")
 
 
 def run():
@@ -37,6 +43,15 @@ def run():
     print "category: " + category
     print "newsgroup: " + newsgroup
     print "status: " + status
+
+    # Log parameters
+    logger.info("full download path: " + download_path)
+    logger.info("nzb name: " + nzb_name)
+    logger.info("download name: " + download_name)
+    logger.info("indexer report number: " + indexer_report_number)
+    logger.info("category: " + category)
+    logger.info("newsgroup: " + newsgroup)
+    logger.info("status: " + status)
 
     # Backup
     _backup_movie_name(download_path, nzb_name, download_name, indexer_report_number, category, newsgroup, status)
@@ -61,7 +76,8 @@ def _backup_movie_name(download_path, nzb_name, download_name, indexer_report_nu
                 file.write("</finalFileName>")
                 file.write("</details>")
                 file.close()
-                print "autoBackupMovieName: created backup file: " + backup_file
+                print "Created backup file: " + backup_file
+                logger.info("Created backup file: " + backup_file)
 
 
 # Run the script

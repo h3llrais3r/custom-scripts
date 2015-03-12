@@ -7,7 +7,7 @@
 # %2 - episode path
 # %3 - subtitle path
 
-
+import logging
 import os
 import sys
 import shutil
@@ -20,11 +20,18 @@ SICKRAGE_PATH = "C:/Tools/Downloads/complete/sickrage/"
 NORM_AUTOSUBLIMINAL_PATH = os.path.normcase(os.path.normpath(AUTOSUBLIMINAL_PATH))
 NORM_SICKRAGE_PATH = os.path.normcase(os.path.normpath(SICKRAGE_PATH))
 
+# Logging config (change to logging.DEBUG for debug info)
+LOG_FILE = os.path.dirname(os.path.realpath(sys.argv[0])) + "/autoSubliminalToSickrage.log"
+logging.basicConfig(filename=LOG_FILE, format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)
+logger = logging.getLogger("autoSubliminalToSickrage")
+
 
 def run():
     print ""
     print "#" * 30
     print "Sickrage post processing folder: %s" % NORM_SICKRAGE_PATH
+    logger.info("----------------------------------------------")
+    logger.debug("Sickrage post processing folder: %s" % NORM_SICKRAGE_PATH)
 
     # Read parameters
     encoding = sys.argv[1]
@@ -35,6 +42,9 @@ def run():
     print "encoding: " + encoding
     print "episode path: " + episode_path
     print "subtitle path: " + subtitle_path
+    logger.debug("encoding: " + encoding)
+    logger.debug("episode path: " + episode_path)
+    logger.debug("subtitle path: " + subtitle_path)
 
     # Move
     if _move(episode_path, subtitle_path):
@@ -42,6 +52,7 @@ def run():
         _cleanup(episode_path)
 
     print "#" * 30
+    logger.info("----------------------------------------------")
 
 
 def _decode(value, encoding):
@@ -59,9 +70,11 @@ def _move(episode_path, subtitle_path):
         shutil.move(episode, destination)
         shutil.move(subtitle, destination)
         print "Moved episode and subtitle to the Sickrage post processing folder"
+        logger.info("Moved episode and subtitle to the Sickrage post processing folder")
         return True
     except Exception, e:
         print "Exception: %s" % e
+        logger.error("Exception: %s" % e)
         return False
 
 
@@ -87,14 +100,18 @@ def _cleanup(episode_path):
                 # Remove the folder of the episode inside the root folder
                 shutil.rmtree(folder_to_clean)
                 print "Removed episode folder: %s" % folder_to_clean
+                logger.info("Removed episode folder: %s" % folder_to_clean)
             except Exception, e:
                 print "Exception: %s" % e
+                logger.error("Exception: %s" % e)
         else:
             print "Episode is located directly under an autosubliminal video folder"
             print "Skipping cleanup"
     else:
         print "Episode is not located in an autosubliminal video folder"
         print "Skipping cleanup"
+        logger.info("Episode is not located in an autosubliminal video folder")
+        logger.info("Skipping cleanup")
 
 
 # Run the script

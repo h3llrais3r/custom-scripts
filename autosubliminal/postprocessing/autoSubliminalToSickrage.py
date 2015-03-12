@@ -13,7 +13,7 @@ import sys
 import shutil
 
 # Paths
-AUTOSUBLIMINAL_PATH = "C:/Tools/Downloads/complete/sickrage-autosubliminal/"
+AUTOSUBLIMINAL_PATH = "//SERVER/sickrage-autosubliminal/"
 SICKRAGE_PATH = "C:/Tools/Downloads/complete/sickrage/"
 
 # Normalized paths (path and case) because paths are compaired when executing cleanup

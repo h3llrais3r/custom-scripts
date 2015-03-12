@@ -31,7 +31,7 @@ def run():
     print "#" * 30
     print "Sickbeard post processing folder: %s" % NORM_SICKBEARD_PATH
     logger.info("----------------------------------------------")
-    logger.debug("Sickbeard post processing folder: %s" % NORM_SICKBEARD_PATH)
+    logger.info("Sickbeard post processing folder: %s" % NORM_SICKBEARD_PATH)
 
     # Read parameters
     encoding = sys.argv[1]
@@ -42,9 +42,9 @@ def run():
     print "encoding: " + encoding
     print "episode path: " + episode_path
     print "subtitle path: " + subtitle_path
-    logger.debug("encoding: " + encoding)
-    logger.debug("episode path: " + episode_path)
-    logger.debug("subtitle path: " + subtitle_path)
+    logger.info("encoding: " + encoding)
+    logger.info("episode path: " + episode_path)
+    logger.info("subtitle path: " + subtitle_path)
 
     # Move
     if _move(episode_path, subtitle_path):

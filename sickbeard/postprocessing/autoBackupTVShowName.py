@@ -11,6 +11,7 @@
 # %6 - episode air date
 
 
+import logging
 import os
 import sys
 import shutil
@@ -18,6 +19,11 @@ import shutil
 
 BACKUP_EXTENSION = ".nfo-sub"
 BACKUP_LOCATION_PATH = "C:/Tools/Downloads/subtitles/backup/"
+LOG_FILE = os.path.dirname(os.path.realpath(sys.argv[0])) + "/autoBackupTVShowName.log"
+
+# Logging config (change to logging.DEBUG for debug info)
+logging.basicConfig(filename=LOG_FILE, format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)
+logger = logging.getLogger("autoBackupTVShowName")
 
 
 def run():
@@ -36,6 +42,14 @@ def run():
     print "season number: " + season
     print "episode number: " + episode
     print "episode air date: " + air_date
+
+    # Log parameters
+    logger.info("final filename: " + full_final_name)
+    logger.info("original filename: " + full_original_name)
+    logger.info("tvdb id: " + tvdb_id)
+    logger.info("season number: " + season)
+    logger.info("episode number: " + episode)
+    logger.info("episode air date: " + air_date)
 
     # Backup
     backup_file = _backup_tvshow_name(full_final_name, full_original_name, tvdb_id, season, episode, air_date)
@@ -59,7 +73,8 @@ def _backup_tvshow_name(full_final_name, full_original_name, tvdb_id, season, ep
     file.write("</finalFileName>")
     file.write("</details>")
     file.close()
-    print "autoBackupTVShowName: created backup file %s" % backup_file
+    print "Created backup file %s" % backup_file
+    logger.info("Created backup file %s" % backup_file)
     return backup_file
 
 
@@ -69,15 +84,18 @@ def _move_backup_file(backup_file_path):
     backup_file = os.path.join(BACKUP_LOCATION_PATH, os.path.basename(backup_file_path))
     try:
         os.remove(backup_file)
-        print "autoBackupTVShowName: backup already exists, deleting old backup %s" % backup_file
+        print "Backup already exists, deleting old backup %s" % backup_file
+        logger.info("Backup already exists, deleting old backup %s" % backup_file)
     except OSError:
         # Backup file does not exist yet, continue
         pass
     try:
         shutil.move(backup, location)
-        print "autoBackupTVShowName: moved backup file %s to the backup location %s" % (backup, location)
+        print "Moved backup file %s to the backup location %s" % (backup, location)
+        logger.info("Moved backup file %s to the backup location %s" % (backup, location))
     except Exception, e:
-        print "autoBackupTVShowName: exception: %s" % e
+        print "Exception: %s" % e
+        logger.error("Exception: %s" % e)
 
 
 # Run the script

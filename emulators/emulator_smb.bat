@@ -10,6 +10,8 @@ if %1=="NES" goto :NES
 if %1=="SNES" goto :SNES
 if %1=="N64" goto :N64
 if %1=="SEGA" goto :SEGA
+if %1=="SMS" goto :SMS
+if %1=="GEN" goto :GEN
 if %1=="MAME" goto :MAME
 :NES
 set EMULATOR_PATH=%EMULATOR_PATH%\Nestopia 
@@ -17,7 +19,7 @@ set EMULATOR=nestopia.exe
 goto :ROM
 :SNES
 set EMULATOR_PATH=%EMULATOR_PATH%\Snes9x
-set EMULATOR=snes9x-x64.exe
+set EMULATOR=snes9x-x64.exe -fullscreen
 goto :ROM
 :N64
 set EMULATOR_PATH=%EMULATOR_PATH%\Project64
@@ -25,11 +27,19 @@ set EMULATOR=project64.exe
 goto :ROM
 :SEGA
 set EMULATOR_PATH=%EMULATOR_PATH%\Fusion
-set EMULATOR=fusion.exe
+set EMULATOR=fusion.exe -auto -fullscreen
+goto :ROM
+:SMS
+set EMULATOR_PATH=%EMULATOR_PATH%\Fusion
+set EMULATOR=fusion.exe -sms -auto -fullscreen
+goto :ROM
+:GEN
+set EMULATOR_PATH=%EMULATOR_PATH%\Fusion
+set EMULATOR=fusion.exe -gen -auto -fullscreen
 goto :ROM
 :MAME
 set EMULATOR_PATH=%EMULATOR_PATH%\Mame
-set EMULATOR=mame64.exe
+set EMULATOR=mame64.exe -skip_gameinfo
 goto :ROM
 :ROM
 if %2=="SMB" goto :SMB

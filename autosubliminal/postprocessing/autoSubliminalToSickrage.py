@@ -9,6 +9,7 @@
 
 import logging
 import os
+import stat
 import sys
 import shutil
 
@@ -98,7 +99,7 @@ def _cleanup(episode_path):
                 episode_folder = os.path.dirname(episode_folder)
             try:
                 # Remove the folder of the episode inside the root folder
-                shutil.rmtree(folder_to_clean)
+                shutil.rmtree(folder_to_clean, onerror=_set_rw_and_remove)
                 print "Removed episode folder: %s" % folder_to_clean
                 logger.info("Removed episode folder: %s" % folder_to_clean)
             except Exception, e:
@@ -112,6 +113,11 @@ def _cleanup(episode_path):
         print "Skipping cleanup"
         logger.info("Episode is not located in an autosubliminal video folder")
         logger.info("Skipping cleanup")
+
+
+def _set_rw_and_remove(operation, name, exc):
+    os.chmod(name, stat.S_IWRITE)
+    os.remove(name)
 
 
 # Run the script

@@ -14,7 +14,7 @@ import sys
 import shutil
 
 # Paths
-AUTOSUBLIMINAL_PATH = "C:/Tools/Downloads/complete/sickbeard-autosubliminal/"
+AUTOSUBLIMINAL_PATH = "//SERVER/sickbeard-autosubliminal/"
 SICKBEARD_PATH = "C:/Tools/Downloads/complete/sickbeard/"
 
 # Normalized paths (path and case) because paths are compaired when executing cleanup

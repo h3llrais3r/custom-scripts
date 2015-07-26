@@ -34,18 +34,21 @@ def run():
     logger.info("----------------------------------------------")
     logger.info("Sickrage post processing folder: %s" % NORM_SICKRAGE_PATH)
 
-    # Read parameters
+    # Read parameters (sys.argv[0] = path to this script)
     encoding = sys.argv[1]
     episode_path = _decode(sys.argv[2], encoding)
-    subtitle_path = _decode(sys.argv[3], encoding)
+    subtitle_path = None
+    if len(sys.argv) == 4:
+        subtitle_path = _decode(sys.argv[3], encoding)
 
     # Print parameters
     print "encoding: " + encoding
-    print "episode path: " + episode_path
-    print "subtitle path: " + subtitle_path
     logger.info("encoding: " + encoding)
+    print "episode path: " + episode_path
     logger.info("episode path: " + episode_path)
-    logger.info("subtitle path: " + subtitle_path)
+    if subtitle_path:
+        print "subtitle path: " + subtitle_path
+        logger.info("subtitle path: " + subtitle_path)
 
     # Move
     if _move(episode_path, subtitle_path):
@@ -67,11 +70,14 @@ def _move(episode_path, subtitle_path):
     try:
         destination = os.path.join(NORM_SICKRAGE_PATH)
         episode = os.path.join(episode_path)
-        subtitle = os.path.join(subtitle_path)
         shutil.move(episode, destination)
-        shutil.move(subtitle, destination)
-        print "Moved episode and subtitle to the Sickrage post processing folder"
-        logger.info("Moved episode and subtitle to the Sickrage post processing folder")
+        print "Moved episode to the Sickrage post processing folder"
+        logger.info("Moved episode to the Sickrage post processing folder")
+        if subtitle_path:
+            subtitle = os.path.join(subtitle_path)
+            shutil.move(subtitle, destination)
+            print "Moved subtitle to the Sickrage post processing folder"
+            logger.info("Moved subtitle to the Sickrage post processing folder")
         return True
     except Exception, e:
         print "Exception: %s" % e

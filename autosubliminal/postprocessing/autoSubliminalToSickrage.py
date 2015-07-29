@@ -22,7 +22,7 @@ NORM_AUTOSUBLIMINAL_PATH = os.path.normcase(os.path.normpath(AUTOSUBLIMINAL_PATH
 NORM_SICKRAGE_PATH = os.path.normcase(os.path.normpath(SICKRAGE_PATH))
 
 # Logging config (change to logging.DEBUG for debug info)
-LOG_FILE = os.path.dirname(os.path.realpath(sys.argv[0])) + "/autoSubliminalToSickrage.log"
+LOG_FILE = os.path.dirname(os.path.realpath(__file__)) + "/autoSubliminalToSickrage.log"
 logging.basicConfig(filename=LOG_FILE, format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger("autoSubliminalToSickrage")
 

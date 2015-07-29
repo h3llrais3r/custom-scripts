@@ -19,7 +19,7 @@ import shutil
 
 BACKUP_EXTENSION = ".nfo-sub"
 BACKUP_LOCATION_PATH = "C:/Tools/Downloads/subtitles/backup/"
-LOG_FILE = os.path.dirname(os.path.realpath(sys.argv[0])) + "/autoBackupTVShowName.log"
+LOG_FILE = os.path.dirname(os.path.realpath(__file__)) + "/autoBackupTVShowName.log"
 
 # Logging config (change to logging.DEBUG for debug info)
 logging.basicConfig(filename=LOG_FILE, format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)

@@ -12,7 +12,7 @@ import Tkinter
 import tkMessageBox
 
 
-FILE = os.path.dirname(os.path.realpath(sys.argv[0])) + "/checkIP.log"
+FILE = os.path.dirname(os.path.realpath(__file__)) + "/checkIP.log"
 URL = "http://checkip.dyndns.org/index.html"
 REGEX = re.compile("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}")
 

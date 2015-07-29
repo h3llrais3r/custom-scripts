@@ -18,7 +18,7 @@ import sys
 
 # Extension for the backup file
 BACKUP_EXTENSION = ".nfo-sub"
-LOG_FILE = os.path.dirname(os.path.realpath(sys.argv[0])) + "/autoBackupMovieName.log"
+LOG_FILE = os.path.dirname(os.path.realpath(__file__)) + "/autoBackupMovieName.log"
 
 # Logging config (change to logging.DEBUG for debug info)
 logging.basicConfig(filename=LOG_FILE, format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)

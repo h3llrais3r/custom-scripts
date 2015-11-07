@@ -15,4 +15,4 @@ Delete IP6Tunnel tunnel:
 ------------------------
 netsh interface ipv6 delete route ::/0 IP6Tunnel <ipv6_server>
 netsh interface ipv6 delete address IP6Tunnel <ipv6_client>
-netsh interface ipv6 delete v6v4tunnel IP6Tunnel
+netsh interface ipv6 delete interface IP6Tunnel

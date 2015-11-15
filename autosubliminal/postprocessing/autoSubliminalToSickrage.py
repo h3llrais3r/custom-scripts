@@ -99,8 +99,8 @@ def _cleanup(episode_path):
         episode_folder = os.path.dirname(norm_episode_path)
         in_sub_folder = episode_folder != NORM_AUTOSUBLIMINAL_PATH
         if in_sub_folder:
-            folder_to_clean = episode_folder
             while episode_folder != NORM_AUTOSUBLIMINAL_PATH:
+                folder_to_clean = episode_folder
                 # Move 1 folder up
                 episode_folder = os.path.dirname(episode_folder)
             try:

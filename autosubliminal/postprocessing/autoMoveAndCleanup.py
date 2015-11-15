@@ -101,8 +101,8 @@ def _cleanup(video_path):
         video_folder = os.path.dirname(norm_video_path)
         in_sub_folder = video_folder != NORM_AUTOSUBLIMINAL_PATH
         if in_sub_folder:
-            folder_to_clean = video_folder
             while video_folder != NORM_AUTOSUBLIMINAL_PATH:
+                folder_to_clean = video_folder
                 # Move 1 folder up
                 video_folder = os.path.dirname(video_folder)
             try:

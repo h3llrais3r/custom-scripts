@@ -38,7 +38,7 @@ def run():
     destination_path = os.path.normcase(os.path.normpath(sys.argv[1]))
     encoding = sys.argv[2]
     video_path = _decode(sys.argv[3], encoding)
-    subtitle_path = None
+    subtitle_path = ""
     if len(sys.argv) == 5:
         subtitle_path = _decode(sys.argv[4], encoding)
 
@@ -49,9 +49,8 @@ def run():
     logger.info("encoding: " + encoding)
     print "video path: " + video_path
     logger.info("video path: " + video_path)
-    if subtitle_path:
-        print "subtitle path: " + subtitle_path
-        logger.info("subtitle path: " + subtitle_path)
+    print "subtitle path: " + subtitle_path
+    logger.info("subtitle path: " + subtitle_path)
 
     # Move
     if _move(destination_path, video_path, subtitle_path):
@@ -101,8 +100,8 @@ def _move_additional_subtitles(destination_path, episode_path):
             destination = os.path.join(destination_path)
             for subtitle in subtitles:
                 shutil.move(subtitle, destination)
-                print "Moved additional subtitle to the destination folder: %s" % subtitle
-                logger.info("Moved additional subtitle to the destination folder: %s" % subtitle)
+                print "Moved additional found subtitle to the destination folder: %s" % subtitle
+                logger.info("Moved additional found subtitle to the destination folder: %s" % subtitle)
 
     except Exception, e:
         print "Exception: %s" % e

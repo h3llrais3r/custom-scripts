@@ -38,7 +38,7 @@ def run():
     # Read parameters (sys.argv[0] = path to this script)
     encoding = sys.argv[1]
     movie_path = _decode(sys.argv[2], encoding)
-    subtitle_path = None
+    subtitle_path = ""
     if len(sys.argv) == 4:
         subtitle_path = _decode(sys.argv[3], encoding)
 
@@ -47,9 +47,8 @@ def run():
     logger.info("encoding: " + encoding)
     print "movie path: " + movie_path
     logger.info("movie path: " + movie_path)
-    if subtitle_path:
-        print "subtitle path: " + subtitle_path
-        logger.info("subtitle path: " + subtitle_path)
+    print "subtitle path: " + subtitle_path
+    logger.info("subtitle path: " + subtitle_path)
 
     # Move
     if _move(movie_path, subtitle_path):
@@ -99,8 +98,8 @@ def _move_additional_subtitles(movie_path):
             destination = os.path.join(NORM_COUCHPOTATO_PATH)
             for subtitle in subtitles:
                 shutil.move(subtitle, destination)
-                print "Moved additional subtitle to the Couchpotato post processing folder: %s" % subtitle
-                logger.info("Moved additional subtitle to the Couchpotato post processing folder: %s" % subtitle)
+                print "Moved additional found subtitle to the Couchpotato post processing folder: %s" % subtitle
+                logger.info("Moved additional found subtitle to the Couchpotato post processing folder: %s" % subtitle)
 
     except Exception, e:
         print "Exception: %s" % e

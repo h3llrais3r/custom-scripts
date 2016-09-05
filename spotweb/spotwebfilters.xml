@@ -19,7 +19,7 @@
       <title>Sounds</title>
       <icon>music</icon>
       <parent>0</parent>
-      <order>17</order>
+      <order>14</order>
       <enablenotify>0</enablenotify>
       <tree>
         <item type="include">cat1_z0</item>
@@ -33,7 +33,7 @@
       <title>Games</title>
       <icon>controller</icon>
       <parent>0</parent>
-      <order>20</order>
+      <order>17</order>
       <enablenotify>0</enablenotify>
       <tree>
         <item type="include">cat2_zz</item>
@@ -44,7 +44,7 @@
       <title>Applications</title>
       <icon>application</icon>
       <parent>0</parent>
-      <order>27</order>
+      <order>24</order>
       <enablenotify>0</enablenotify>
       <tree>
         <item type="include">cat3_zz</item>
@@ -217,11 +217,34 @@
       </sort>
     </filter>
     <filter>
+      <id>505</id>
+      <title>HD - LRT</title>
+      <icon>hd</icon>
+      <parent>434</parent>
+      <order>7</order>
+      <enablenotify>0</enablenotify>
+      <tree/>
+      <values>
+        <item>
+          <fieldname>Tag</fieldname>
+          <operator>=</operator>
+          <booloper>DEF</booloper>
+          <value>LRT</value>
+        </item>
+      </values>
+      <sort>
+        <item>
+          <fieldname>date</fieldname>
+          <direction>desc</direction>
+        </item>
+      </sort>
+    </filter>
+    <filter>
       <id>440</id>
       <title>Series</title>
       <icon>tv</icon>
       <parent>434</parent>
-      <order>7</order>
+      <order>8</order>
       <enablenotify>0</enablenotify>
       <tree>
         <item type="include">cat0_z1</item>
@@ -232,7 +255,7 @@
       <title>Books</title>
       <icon>book</icon>
       <parent>434</parent>
-      <order>8</order>
+      <order>9</order>
       <enablenotify>0</enablenotify>
       <tree>
         <item type="include">cat0_z2</item>
@@ -243,7 +266,7 @@
       <title>Erotica</title>
       <icon>female</icon>
       <parent>434</parent>
-      <order>12</order>
+      <order>13</order>
       <enablenotify>0</enablenotify>
       <tree>
         <item type="include">cat0_z3</item>
@@ -254,7 +277,7 @@
       <title>Dutch</title>
       <icon>book</icon>
       <parent>441</parent>
-      <order>9</order>
+      <order>10</order>
       <enablenotify>0</enablenotify>
       <tree>
         <item type="include">cat0_z2_c11</item>
@@ -265,7 +288,7 @@
       <title>English</title>
       <icon>book</icon>
       <parent>441</parent>
-      <order>10</order>
+      <order>11</order>
       <enablenotify>0</enablenotify>
       <tree>
         <item type="include">cat0_z2_c10</item>
@@ -276,7 +299,7 @@
       <title>Others</title>
       <icon>book</icon>
       <parent>441</parent>
-      <order>11</order>
+      <order>12</order>
       <enablenotify>0</enablenotify>
       <tree>
         <item type="include">cat0_z2</item>
@@ -289,7 +312,7 @@
       <title>Compressed</title>
       <icon>music</icon>
       <parent>450</parent>
-      <order>18</order>
+      <order>15</order>
       <enablenotify>0</enablenotify>
       <tree>
         <item type="include">cat1_z0_a0</item>
@@ -315,7 +338,7 @@
       <title>Lossless</title>
       <icon>music</icon>
       <parent>450</parent>
-      <order>19</order>
+      <order>16</order>
       <enablenotify>0</enablenotify>
       <tree>
         <item type="include">cat1_z0_a2</item>
@@ -341,7 +364,7 @@
       <title>Windows</title>
       <icon>windows</icon>
       <parent>453</parent>
-      <order>21</order>
+      <order>18</order>
       <enablenotify>0</enablenotify>
       <tree>
         <item type="include">cat2_zz_a0</item>
@@ -352,7 +375,7 @@
       <title>Mac / Linux</title>
       <icon>linux</icon>
       <parent>453</parent>
-      <order>22</order>
+      <order>19</order>
       <enablenotify>0</enablenotify>
       <tree>
         <item type="include">cat2_zz_a1</item>
@@ -364,7 +387,7 @@
       <title>Playstation</title>
       <icon>playstation</icon>
       <parent>453</parent>
-      <order>23</order>
+      <order>20</order>
       <enablenotify>0</enablenotify>
       <tree>
         <item type="include">cat2_zz_a3</item>
@@ -378,7 +401,7 @@
       <title>XBox</title>
       <icon>xbox</icon>
       <parent>453</parent>
-      <order>24</order>
+      <order>21</order>
       <enablenotify>0</enablenotify>
       <tree>
         <item type="include">cat2_zz_a6</item>
@@ -390,7 +413,7 @@
       <title>Nintendo</title>
       <icon>nintendo_ds</icon>
       <parent>453</parent>
-      <order>25</order>
+      <order>22</order>
       <enablenotify>0</enablenotify>
       <tree>
         <item type="include">cat2_zz_a8</item>
@@ -404,7 +427,7 @@
       <title>Smartphone / PDA</title>
       <icon>pda</icon>
       <parent>453</parent>
-      <order>26</order>
+      <order>23</order>
       <enablenotify>0</enablenotify>
       <tree>
         <item type="include">cat2_zz_a13</item>
@@ -417,7 +440,7 @@
       <title>Windows</title>
       <icon>vista</icon>
       <parent>460</parent>
-      <order>28</order>
+      <order>25</order>
       <enablenotify>0</enablenotify>
       <tree>
         <item type="include">cat3_zz_a0</item>
@@ -428,7 +451,7 @@
       <title>Mac / Linux / OS2</title>
       <icon>linux</icon>
       <parent>460</parent>
-      <order>29</order>
+      <order>26</order>
       <enablenotify>0</enablenotify>
       <tree>
         <item type="include">cat3_zz_a1</item>
@@ -441,7 +464,7 @@
       <title>Navigation</title>
       <icon>ipod</icon>
       <parent>460</parent>
-      <order>30</order>
+      <order>27</order>
       <enablenotify>0</enablenotify>
       <tree>
         <item type="include">cat3_zz_a5</item>
@@ -452,7 +475,7 @@
       <title>Windows Phone</title>
       <icon>pda</icon>
       <parent>460</parent>
-      <order>31</order>
+      <order>28</order>
       <enablenotify>0</enablenotify>
       <tree>
         <item type="include">cat3_zz_a4</item>
@@ -463,7 +486,7 @@
       <title>Apple iOS</title>
       <icon>mac</icon>
       <parent>460</parent>
-      <order>32</order>
+      <order>29</order>
       <enablenotify>0</enablenotify>
       <tree>
         <item type="include">cat3_zz_a6</item>
@@ -474,7 +497,7 @@
       <title>Android</title>
       <icon>phone</icon>
       <parent>460</parent>
-      <order>33</order>
+      <order>30</order>
       <enablenotify>0</enablenotify>
       <tree>
         <item type="include">cat3_zz_a7</item>

@@ -7,6 +7,7 @@
 # %2 - movie path
 # %3 - subtitle path
 
+import glob
 import logging
 import os
 import stat
@@ -52,6 +53,8 @@ def run():
 
     # Move
     if _move(movie_path, subtitle_path):
+        # Move additional subtitles
+        _move_additional_subtitles(movie_path)
         # Cleanup
         _cleanup(movie_path)
 
@@ -83,6 +86,25 @@ def _move(movie_path, subtitle_path):
         print "Exception: %s" % e
         logger.error("Exception: %s" % e)
         return False
+
+
+def _move_additional_subtitles(movie_path):
+    """
+    Move additional subtitles if there are any found at the same location.
+    """
+    try:
+        path_name = os.path.splitext(os.path.normpath(movie_path))[0]
+        subtitles = glob.glob(path_name + '*' + '.srt')
+        if subtitles:
+            destination = os.path.join(NORM_COUCHPOTATO_PATH)
+            for subtitle in subtitles:
+                shutil.move(subtitle, destination)
+                print "Moved additional subtitle to the Couchpotato post processing folder: %s" % subtitle
+                logger.info("Moved additional subtitle to the Couchpotato post processing folder: %s" % subtitle)
+
+    except Exception, e:
+        print "Exception: %s" % e
+        logger.error("Exception: %s" % e)
 
 
 def _cleanup(movie_path):

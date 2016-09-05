@@ -10,6 +10,7 @@
 # %3 - video path
 # %4 - subtitle path (optional)
 
+import glob
 import logging
 import os
 import stat
@@ -54,6 +55,8 @@ def run():
 
     # Move
     if _move(destination_path, video_path, subtitle_path):
+        # Move additional subtitles
+        _move_additional_subtitles(destination_path, video_path)
         # Cleanup
         _cleanup(video_path)
 
@@ -85,6 +88,25 @@ def _move(destination_path, video_path, subtitle_path):
         print "Exception: %s" % e
         logger.error("Exception: %s" % e)
         return False
+
+
+def _move_additional_subtitles(destination_path, episode_path):
+    """
+    Move additional subtitles if there are any found at the same location.
+    """
+    try:
+        path_name = os.path.splitext(os.path.normpath(episode_path))[0]
+        subtitles = glob.glob(path_name + '*' + '.srt')
+        if subtitles:
+            destination = os.path.join(destination_path)
+            for subtitle in subtitles:
+                shutil.move(subtitle, destination)
+                print "Moved additional subtitle to the destination folder: %s" % subtitle
+                logger.info("Moved additional subtitle to the destination folder: %s" % subtitle)
+
+    except Exception, e:
+        print "Exception: %s" % e
+        logger.error("Exception: %s" % e)
 
 
 def _cleanup(video_path):

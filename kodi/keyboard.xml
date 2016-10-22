@@ -1,4 +1,5 @@
 <keymap>
+    <!-- global keyboard mappings -->
     <global>
         <keyboard>
             <!-- keyboard - subtitle shift -->
@@ -7,12 +8,27 @@
             <!-- keyboard - audio shift -->
             <left mod="ctrl,shift">AudioDelayMinus</left>
             <right mod="ctrl,shift">AudioDelayPlus</right>
-			<!-- remote control - menu button -->
+            <!-- remote control - red button = record button -->
+            <!--<at mod="ctrl,alt"></at>-->
+            <!-- remote control - green button = menu button -->
             <pipe mod="ctrl,alt">ContextMenu</pipe>
-            <!-- remote control - info button -->
-			<hash mod="ctrl,alt">Info</hash>
-			<!-- remote control - guide button -->
-            <at mod="ctrl,alt">ActivateWindow(Home)</at>
+			<!-- remote control - yellow button = info button -->
+            <openbrace mod="ctrl,alt">Info</openbrace>
+            <!-- remote control - blue button = guide button -->
+			<hash mod="ctrl,alt">ActivateWindow(Home)</hash>
         </keyboard>
     </global>
+    <!-- full screen video keyboard mappings -->
+    <FullScreenVideo>
+        <keyboard>
+            <!-- remote control - red button = record button -->
+            <at mod="ctrl,alt">AudioNextLanguage</at>
+            <!-- remote control - green button = menu button -->
+            <pipe mod="ctrl,alt">ShowSubtitles</pipe>
+			<!-- remote control - yellow button = info button -->
+            <openbrace mod="ctrl,alt">NextSubtitle</openbrace>
+            <!-- remote control - blue button = guide button -->
+			<!--<hash mod="ctrl,alt"></hash>-->
+        </keyboard>
+    </FullScreenVideo>
 </keymap>

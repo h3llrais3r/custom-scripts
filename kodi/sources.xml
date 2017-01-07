@@ -5,18 +5,28 @@
     <video>
         <default pathversion="1"></default>
         <source>
-            <name>Movies</name>
-            <path pathversion="1">smb://192.168.0.100/Movies/</path>
+            <name>Movies 1</name>
+            <path pathversion="1">smb://192.168.0.100/Movies-1/</path>
             <allowsharing>true</allowsharing>
         </source>
         <source>
-            <name>TV Shows</name>
-            <path pathversion="1">smb://192.168.0.100/TV Shows/</path>
+            <name>Movies 2</name>
+            <path pathversion="1">smb://192.168.0.100/Movies-2/</path>
             <allowsharing>true</allowsharing>
         </source>
         <source>
-            <name>Anime</name>
-            <path pathversion="1">smb://192.168.0.100/Anime/</path>
+            <name>TV Shows 1</name>
+            <path pathversion="1">smb://192.168.0.100/TV-Shows-1/</path>
+            <allowsharing>true</allowsharing>
+        </source>
+        <source>
+            <name>TV Shows 2</name>
+            <path pathversion="1">smb://192.168.0.100/TV-Shows-2/</path>
+            <allowsharing>true</allowsharing>
+        </source>
+        <source>
+            <name>Anime 1</name>
+            <path pathversion="1">smb://192.168.0.100/Anime-1/</path>
             <allowsharing>true</allowsharing>
         </source>
     </video>

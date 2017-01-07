@@ -3,6 +3,10 @@
 	<label>TV series</label>
     <icon>DefaultTVShows.png</icon>
 	<content>tvshows</content>
+    <match>all</match>
+	<rule field="path" operator="contains">
+		<value>smb://192.168.0.100/TV-Shows</value>
+	</rule>
 	<rule field="genre" operator="isnot">
 		<value>Animation</value>
 	</rule>

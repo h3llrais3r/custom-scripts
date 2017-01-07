@@ -3,6 +3,7 @@
 	<label>Speelfilms</label>
     <icon>DefaultMovies.png</icon>
 	<content>movies</content>
+    <match>all</match>
 	<rule field="genre" operator="isnot">
 		<value>Animation</value>
 	</rule>

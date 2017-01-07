@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<node type="filter">
+	<label>TV series</label>
+    <icon>DefaultTVShows.png</icon>
+	<content>tvshows</content>
+	<rule field="genre" operator="isnot">
+		<value>Animation</value>
+	</rule>
+</node>

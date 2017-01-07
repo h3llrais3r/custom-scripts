@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<node type="filter">
+	<label>Animatie series</label>
+	<icon>DefaultGenre.png</icon>
+	<content>tvshows</content>
+	<rule field="genre" operator="is">
+		<value>Animation</value>
+	</rule>
+</node>

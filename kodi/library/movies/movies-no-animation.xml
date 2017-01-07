@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<node type="filter">
+	<label>Speelfilms</label>
+    <icon>DefaultMovies.png</icon>
+	<content>movies</content>
+	<rule field="genre" operator="isnot">
+		<value>Animation</value>
+	</rule>
+</node>

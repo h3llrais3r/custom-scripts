@@ -258,7 +258,13 @@
       <parent>634</parent>
       <order>7</order>
       <enablenotify>0</enablenotify>
-      <tree/>
+      <tree>
+        <item type="include">cat0_z0_a4</item>
+        <item type="include">cat0_z0_a6</item>
+        <item type="include">cat0_z0_a7</item>
+        <item type="include">cat0_z0_a8</item>
+        <item type="include">cat0_z0_a9</item>
+      </tree>
       <values>
         <item>
           <fieldname>SpotterID</fieldname>

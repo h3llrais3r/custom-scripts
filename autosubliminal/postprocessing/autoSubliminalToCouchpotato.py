@@ -93,7 +93,7 @@ def _move_additional_subtitles(movie_path):
     """
     try:
         path_name = os.path.splitext(os.path.normpath(movie_path))[0]
-        subtitles = glob.glob(path_name + '*' + '.srt')
+        subtitles = glob.glob(path_name + '.*' + '.srt')
         if subtitles:
             destination = os.path.join(NORM_COUCHPOTATO_PATH)
             for subtitle in subtitles:

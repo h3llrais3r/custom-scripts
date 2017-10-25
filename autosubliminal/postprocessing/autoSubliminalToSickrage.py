@@ -93,7 +93,7 @@ def _move_additional_subtitles(episode_path):
     """
     try:
         path_name = os.path.splitext(os.path.normpath(episode_path))[0]
-        subtitles = glob.glob(path_name + '*' + '.srt')
+        subtitles = glob.glob(path_name + '.*' + '.srt')
         if subtitles:
             destination = os.path.join(NORM_SICKRAGE_PATH)
             for subtitle in subtitles:

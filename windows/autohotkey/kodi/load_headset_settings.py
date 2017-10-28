@@ -26,9 +26,9 @@ payload_channels = {'jsonrpc': '2.0', 'method': 'Settings.SetSettingValue', 'par
 url_param_channels = urllib.urlencode({'request': json.dumps(payload_channels)})
 response = requests.get(xbmc_json_rpc_url + '?' + url_param_channels, headers=headers)
 #Set passthrough = false
-payload_passthrough = {'jsonrpc': '2.0', 'method': 'Settings.SetSettingValue', 'params': {'setting': 'audiooutput.passthrough', 'value': false}, 'id': 1}
+payload_passthrough = {'jsonrpc': '2.0', 'method': 'Settings.SetSettingValue', 'params': {'setting': 'audiooutput.passthrough', 'value': False}, 'id': 1}
 url_param_passthrough = urllib.urlencode({'request': json.dumps(payload_passthrough)})
-response = requests.get(xbmc_json_rpc_url + '?' + url_param, headers=headers)
+response = requests.get(xbmc_json_rpc_url + '?' + url_param_passthrough, headers=headers)
 
 #Show notification if loaded
 if response.status_code == 200:

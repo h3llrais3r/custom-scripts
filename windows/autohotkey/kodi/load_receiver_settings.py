@@ -20,18 +20,20 @@ xbmc_port = 8090
 #parameter. For POSTs, we add the payload as JSON the the HTTP request body
 xbmc_json_rpc_url = "http://" + user + ":" + password + "@" + xbmc_host + ":" + str(xbmc_port) + "/jsonrpc"
 
-#Payload for the method to load the receiver settings (5.1 channels = 8)
-payload = {'jsonrpc': '2.0', 'method': 'Settings.SetSettingValue', 'params': {'setting': 'audiooutput.channels', 'value': 8}, 'id': 1}
-url_param = urllib.urlencode({'request': json.dumps(payload)})
-
 #Load the receiver settings
+#Set channels (5.1 channels = 8)
+payload_channels = {'jsonrpc': '2.0', 'method': 'Settings.SetSettingValue', 'params': {'setting': 'audiooutput.channels', 'value': 8}, 'id': 1}
+url_param_channels = urllib.urlencode({'request': json.dumps(payload_channels)})
+response = requests.get(xbmc_json_rpc_url + '?' + url_param_channels, headers=headers)
+#Set passthrough = true
+payload_passthrough = {'jsonrpc': '2.0', 'method': 'Settings.SetSettingValue', 'params': {'setting': 'audiooutput.passthrough', 'value': true}, 'id': 1}
+url_param_passthrough = urllib.urlencode({'request': json.dumps(payload_passthrough)})
 response = requests.get(xbmc_json_rpc_url + '?' + url_param, headers=headers)
 
 #Show notification if loaded
 if response.status_code == 200:
-    #Payload for the method to show a notification of the change
-    payload = {'jsonrpc': '2.0', 'method': 'GUI.ShowNotification', 'params': {'title': 'Audio change', 'message': 'Switching to receiver output'}, 'id': 1}
-    url_param = urllib.urlencode({'request': json.dumps(payload)})
-    requests.get(xbmc_json_rpc_url + '?' + url_param, headers=headers)
+    payload_notification = {'jsonrpc': '2.0', 'method': 'GUI.ShowNotification', 'params': {'title': 'Audio change', 'message': 'Switching to receiver output'}, 'id': 1}
+    url_param_notification = urllib.urlencode({'request': json.dumps(payload_notification)})
+    requests.get(xbmc_json_rpc_url + '?' + url_param_notification, headers=headers)
 else:
     print response.status_code

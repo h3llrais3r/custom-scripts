@@ -2,7 +2,8 @@
 ; To hunt down the GUID, use Detect_Hardware_Changes.ahk
 
 ; GUID of device from which you want to detect the hardware changes
-DEVICE_CLASS_GUID={C166523C-FE0C-4A94-A586-F1A80CFBBF3E} ; Speakers laptop
+; You need to get the GUID from the instance id value to get the unique device id
+DEVICE_INSTANCE_ID := "{943FD307-FFE3-4BA6-82E1-2102696CBB5F}" ; laptop speakers
 
 #persistent
 #SingleInstance force
@@ -19,6 +20,14 @@ DBT_DEVICEARRIVAL := 0x8000
 DBT_DEVICEREMOVECOMPLETE := 0x8004
 DIGCF_ALLCLASSES := 0x00000004 ; list of installed devices for all device setup classes or all device interface classes
 DIGCF_DEVICEINTERFACE := 0x00000010 ; devices that support device interfaces for the specified device interface classes.
+SPDRP_FRIENDLYNAME := 0x0000000C
+SPDRP_DEVICEDESC := 0x00000000
+SPDRP_CLASS := 0x00000007
+SPDRP_MFG := 0x0000000B
+SPDRP_ENUMERATOR_NAME := 0x00000016
+SPDRP_SERVICE := 0x00000004
+SPDRP_PHYSICAL_DEVICE_OBJECT_NAME := 0x0000000E
+SPDRP_LOCATION_INFORMATION := 0x0000000D
 
 VarSetCapacity(DevHdr, 32, 0)
 NumPut(32, DevHdr, 0, "UInt") ; sizeof(_DEV_BROADCAST_DEVICEINTERFACE)
@@ -36,7 +45,7 @@ Return
 
 MsgMonitor(wParam, lParam, msg)
 {
-    global DEVICE_CLASS_GUID, DBT_DEVTYP_DEVICEINTERFACE, DBT_DEVICEARRIVAL, DBT_DEVICEREMOVECOMPLETE
+    global DEVICE_INSTANCE_ID, DBT_DEVTYP_DEVICEINTERFACE, DBT_DEVICEARRIVAL, DBT_DEVICEREMOVECOMPLETE
     
     if (wParam == DBT_DEVICEARRIVAL)
     {
@@ -49,9 +58,9 @@ MsgMonitor(wParam, lParam, msg)
             dbcc_name := GetString(lParam+28)
             dbcc_classguid := GetGuid(lParam+12)
             devices := ListDevices(lParam+12, dbcc_name) ; list devices impacted by hardware change
-            if(InStr(devices, DEVICE_CLASS_GUID)) ; check if our device is impacted
+            if(InStr(devices, DEVICE_INSTANCE_ID)) ; check if our device is impacted
             {
-                MsgBox, added
+                MsgBox, Added device %DEVICE_INSTANCE_ID%
             }
         }
     } 
@@ -66,9 +75,9 @@ MsgMonitor(wParam, lParam, msg)
             dbcc_name := GetString(lParam+28)
             dbcc_classguid := GetGuid(lParam+12)
             devices := ListDevices(lParam+12, dbcc_name) ; list devices impacted by hardware change
-            if(InStr(devices, DEVICE_CLASS_GUID)) ; check if our device is impacted
+            if(InStr(devices, DEVICE_INSTANCE_ID)) ; check if our device is impacted
             {  
-                MsgBox, removed
+                MsgBox, Removed device %DEVICE_INSTANCE_ID%
             }
         }
     }  
@@ -76,7 +85,7 @@ MsgMonitor(wParam, lParam, msg)
 
 ListDevices(GUIDAddr = 0, FindDevicePath = "")
 {
-    global DIGCF_DEVICEINTERFACE, DIGCF_ALLCLASSES
+    global DIGCF_DEVICEINTERFACE, DIGCF_ALLCLASSES, SPDRP_FRIENDLYNAME, SPDRP_DEVICEDESC, SPDRP_MFG, SPDRP_CLASS, SPDRP_SERVICE, SPDRP_ENUMERATOR_NAME, SPDRP_PHYSICAL_DEVICE_OBJECT_NAME, SPDRP_LOCATION_INFORMATION
    
     hMod := DllCall("LoadLibrary", "str", "setupapi.dll")
     hDev := DllCall("setupapi\SetupDiGetClassDevs", "UInt", GuidAddr, "UInt", 0, "UInt", 0, "UInt", DIGCF_DEVICEINTERFACE)
@@ -141,6 +150,29 @@ ListDevices(GUIDAddr = 0, FindDevicePath = "")
         }
          
         sRes .= "Device " . A_Index . " - DevInfoData Size " . NumGet(DevInfoData, 0, "UInt") . " - Device Class GUID " . GetGuid(&DevInfoData+4) . " - " . NumGet(DevInfoData, 20, "UInt") . "`r`n"
+        if (Name <> "Unknown")
+        {
+            sRes .= "   Name: " . Name . "`r`n"
+        }
+
+        VarSetCapacity(DevName, 1024)
+        Ret := DllCall("setupapi\SetupDiGetDeviceInstanceId", "UInt", hDev, "UInt", &DevInfoData, "Str", DevName, "UInt", 1024, "UInt", 0, "UInt")
+        if (Ret <> 1)
+        {
+            ErrMsg := FormatMessageFromSystem(A_LastError)
+            sRes = %sRes% Ret %Ret% ErrorLevel %ErrorLevel% %A_LastError% %ErrMsg%
+        }
+        sRes .= "   Device Instance Id: " . DevName . "`r`n"
+      
+        sRes .= "   SPDRP_FRIENDLYNAME: " . GetRegistryProperty(hDev, DevInfoData, SPDRP_FRIENDLYNAME) . "`r`n"
+        sRes .= "   SPDRP_DEVICEDESC: " . GetRegistryProperty(hDev, DevInfoData, SPDRP_DEVICEDESC) . "`r`n"
+        sRes .= "   SPDRP_MFG: " . GetRegistryProperty(hDev, DevInfoData, SPDRP_MFG) . "`r`n"
+        sRes .= "   SPDRP_CLASS: " . GetRegistryProperty(hDev, DevInfoData, SPDRP_CLASS) . "`r`n"
+        sRes .= "   SPDRP_SERVICE: " . GetRegistryProperty(hDev, DevInfoData, SPDRP_SERVICE) . "`r`n"
+        sRes .= "   SPDRP_ENUMERATOR_NAME: " . GetRegistryProperty(hDev, DevInfoData, SPDRP_ENUMERATOR_NAME) . "`r`n"      
+        sRes .= "   SPDRP_PHYSICAL_DEVICE_OBJECT_NAME: " . GetRegistryProperty(hDev, DevInfoData, SPDRP_PHYSICAL_DEVICE_OBJECT_NAME) . "`r`n"      
+        sRes .= "   SPDRP_LOCATION_INFORMATION: " . GetRegistryProperty(hDev, DevInfoData, SPDRP_LOCATION_INFORMATION) . "`r`n"
+        sRes .= "`r`n"
     }
 
     DllCall("setupapi\SetupDiDestroyDeviceInfoList", "UInt", hDev)
@@ -217,4 +249,21 @@ FormatMessageFromSystem(ErrorCode)
     ; Strip any newlines
     Buffer := RegExReplace(Buffer, "\r\n", " ")
     Return Buffer
+}
+
+GetRegistryProperty(hDev, ByRef DevInfoData, Prop)
+{
+    VarSetCapacity(NameType, 4, 0)
+    VarSetCapacity(Name, 1024, 0)
+    Ret:= DllCall("setupapi\SetupDiGetDeviceRegistryProperty", "UInt", hDev, "UInt", &DevInfoData, "UInt", Prop, "UInt", &NameType, "Str", Name, "UInt", 1024, "UInt", 0, "UInt")
+    if (Ret <> 1)
+    {
+        ErrMsg := FormatMessageFromSystem(A_LastError)
+        Res := "Not Found, Ret " Ret " ErrorLevel " ErrorLevel " " A_LastError " " ErrMsg
+    }
+    else
+    {
+        Res := Name
+    }
+    Return Res
 }

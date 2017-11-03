@@ -1,0 +1,26 @@
+THIS MUST BE CONFIGURED ON THE MACHINE THAT IS ACCESSING REMOTE SYMLINKS!
+*************************************************************************
+
+When access a symbolic link on a file server, sometimes you may see the following error:
+
+"The symbolic link cannot be followed because its type is disabled"
+
+This is because by default remote to remote symbolic links are disabled. You can enable it with fsutil.
+
+C:\Windows\system32>fsutil behavior query SymlinkEvaluation
+
+Local to local symbolic links are enabled.
+Local to remote symbolic links are enabled.
+Remote to local symbolic links are disabled.
+Remote to remote symbolic links are disabled.
+
+C:\Windows\system32>fsutil behavior set SymlinkEvaluation R2R:1
+
+C:\Windows\system32>fsutil behavior query SymlinkEvaluation
+
+Local to local symbolic links are enabled.
+Local to remote symbolic links are enabled.
+Remote to local symbolic links are disabled.
+Remote to remote symbolic links are enabled.
+
+Be sure to run fsutil from elevated command prompt.

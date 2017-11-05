@@ -1,5 +1,7 @@
 @echo off
 @rem RUN AS ADMINISTRATOR!
+@rem This script creates the assets folders for games for usage with AEL (Advanced Emulator Launcher)
+@rem It makes use of assets scraped from emumovies to \\192.168.0.100\Games\Assets\<console>\<artwork>
 
 set PATH=
 set /P PATH=Specify the path to your AEL-assets folder (empty = current directory): 

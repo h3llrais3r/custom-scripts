@@ -54,7 +54,7 @@ MsgMonitor(wParam, lParam, msg)
     if (wParam == DBT_DEVICEARRIVAL)
     {
         ; lParam points to a DEV_BROADCAST_HDR structure
-        dbch_size       := NumGet(lParam+0, 0, "UInt")
+        dbch_size := NumGet(lParam+0, 0, "UInt")
         dbch_devicetype := NumGet(lParam+0, 4, "UInt")
         if (dbch_devicetype == DBT_DEVTYP_DEVICEINTERFACE)
         {
@@ -62,18 +62,24 @@ MsgMonitor(wParam, lParam, msg)
             dbcc_name := GetString(lParam+28)
             dbcc_classguid := GetGuid(lParam+12)
             devices := ListDevices(lParam+12, dbcc_name) ; list devices impacted by hardware change
-            if(InStr(devices, DEVICE_INSTANCE_ID)) ; check if our device is impacted
+            for index, device in devices
             {
-                ;MsgBox, Added device %DEVICE_INSTANCE_ID%
-                ; Load headset settings
-                Run load_headset_settings.py
+                if (InStr(device.instanceId, DEVICE_INSTANCE_ID)) ; check if our device is in the list of devices
+                {
+                    if (device.physicalDeviceObjectName) ; check if physicalDeviceObjectName is available (available means physically connected or enabled)
+                    {
+                        ;MsgBox, Device %DEVICE_INSTANCE_ID% physically connected (or enabled)
+                        ; Load headset settings
+                        Run load_headset_settings.py
+                    }
+                }
             }
         }
     } 
     else if (wParam == DBT_DEVICEREMOVECOMPLETE)
     {
         ; lParam points to a DEV_BROADCAST_HDR structure
-        dbch_size       := NumGet(lParam+0, 0, "UInt")
+        dbch_size := NumGet(lParam+0, 0, "UInt")
         dbch_devicetype := NumGet(lParam+0, 4, "UInt")
         if (dbch_devicetype == DBT_DEVTYP_DEVICEINTERFACE)
         {
@@ -81,11 +87,17 @@ MsgMonitor(wParam, lParam, msg)
             dbcc_name := GetString(lParam+28)
             dbcc_classguid := GetGuid(lParam+12)
             devices := ListDevices(lParam+12, dbcc_name) ; list devices impacted by hardware change
-            if(InStr(devices, DEVICE_INSTANCE_ID)) ; check if our device is impacted
-            {  
-                ;MsgBox, Removed device %DEVICE_INSTANCE_ID%
-                ; Load receiver settings
-                Run load_receiver_settings.py
+            for index, device in devices
+            {
+                if (InStr(device.instanceId, DEVICE_INSTANCE_ID)) ; check if our device is in the list of devices
+                {
+                    if (!device.physicalDeviceObjectName) ; check if physicalDeviceObjectName is blank (blank means physically disconnected or disabled)
+                    {
+                        ;MsgBox, Device %DEVICE_INSTANCE_ID% physically disconnected (or disabled)
+                        ; Load receiver settings
+                        Run load_receiver_settings.py
+                    }
+                }
             }
         }
     }  
@@ -98,8 +110,10 @@ ListDevices(GUIDAddr = 0, FindDevicePath = "")
     hMod := DllCall("LoadLibrary", "str", "setupapi.dll")
     hDev := DllCall("setupapi\SetupDiGetClassDevs", "UInt", GuidAddr, "UInt", 0, "UInt", 0, "UInt", DIGCF_DEVICEINTERFACE)
     
+    Res := []
     Loop
     {
+        sRes :=
         VarSetCapacity(DevInfoData, 32)
         NumPut(32, DevInfoData, 0, "UInt")
         if (GUIDAddr == 0)
@@ -156,7 +170,7 @@ ListDevices(GUIDAddr = 0, FindDevicePath = "")
         {
             continue
         }
-         
+        
         sRes .= "Device " . A_Index . " - DevInfoData Size " . NumGet(DevInfoData, 0, "UInt") . " - Device Class GUID " . GetGuid(&DevInfoData+4) . " - " . NumGet(DevInfoData, 20, "UInt") . "`r`n"
         if (Name <> "Unknown")
         {
@@ -171,7 +185,7 @@ ListDevices(GUIDAddr = 0, FindDevicePath = "")
             sRes = %sRes% Ret %Ret% ErrorLevel %ErrorLevel% %A_LastError% %ErrMsg%
         }
         sRes .= "   Device Instance Id: " . DevName . "`r`n"
-      
+        
         sRes .= "   SPDRP_FRIENDLYNAME: " . GetRegistryProperty(hDev, DevInfoData, SPDRP_FRIENDLYNAME) . "`r`n"
         sRes .= "   SPDRP_DEVICEDESC: " . GetRegistryProperty(hDev, DevInfoData, SPDRP_DEVICEDESC) . "`r`n"
         sRes .= "   SPDRP_MFG: " . GetRegistryProperty(hDev, DevInfoData, SPDRP_MFG) . "`r`n"
@@ -181,12 +195,30 @@ ListDevices(GUIDAddr = 0, FindDevicePath = "")
         sRes .= "   SPDRP_PHYSICAL_DEVICE_OBJECT_NAME: " . GetRegistryProperty(hDev, DevInfoData, SPDRP_PHYSICAL_DEVICE_OBJECT_NAME) . "`r`n"      
         sRes .= "   SPDRP_LOCATION_INFORMATION: " . GetRegistryProperty(hDev, DevInfoData, SPDRP_LOCATION_INFORMATION) . "`r`n"
         sRes .= "`r`n"
+        
+        Device := {}
+        Device.index := A_Index
+        Device.classGuid := GetGuid(&DevInfoData+4)
+        Device.id := NumGet(DevInfoData, 20, "UInt")
+        Device.name := Name
+        Device.instanceId := DevName
+        Device.friendlyName := GetRegistryProperty(hDev, DevInfoData, SPDRP_FRIENDLYNAME)
+        Device.deviceDescription := GetRegistryProperty(hDev, DevInfoData, SPDRP_DEVICEDESC)
+        Device.mfg := GetRegistryProperty(hDev, DevInfoData, SPDRP_MFG)
+        Device.class := GetRegistryProperty(hDev, DevInfoData, SPDRP_CLASS)
+        Device.service := GetRegistryProperty(hDev, DevInfoData, SPDRP_SERVICE)
+        Device.enumeratorName := GetRegistryProperty(hDev, DevInfoData, SPDRP_ENUMERATOR_NAME)
+        Device.physicalDeviceObjectName := GetRegistryProperty(hDev, DevInfoData, SPDRP_PHYSICAL_DEVICE_OBJECT_NAME)
+        Device.locationInformation := GetRegistryProperty(hDev, DevInfoData, SPDRP_LOCATION_INFORMATION)
+        Device.string := sRes
+        
+        Res.Push(Device)
     }
 
     DllCall("setupapi\SetupDiDestroyDeviceInfoList", "UInt", hDev)
     DllCall("FreeLibrary", "UInt", hMod)
     
-    Return sRes
+    Return Res
 }
 
 GetAHKWin()
@@ -267,7 +299,8 @@ GetRegistryProperty(hDev, ByRef DevInfoData, Prop)
     if (Ret <> 1)
     {
         ErrMsg := FormatMessageFromSystem(A_LastError)
-        Res := "Not Found, Ret " Ret " ErrorLevel " ErrorLevel " " A_LastError " " ErrMsg
+        ;Res := "Not Found, Ret " Ret " ErrorLevel " ErrorLevel " " A_LastError " " ErrMsg
+        Res :=
     }
     else
     {

@@ -4,6 +4,8 @@
 ; When the headset is disconnected, it switches back to the settings for the receiver
 ; REMARK: I assume that the headset becomes the default audio devices in windows when it connects; if not, we'll also need to add a switch of audio device in the kodi settings (not included in this script)
 ; To hunt down the GUID, use Detect_Hardware_Changes.ahk
+; ALTERNATIVE: You could also check with a tool like regshot (https://sourceforge.net/projects/regshot/) the registry changes when the headset connects (keys added) or disconnects (keys removed)
+; When you know the keys that are added/removed you could also easily check these keys with autohotkey and do the switch based on that (see https://autohotkey.com/board/topic/70836-any-way-to-detect-bluetooth-device-status/)
 
 ; GUID of device from which you want to detect the hardware changes
 ; You need to get the GUID from the instance id value to get the unique device id

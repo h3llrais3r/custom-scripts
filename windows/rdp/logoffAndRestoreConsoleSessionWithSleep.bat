@@ -5,4 +5,6 @@
 @rem Program location: %windir%\system32
 tscon.exe 1 /dest:console
 timeout 2 /nobreak
+powercfg -hibernate off
 rundll32.exe powrprof.dll,SetSuspendState 0,1,0
+powercfg -hibernate on

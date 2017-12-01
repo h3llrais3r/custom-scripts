@@ -13,6 +13,8 @@ netsh interface ipv6 add route ::/0 IP6Tunnel <ipv6_server>
 
 Delete IP6Tunnel tunnel:
 ------------------------
-netsh interface ipv6 delete route ::/0 IP6Tunnel <ipv6_server>
+netsh interface ipv6 delete route ::/0 IP6Tunnel
 netsh interface ipv6 delete address IP6Tunnel <ipv6_client>
 netsh interface ipv6 delete interface IP6Tunnel
+
+-> delete address is not needed, it's done automatically when deleting the interface!

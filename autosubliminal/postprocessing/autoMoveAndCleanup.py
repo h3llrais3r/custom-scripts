@@ -18,7 +18,6 @@ import os
 import stat
 import sys
 import shutil
-from os.path import sep
 
 # Logging config (change to logging.DEBUG for debug info)
 LOG_FILE = os.path.normpath(os.path.dirname(os.path.realpath(__file__)) + '/autoMoveAndCleanup.log')
@@ -117,14 +116,15 @@ def _cleanup(root_path, video_path):
     in_root_folder = _get_common_path([norm_root_path, norm_video_path]) == norm_root_path
     if in_root_folder:
         # Check if the video is in a sub folder of the root folder
-        video_folder = os.path.dirname(norm_video_path)
+        # Only compare _norm_path values to prevent a possible endless loop with difference in trailing slashes!
+        video_folder = _norm_path(os.path.dirname(norm_video_path))
         in_sub_folder = video_folder != norm_root_path
         if in_sub_folder:
             folder_to_clean = None
             while video_folder != norm_root_path:
                 folder_to_clean = video_folder
                 # Move 1 folder up
-                video_folder = os.path.dirname(video_folder)
+                video_folder = _norm_path(os.path.dirname(video_folder))
             try:
                 # Remove the folder of the video inside the root folder
                 shutil.rmtree(folder_to_clean, onerror=_set_rw_and_remove)
@@ -172,11 +172,10 @@ def _print(message):
 
 
 def _norm_path(path):
-    # On windows also normalise case (Windows is case insensitive)
-    if os.name == 'nt':
-        return os.path.normcase(os.path.normpath(path))
-    else:
-        return os.path.normpath(path)
+    # This only affects case insensitive systems (like Windows)
+    norm_path = os.path.normcase(os.path.normpath(path))
+    # Make sure to strip trailing os.path.sep characters because we'll be comparing paths
+    return norm_path.rstrip(os.path.sep)
 
 
 def _get_common_path(paths):
@@ -184,7 +183,7 @@ def _get_common_path(paths):
     # This unlike the os.path.commonprefix version always returns path prefixes as it compares path component wise
     cp = []
 
-    ls = [p.split(sep) for p in paths]
+    ls = [p.split(os.path.sep) for p in paths]
     ml = min(len(p) for p in ls)
     for i in range(ml):
         s = set(p[i] for p in ls)
@@ -192,7 +191,7 @@ def _get_common_path(paths):
             break
         cp.append(s.pop())
 
-    return sep.join(cp) if cp else None
+    return os.path.sep.join(cp) if cp else None
 
 
 def _set_rw_and_remove(operation, name, exc):

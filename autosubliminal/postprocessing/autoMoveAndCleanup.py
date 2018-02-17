@@ -2,65 +2,68 @@
 # It moves a video file and (optionally) its subtitle from Auto-Subliminal to a new destination.
 # CONFIGURATION: changes the values of AUTOSUBLIMINAL_PATH to your path.
 
-# Required parameter to be specified when running the script:
-# %1 - destination path
-
 # Auto-Subliminal parameters passed to the script:
-# %2 - encoding
+# %1 - encoding
+# %2 - root path
 # %3 - video path
 # %4 - subtitle path (optional)
 
+# Required parameter to be specified when running the script:
+# %5 - destination path
+
 import glob
+import locale
 import logging
 import os
 import stat
 import sys
 import shutil
-
-# Paths
-AUTOSUBLIMINAL_PATH = "//SERVER/sickrage-autosubliminal/"
-
-# Normalized paths (path and case) because paths are compaired when executing cleanup
-NORM_AUTOSUBLIMINAL_PATH = os.path.normcase(os.path.normpath(AUTOSUBLIMINAL_PATH))
+from os.path import sep
 
 # Logging config (change to logging.DEBUG for debug info)
-LOG_FILE = os.path.dirname(os.path.realpath(__file__)) + "/autoMoveAndCleanup.log"
+LOG_FILE = os.path.normpath(os.path.dirname(os.path.realpath(__file__)) + '/autoMoveAndCleanup.log')
 logging.basicConfig(filename=LOG_FILE, format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)
-logger = logging.getLogger("autoMoveAndCleanup")
+logger = logging.getLogger('autoMoveAndCleanup')
+
+# System encoding
+SYS_ENCODING = locale.getpreferredencoding()
 
 
 def run():
-    print ""
-    print "#" * 30
-    logger.info("----------------------------------------------")
-
     # Read parameters (sys.argv[0] = path to this script)
-    destination_path = os.path.normcase(os.path.normpath(sys.argv[1]))
-    encoding = sys.argv[2]
-    video_path = _decode(sys.argv[3], encoding)
-    subtitle_path = ""
-    if len(sys.argv) == 5:
-        subtitle_path = _decode(sys.argv[4], encoding)
+    global ENCODING
+    if sys.argv[1]:
+        ENCODING = sys.argv[1].lower()
+    else:
+        ENCODING = SYS_ENCODING.lower()
 
-    # Print parameters
-    print "destination: %s" % destination_path
-    logger.info("destination: %s" % destination_path)
-    print "encoding: " + encoding
-    logger.info("encoding: " + encoding)
-    print "video path: " + video_path
-    logger.info("video path: " + video_path)
-    print "subtitle path: " + subtitle_path
-    logger.info("subtitle path: " + subtitle_path)
+    _log_message('')
+    _log_message('----------------------------------------------')
+
+    # Default autosubliminal parameters
+    encoding = ENCODING
+    root_path = _decode(sys.argv[2], ENCODING)
+    video_path = _decode(sys.argv[3], ENCODING)
+    subtitle_path = _decode(sys.argv[4], ENCODING)
+
+    # Required parameter
+    destination_path = _decode(sys.argv[5], ENCODING)
+
+    # Log parameters
+    _log_message('encoding: %s' % encoding)
+    _log_message('root path: %s' % root_path)
+    _log_message('video path: %s' % video_path)
+    _log_message('subtitle path: %s' % subtitle_path)
+    _log_message('destination path: %s' % destination_path)
 
     # Move
     if _move(destination_path, video_path, subtitle_path):
         # Move additional subtitles
         _move_additional_subtitles(destination_path, video_path)
         # Cleanup
-        _cleanup(video_path)
+        _cleanup(root_path, video_path)
 
-    print "#" * 30
-    logger.info("----------------------------------------------")
+    _log_message('----------------------------------------------')
 
 
 def _decode(value, encoding):
@@ -75,17 +78,14 @@ def _move(destination_path, video_path, subtitle_path):
         destination = os.path.join(destination_path)
         video = os.path.join(video_path)
         shutil.move(video, destination)
-        print "Moved video to destination folder"
-        logger.info("Moved video to destination folder")
+        _log_message('Moved video to destination folder')
         if subtitle_path:
             subtitle = os.path.join(subtitle_path)
             shutil.move(subtitle, destination)
-            print "Moved subtitle to destination folder"
-            logger.info("Moved subtitle to destination folder")
+            _log_message('Moved subtitle to destination folder')
         return True
-    except Exception, e:
-        print "Exception: %s" % e
-        logger.error("Exception: %s" % e)
+    except Exception as e:
+        _log_message('Error while moving files', e, logging.ERROR)
         return False
 
 
@@ -100,48 +100,99 @@ def _move_additional_subtitles(destination_path, episode_path):
             destination = os.path.join(destination_path)
             for subtitle in subtitles:
                 shutil.move(subtitle, destination)
-                print "Moved additional found subtitle to the destination folder: %s" % subtitle
-                logger.info("Moved additional found subtitle to the destination folder: %s" % subtitle)
-
-    except Exception, e:
-        print "Exception: %s" % e
-        logger.error("Exception: %s" % e)
+                _log_message('Moved additional found subtitle to the destination folder: %s' % subtitle)
+    except Exception as e:
+        _log_message('Error while moving additional subtitles', e, logging.ERROR)
 
 
-def _cleanup(video_path):
+def _cleanup(root_path, video_path):
     """
     Cleanup leftovers.
     We need to clean up when:
-    - the video is located in the autosubliminal path
-    - the video is in a subfolder underneath the autosubliminal path
+    - the video is located in the root path
+    - the video is in a sub folder underneath the root path
     """
-    norm_video_path = os.path.normcase(os.path.normpath(video_path))
-    in_root_folder = os.path.commonprefix([NORM_AUTOSUBLIMINAL_PATH, norm_video_path]) == NORM_AUTOSUBLIMINAL_PATH
+    norm_root_path = _norm_path(root_path)
+    norm_video_path = _norm_path(video_path)
+    in_root_folder = _get_common_path([norm_root_path, norm_video_path]) == norm_root_path
     if in_root_folder:
-        # Check if the video is in a subfolder of the root folder
+        # Check if the video is in a sub folder of the root folder
         video_folder = os.path.dirname(norm_video_path)
-        in_sub_folder = video_folder != NORM_AUTOSUBLIMINAL_PATH
+        in_sub_folder = video_folder != norm_root_path
         if in_sub_folder:
-            while video_folder != NORM_AUTOSUBLIMINAL_PATH:
+            folder_to_clean = None
+            while video_folder != norm_root_path:
                 folder_to_clean = video_folder
                 # Move 1 folder up
                 video_folder = os.path.dirname(video_folder)
             try:
                 # Remove the folder of the video inside the root folder
                 shutil.rmtree(folder_to_clean, onerror=_set_rw_and_remove)
-                print "Removed video folder: %s" % folder_to_clean
-                logger.info("Removed video folder: %s" % folder_to_clean)
-            except Exception, e:
-                print "Exception: %s" % e
-                logger.error("Exception: %s" % e)
+                _log_message('Removed video folder: %s' % folder_to_clean)
+            except Exception as e:
+                _log_message('Error while cleaning up video folder', e, logging.ERROR)
         else:
-            print "Video is located directly under an autosubliminal video folder"
-            print "Skipping cleanup"
+            _log_message('Video is located directly under a root folder')
+            _log_message('Skipping cleanup')
     else:
-        print "Video is not located in an autosubliminal video folder"
-        print "Skipping cleanup"
-        logger.info("Video is not located in an autosubliminal video folder")
-        logger.info("Skipping cleanup")
+        _log_message('Video is not located in a root folder')
+        _log_message('Skipping cleanup')
+
+
+def _log_message(message, exception=None, log_level=logging.INFO):
+    # Print message to standard output
+    _print(message)
+    if exception:
+        _print('Please check %s for details' % LOG_FILE)
+    # Log message
+    if exception:
+        logger.exception(message)  # This will also print the traceback
+    else:
+        logger.log(log_level, message)
+
+
+def _print(message):
+    # Print the message
+    # When decoded in utf-8 encode it back to utf-8 before printing
+    # Otherwise, we are already using the system encoding and we can print it
+    # Add fallback encoding just in case
+    try:
+        if ENCODING == 'utf-8':
+            print(message.encode('utf-8'))
+        else:
+            print(message)
+    except:
+        try:
+            print(message.encode('utf-8'))
+        except:
+            try:
+                print(message.encode('utf-8').decode(SYS_ENCODING, errors='replace'))
+            except:
+                print(message.encode('utf-8').decode(SYS_ENCODING, errors='ignore'))
+
+
+def _norm_path(path):
+    # On windows also normalise case (Windows is case insensitive)
+    if os.name == 'nt':
+        return os.path.normcase(os.path.normpath(path))
+    else:
+        return os.path.normpath(path)
+
+
+def _get_common_path(paths):
+    # See https://stackoverflow.com/questions/21498939/how-to-circumvent-the-fallacy-of-pythons-os-path-commonprefix
+    # This unlike the os.path.commonprefix version always returns path prefixes as it compares path component wise
+    cp = []
+
+    ls = [p.split(sep) for p in paths]
+    ml = min(len(p) for p in ls)
+    for i in range(ml):
+        s = set(p[i] for p in ls)
+        if len(s) != 1:
+            break
+        cp.append(s.pop())
+
+    return sep.join(cp) if cp else None
 
 
 def _set_rw_and_remove(operation, name, exc):

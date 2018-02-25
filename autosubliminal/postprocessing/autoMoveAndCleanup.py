@@ -75,13 +75,13 @@ def run():
 
 
 def _decode(value, encoding):
-    # Decode a value if encoding is specified
+    # Decode a value if encoding is specified (needed for Python 2 which uses bytes string by default)
     if encoding:
         try:
             return value.decode(encoding)
         except:
-            # Try without decoding on fallback
-            _log_message('Decode failed, using original value')
+            # Try without decoding on fallback (needed for Python 3 which uses unicode string by default)
+            _log_message('Decode failed, using original value', log_level=logging.DEBUG)
             return value
     return value
 

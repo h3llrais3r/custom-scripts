@@ -169,7 +169,7 @@ def _log_message(message, exception=None, log_level=logging.INFO):
     # Print message to standard output
     _print(message, log_level)
     if exception:
-        _print('Please check %s for details' % LOG_FILE, log_level)
+        _print('Please check %s for details' % log_file, log_level)
     # Log message
     if exception:
         logger.exception(message)  # This will also print the traceback

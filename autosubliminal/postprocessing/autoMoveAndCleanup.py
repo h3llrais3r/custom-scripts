@@ -19,10 +19,18 @@ import stat
 import sys
 import shutil
 
-# Logging config (change to logging.DEBUG for debug info)
-LOG_FILE = os.path.normpath(os.path.dirname(os.path.realpath(__file__)) + '/autoMoveAndCleanup.log')
-logging.basicConfig(filename=LOG_FILE, format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)
+# Enable debug
+DEBUG = False
+
+# Logger config
 logger = logging.getLogger('autoMoveAndCleanup')
+logger.setLevel(logging.DEBUG if DEBUG else logging.INFO)
+log_file = os.path.normpath(os.path.dirname(os.path.realpath(__file__)) + '/autoMoveAndCleanup.log')
+log_handler = logging.FileHandler(log_file, mode='a', encoding='utf-8')  # make sure to log in utf-8
+log_formatter = logging.Formatter('%(asctime)s %(levelname)-8s - %(message)s')
+log_handler.setFormatter(log_formatter)
+log_handler.setLevel(logging.DEBUG if DEBUG else logging.INFO)
+logger.addHandler(log_handler)
 
 # System encoding
 SYS_ENCODING = locale.getpreferredencoding()
@@ -38,6 +46,7 @@ def run():
 
     _log_message('')
     _log_message('----------------------------------------------')
+    _log_message('Running script with python version %s' % sys.version)
 
     # Default autosubliminal parameters
     encoding = ENCODING
@@ -68,23 +77,33 @@ def run():
 def _decode(value, encoding):
     # Decode a value if encoding is specified
     if encoding:
-        return value.decode(encoding)
+        try:
+            return value.decode(encoding)
+        except:
+            # Try without decoding on fallback
+            _log_message('Decode failed, using original value')
+            return value
     return value
 
 
 def _move(destination_path, video_path, subtitle_path):
     try:
+        _log_message('Moving video to destination folder', log_level=logging.DEBUG)
         destination = os.path.join(destination_path)
         video = os.path.join(video_path)
+        _log_message('Destination: %s' % destination, log_level=logging.DEBUG)
+        _log_message('Video: %s' % video, log_level=logging.DEBUG)
         shutil.move(video, destination)
         _log_message('Moved video to destination folder')
         if subtitle_path:
+            _log_message('Moving subtitle to destination folder', log_level=logging.DEBUG)
             subtitle = os.path.join(subtitle_path)
+            _log_message('Subtitle: %s' % subtitle, log_level=logging.DEBUG)
             shutil.move(subtitle, destination)
             _log_message('Moved subtitle to destination folder')
         return True
     except Exception as e:
-        _log_message('Error while moving files', e, logging.ERROR)
+        _log_message('Error while moving files', exception=e, log_level=logging.ERROR)
         return False
 
 
@@ -96,12 +115,14 @@ def _move_additional_subtitles(destination_path, episode_path):
         path_name = os.path.splitext(os.path.normpath(episode_path))[0]
         subtitles = glob.glob(path_name + '.*' + '.srt')
         if subtitles:
+            _log_message('Moving additional subtitles', log_level=logging.DEBUG)
             destination = os.path.join(destination_path)
             for subtitle in subtitles:
+                _log_message('Additional subtitle: %s' % subtitle, log_level=logging.DEBUG)
                 shutil.move(subtitle, destination)
                 _log_message('Moved additional found subtitle to the destination folder: %s' % subtitle)
     except Exception as e:
-        _log_message('Error while moving additional subtitles', e, logging.ERROR)
+        _log_message('Error while moving additional subtitles', exception=e, log_level=logging.ERROR)
 
 
 def _cleanup(root_path, video_path):
@@ -111,9 +132,13 @@ def _cleanup(root_path, video_path):
     - the video is located in the root path
     - the video is in a sub folder underneath the root path
     """
+    _log_message('Cleaning up leftovers', log_level=logging.DEBUG)
     norm_root_path = _norm_path(root_path)
     norm_video_path = _norm_path(video_path)
     in_root_folder = _get_common_path([norm_root_path, norm_video_path]) == norm_root_path
+    _log_message('Root path: %s' % norm_root_path, log_level=logging.DEBUG)
+    _log_message('Video path: %s' % norm_video_path, log_level=logging.DEBUG)
+    _log_message('In root folder: %s' % in_root_folder, log_level=logging.DEBUG)
     if in_root_folder:
         # Check if the video is in a sub folder of the root folder
         # Only compare _norm_path values to prevent a possible endless loop with difference in trailing slashes!
@@ -127,6 +152,7 @@ def _cleanup(root_path, video_path):
                 video_folder = _norm_path(os.path.dirname(video_folder))
             try:
                 # Remove the folder of the video inside the root folder
+                _log_message('Cleaning up video folder: %s' % folder_to_clean, log_level=logging.DEBUG)
                 shutil.rmtree(folder_to_clean, onerror=_set_rw_and_remove)
                 _log_message('Removed video folder: %s' % folder_to_clean)
             except Exception as e:
@@ -141,9 +167,9 @@ def _cleanup(root_path, video_path):
 
 def _log_message(message, exception=None, log_level=logging.INFO):
     # Print message to standard output
-    _print(message)
+    _print(message, log_level)
     if exception:
-        _print('Please check %s for details' % LOG_FILE)
+        _print('Please check %s for details' % LOG_FILE, log_level)
     # Log message
     if exception:
         logger.exception(message)  # This will also print the traceback
@@ -151,24 +177,42 @@ def _log_message(message, exception=None, log_level=logging.INFO):
         logger.log(log_level, message)
 
 
-def _print(message):
-    # Print the message
-    # When decoded in utf-8 encode it back to utf-8 before printing
-    # Otherwise, we are already using the system encoding and we can print it
-    # Add fallback encoding just in case
-    try:
-        if ENCODING == 'utf-8':
-            print(message.encode('utf-8'))
-        else:
-            print(message)
-    except:
+def _print(message, log_level):
+    """
+    Print the message.
+    If an encoding is specified, print it in the specified encoding.
+    Otherwise print the bare message.
+    Add fallback just in case something goes wrong.
+    """
+    # Add prefix in debug mode
+    if DEBUG and log_level == logging.DEBUG:
+        message = 'DEBUG - ' + message
+    # Only print message according to log level
+    if log_level >= logger.level:
         try:
-            print(message.encode('utf-8'))
-        except:
+            if ENCODING:
+                if DEBUG:
+                    print('DEBUG - Print message in %s encoding' % ENCODING)
+                print(message.encode(ENCODING))
+            else:
+                if DEBUG:
+                    print('DEBUG - Print bare message')
+                print(message)
+        except Exception:
+            # This should not occur, but just to be sure we add some fallback
+            if DEBUG:
+                print('DEBUG - Print message failed, try in utf-8 encoding')
             try:
-                print(message.encode('utf-8').decode(SYS_ENCODING, errors='replace'))
-            except:
-                print(message.encode('utf-8').decode(SYS_ENCODING, errors='ignore'))
+                print(message.encode('utf-8'))
+            except Exception:
+                if DEBUG:
+                    print('DEBUG - Print message failed, try in utf-8 encoding with replace')
+                try:
+                    print(message.encode('utf-8').decode(SYS_ENCODING, errors='replace'))
+                except Exception:
+                    if DEBUG:
+                        print('DEBUG - Print message failed, try in utf-8 encoding with ignore')
+                    print(message.encode('utf-8').decode(SYS_ENCODING, errors='ignore'))
 
 
 def _norm_path(path):

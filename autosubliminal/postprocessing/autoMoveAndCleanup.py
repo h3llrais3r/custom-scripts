@@ -208,11 +208,11 @@ def _print(message, log_level):
                 if DEBUG:
                     print('DEBUG - Print message failed, try in utf-8 encoding with replace')
                 try:
-                    print(message.encode('utf-8').decode(SYS_ENCODING, errors='replace'))
+                    print(message.encode('utf-8', errors='replace'))
                 except Exception:
                     if DEBUG:
                         print('DEBUG - Print message failed, try in utf-8 encoding with ignore')
-                    print(message.encode('utf-8').decode(SYS_ENCODING, errors='ignore'))
+                    print(message.encode('utf-8', errors='ignore'))
 
 
 def _norm_path(path):

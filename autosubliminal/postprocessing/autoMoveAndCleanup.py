@@ -35,6 +35,10 @@ logger.addHandler(log_handler)
 # System encoding
 SYS_ENCODING = locale.getpreferredencoding()
 
+# System version
+PY2 = sys.version_info[0] == 2
+PY3 = sys.version_info[0] == 3
+
 
 def run():
     # Read parameters (sys.argv[0] = path to this script)
@@ -49,13 +53,13 @@ def run():
     _log_message('Running script with python version %s' % sys.version)
 
     # Default autosubliminal parameters
-    encoding = ENCODING
-    root_path = _decode(sys.argv[2], ENCODING)
-    video_path = _decode(sys.argv[3], ENCODING)
-    subtitle_path = _decode(sys.argv[4], ENCODING)
+    encoding = _to_unicode(ENCODING, ENCODING)
+    root_path = _to_unicode(sys.argv[2], ENCODING)
+    video_path = _to_unicode(sys.argv[3], ENCODING)
+    subtitle_path = _to_unicode(sys.argv[4], ENCODING)
 
     # Required parameter
-    destination_path = _decode(sys.argv[5], ENCODING)
+    destination_path = _to_unicode(sys.argv[5], ENCODING)
 
     # Log parameters
     _log_message('encoding: %s' % encoding)
@@ -74,16 +78,18 @@ def run():
     _log_message('----------------------------------------------')
 
 
-def _decode(value, encoding):
-    # Decode a value if encoding is specified (needed for Python 2 which uses bytes string by default)
-    if encoding:
+def _to_unicode(value, encoding):
+    # Python 2 uses byte string by default, so decode it to unicode
+    if PY2:
         try:
             return value.decode(encoding)
-        except:
-            # Try without decoding on fallback (needed for Python 3 which uses unicode string by default)
+        except Exception:
+            # Use without decoding as fallback
             _log_message('Decode failed, using original value', log_level=logging.DEBUG)
             return value
-    return value
+    # Python 3 uses unicode string by default, so use it directly
+    if PY3:
+        return value
 
 
 def _move(destination_path, video_path, subtitle_path):
@@ -136,8 +142,6 @@ def _cleanup(root_path, video_path):
     norm_root_path = _norm_path(root_path)
     norm_video_path = _norm_path(video_path)
     in_root_folder = _get_common_path([norm_root_path, norm_video_path]) == norm_root_path
-    _log_message('Root path: %s' % norm_root_path, log_level=logging.DEBUG)
-    _log_message('Video path: %s' % norm_video_path, log_level=logging.DEBUG)
     _log_message('In root folder: %s' % in_root_folder, log_level=logging.DEBUG)
     if in_root_folder:
         # Check if the video is in a sub folder of the root folder
@@ -180,9 +184,9 @@ def _log_message(message, exception=None, log_level=logging.INFO):
 def _print(message, log_level):
     """
     Print the message.
-    If an encoding is specified, print it in the specified encoding.
-    Otherwise print the bare message.
-    Add fallback just in case something goes wrong.
+    Printing should be done with the native string.
+    For PY2: encode unicode back to native string with the provided encoding
+    For PY3: convert unicode string with provided encoding to string in system encoding
     """
     # Add prefix in debug mode
     if DEBUG and log_level == logging.DEBUG:
@@ -190,28 +194,28 @@ def _print(message, log_level):
     # Only print message according to log level
     if log_level >= logger.level:
         try:
-            if ENCODING:
-                if DEBUG:
-                    print('DEBUG - Print message in %s encoding' % ENCODING)
-                print(message.encode(ENCODING))
-            else:
-                if DEBUG:
-                    print('DEBUG - Print bare message')
-                print(message)
-        except Exception:
-            # This should not occur, but just to be sure we add some fallback
             if DEBUG:
-                print('DEBUG - Print message failed, try in utf-8 encoding')
+                print('DEBUG - Print message')
+            if PY2:
+                # Encode unicode back to native string with the provided encoding
+                print(message.encode(ENCODING))
+            if PY3:
+                # Convert unicode string with provided encoding to string in system encoding
+                print(message.encode(ENCODING).decode(SYS_ENCODING))
+        except Exception:
+            # This should not occur, but let's try to print anyway with fallback to utf-8
+            if DEBUG:
+                print('DEBUG - Print message failed, try utf-8 encoding to system encoding')
             try:
-                print(message.encode('utf-8'))
+                print(message.encode('utf-8').decode(SYS_ENCODING))
             except Exception:
                 if DEBUG:
-                    print('DEBUG - Print message failed, try in utf-8 encoding with replace')
+                    print('DEBUG - Print message failed, try utf-8 encoding with replace')
                 try:
                     print(message.encode('utf-8', errors='replace'))
                 except Exception:
                     if DEBUG:
-                        print('DEBUG - Print message failed, try in utf-8 encoding with ignore')
+                        print('DEBUG - Print message failed, try utf-8 encoding with ignore')
                     print(message.encode('utf-8', errors='ignore'))
 
 

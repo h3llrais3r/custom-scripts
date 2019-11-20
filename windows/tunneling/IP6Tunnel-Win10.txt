@@ -1,0 +1,20 @@
+IP6Tunnel tunnel (and disable Teredo tunnel)
+--------------------------------------------
+
+Disable teredo tunnel:
+----------------------
+netsh interface teredo set state disabled
+
+Create IP6Tunnel tunnel:
+------------------------
+netsh interface ipv6 add v6v4tunnel interface=IP6Tunnel localaddress=<ipv4_client> remoteaddress=<ipv4_server>
+netsh interface ipv6 add address interface=IP6Tunnel address=<ipv6_client>
+netsh interface ipv6 add route prefix=::/0 interface=IP6Tunnel nexthop=<ipv6_server>
+
+Delete IP6Tunnel tunnel:
+------------------------
+netsh interface ipv6 delete route ::/0 IP6Tunnel
+netsh interface ipv6 delete address IP6Tunnel <ipv6_client>
+netsh interface ipv6 delete interface IP6Tunnel
+
+-> delete address is not needed, it's done automatically when deleting the interface!

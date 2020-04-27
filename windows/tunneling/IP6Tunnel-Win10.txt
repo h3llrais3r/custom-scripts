@@ -17,4 +17,4 @@ netsh interface ipv6 delete route ::/0 IP6Tunnel
 netsh interface ipv6 delete address IP6Tunnel <ipv6_client>
 netsh interface ipv6 delete interface IP6Tunnel
 
--> delete address is not needed, it's done automatically when deleting the interface!
+-> delete address and route is not needed, it's done automatically when deleting the interface!

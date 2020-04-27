@@ -57,19 +57,24 @@ def run():
     root_path = _to_unicode(sys.argv[2], ENCODING)
     video_path = _to_unicode(sys.argv[3], ENCODING)
     subtitle_path = _to_unicode(sys.argv[4], ENCODING)
+    library_path = _to_unicode(sys.argv[5], ENCODING)
 
     # Required parameter
-    destination_path = _to_unicode(sys.argv[5], ENCODING)
+    destination_path = _to_unicode(sys.argv[6], ENCODING)
 
     # Log parameters
     _log_message('encoding: %s' % encoding)
     _log_message('root path: %s' % root_path)
     _log_message('video path: %s' % video_path)
     _log_message('subtitle path: %s' % subtitle_path)
+    _log_message('library path: %s' % library_path)
     _log_message('destination path: %s' % destination_path)
 
-    # Move
-    if _move(destination_path, video_path, subtitle_path):
+    # Skip execution of script if video is already located in a video library path
+    # If not, execute move and cleanup
+    if library_path:
+        _log_message('Skipping as video is already located in the video library: %s' % library_path)
+    elif _move(destination_path, video_path, subtitle_path):
         # Move additional subtitles
         _move_additional_subtitles(destination_path, video_path)
         # Cleanup

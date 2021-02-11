@@ -16,14 +16,13 @@ import os
 import sys
 import shutil
 
-
-BACKUP_EXTENSION = ".nfo-sub"
-BACKUP_LOCATION_PATH = "C:/Tools/Downloads/subtitles/backup/"
-LOG_FILE = os.path.dirname(os.path.realpath(__file__)) + "/autoBackupTVShowName.log"
+BACKUP_EXTENSION = '.nfo-sub'
+BACKUP_LOCATION_PATH = 'C:/Tools/Downloads/subtitles/backup/'
+LOG_FILE = os.path.dirname(os.path.realpath(__file__)) + '/autoBackupTVShowName.log'
 
 # Logging config (change to logging.DEBUG for debug info)
 logging.basicConfig(filename=LOG_FILE, format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)
-logger = logging.getLogger("autoBackupTVShowName")
+logger = logging.getLogger('autoBackupTVShowName')
 
 
 def run():
@@ -36,20 +35,20 @@ def run():
     air_date = sys.argv[6]
 
     # Print parameters
-    print "final filename: " + full_final_name
-    print "original filename: " + full_original_name
-    print "indexer id: " + indexer_id
-    print "season number: " + season
-    print "episode number: " + episode
-    print "episode air date: " + air_date
+    print('final filename: %s' % full_final_name)
+    print('original filename: %s' % full_original_name)
+    print('indexer id: %s' % indexer_id)
+    print('season number: %s' % season)
+    print('episode number: %s' % episode)
+    print('episode air date: %s' % air_date)
 
     # Log parameters
-    logger.info("final filename: " + full_final_name)
-    logger.info("original filename: " + full_original_name)
-    logger.info("indexer id: " + indexer_id)
-    logger.info("season number: " + season)
-    logger.info("episode number: " + episode)
-    logger.info("episode air date: " + air_date)
+    logger.info('final filename: %s' % full_final_name)
+    logger.info('original filename: %s' % full_original_name)
+    logger.info('indexer id: %s' % indexer_id)
+    logger.info('season number: %s' % season)
+    logger.info('episode number: %s' % episode)
+    logger.info('episode air date: %s' % air_date)
 
     # Backup
     backup_file = _backup_tvshow_name(full_final_name, full_original_name, indexer_id, season, episode, air_date)
@@ -62,19 +61,19 @@ def _backup_tvshow_name(full_final_name, full_original_name, tvdb_id, season, ep
     original_name = os.path.basename(full_original_name)
     final_name = os.path.basename(full_final_name)
     backup_file = full_final_name + BACKUP_EXTENSION
-    file = open(backup_file, "w")
-    file.write("<?xml version='1.0' encoding='utf-8'?>")
-    file.write("<details>")
-    file.write("<originalFileName>")
+    file = open(backup_file, 'w')
+    file.write('<?xml version="1.0" encoding="utf-8"?>')
+    file.write('<details>')
+    file.write('<originalFileName>')
     file.write(original_name)
-    file.write("</originalFileName>")
-    file.write("<finalFileName>")
+    file.write('</originalFileName>')
+    file.write('<finalFileName>')
     file.write(final_name)
-    file.write("</finalFileName>")
-    file.write("</details>")
+    file.write('</finalFileName>')
+    file.write('</details>')
     file.close()
-    print "Created backup file %s" % backup_file
-    logger.info("Created backup file %s" % backup_file)
+    print('Created backup file %s' % backup_file)
+    logger.info('Created backup file %s' % backup_file)
     return backup_file
 
 
@@ -84,18 +83,18 @@ def _move_backup_file(backup_file_path):
     backup_file = os.path.join(BACKUP_LOCATION_PATH, os.path.basename(backup_file_path))
     try:
         os.remove(backup_file)
-        print "Backup already exists, deleting old backup %s" % backup_file
-        logger.info("Backup already exists, deleting old backup %s" % backup_file)
+        print('Backup already exists, deleting old backup %s' % backup_file)
+        logger.info('Backup already exists, deleting old backup %s' % backup_file)
     except OSError:
         # Backup file does not exist yet, continue
         pass
     try:
         shutil.move(backup, location)
-        print "Moved backup file %s to the backup location %s" % (backup, location)
-        logger.info("Moved backup file %s to the backup location %s" % (backup, location))
-    except Exception, e:
-        print "Exception: %s" % e
-        logger.error("Exception: %s" % e)
+        print('Moved backup file %s to the backup location %s' % (backup, location))
+        logger.info('Moved backup file %s to the backup location %s' % (backup, location))
+    except Exception as e:
+        print('Exception: %s' % e)
+        logger.error('Exception: %s' % e)
 
 
 # Run the script

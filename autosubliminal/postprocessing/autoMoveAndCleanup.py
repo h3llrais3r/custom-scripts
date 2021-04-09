@@ -124,7 +124,7 @@ def _move_additional_subtitles(destination_path, episode_path):
     """
     try:
         path_name = os.path.splitext(os.path.normpath(episode_path))[0]
-        subtitles = glob.glob(path_name + '.*' + '.srt')
+        subtitles = glob.glob(path_name + '*' + '.srt')
         if subtitles:
             _log_message('Moving additional subtitles', log_level=logging.DEBUG)
             destination = os.path.join(destination_path)

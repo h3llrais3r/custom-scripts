@@ -9,7 +9,7 @@
 
 ; GUID of device from which you want to detect the hardware changes
 ; You need to get the GUID from the instance id value to get the unique device id
-DEVICE_INSTANCE_ID := "{50BB70C0-378A-4341-AC79-2A675B5272F9}" ; bluetooth headset Philips SHB7000
+DEVICE_INSTANCE_ID := "{91E41436-DCF9-49B1-A1C7-D76025DD2760}" ; bluetooth headset Philips SHB7000
 
 #persistent
 #SingleInstance force

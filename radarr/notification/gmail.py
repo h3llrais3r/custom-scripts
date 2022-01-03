@@ -152,7 +152,7 @@ message = MIMEMultipart()
 message['From'] = mail_sender_address
 message['To'] = mail_receiver_address
 message['Subject'] = subject
-message.attach(MIMEText(content, 'plain'))
+message.attach(MIMEText(content.lstrip(), 'plain'))
 
 # Send mail
 session = smtplib.SMTP(mail_host, mail_port)

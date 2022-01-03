@@ -119,7 +119,7 @@ elif radarr_eventtype == 'Rename':
     Path: {radarr_movie_path}
     '''
 elif radarr_eventtype == 'HealthIssue':
-    subject = 'Health issue - {radarr_health_issue_level}'
+    subject = f'Radarr - Health issue - {radarr_health_issue_level}'
     content = f'''
     Level: {radarr_health_issue_level}
     Message: {radarr_health_issue_message}
@@ -127,17 +127,17 @@ elif radarr_eventtype == 'HealthIssue':
     Wiki: {radarr_health_issue_wiki}
     '''
 elif radarr_eventtype == 'ApplicationUpdate':
-    subject = 'Application update'
+    subject = f'Radarr - Application update - {radarr_update_newversion}'
     content = f'''
     Message: {radarr_update_message}
     New version: {radarr_update_newversion}
     Previous version: {radarr_update_previousversion}
     '''
 elif radarr_eventtype == 'Test':
-    subject = 'Test message'
+    subject = 'Radarr - Test message'
     content = ''
 else:
-    subject = 'Unknown event'
+    subject = 'Radarr - Unknown event'
     content = ''
 
 # Mail variables

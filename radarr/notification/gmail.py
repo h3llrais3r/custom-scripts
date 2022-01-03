@@ -4,32 +4,33 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 # Radarr variables (from https://wiki.servarr.com/radarr/custom-scripts)
-radarr_eventtype = os.environ.get('radarr_eventtype') # Download
-radarr_download_id = os.environ.get('radarr_download_id') # Hash of the torrent/NZB file (used to uniquely identify the download in the download client)
-radarr_download_client = os.environ.get('radarr_download_client') # Download client
-radarr_isupgrade = os.environ.get('radarr_isupgrade') # True when an existing file is upgraded, False otherwise
-radarr_movie_id = os.environ.get('radarr_movie_id') # Internal ID of the movie
-radarr_movie_imdbid = os.environ.get('radarr_movie_imdbid') # IMDb ID for the movie (empty if unknown)
-radarr_movie_in_cinemas_date = os.environ.get('radarr_movie_in_cinemas_date') # Cinema release date (empty if unknown)
-radarr_movie_path = os.environ.get('radarr_movie_path') # Full path to the movie
-radarr_movie_physical_release_date = os.environ.get('radarr_movie_physical_release_date') # Physical release date (empty if unknown)
-radarr_movie_title = os.environ.get('radarr_movie_title') # Title of the movie
-radarr_movie_tmdbid = os.environ.get('radarr_movie_tmdbid') # TMDb ID for the movie
-radarr_movie_year = os.environ.get('radarr_movie_year') # Release year of the movie
-radarr_moviefile_id = os.environ.get('radarr_moviefile_id') # Internal ID of the movie file
-radarr_moviefile_relativepath = os.environ.get('radarr_moviefile_relativepath') # Path to the movie file, relative to the movie path
-radarr_moviefile_path = os.environ.get('radarr_moviefile_path') # Full path to the movie file
-radarr_moviefile_quality = os.environ.get('radarr_moviefile_quality') # Quality name of the release, as detected by Radarr
-radarr_moviefile_qualityversion = os.environ.get('radarr_moviefile_qualityversion') # 1 is the default, 2 is for proper, and 3+ could be used for anime versions
-radarr_moviefile_releasegroup = os.environ.get('radarr_moviefile_releasegroup') # Release group (empty if unknown)
-radarr_moviefile_scenename = os.environ.get('radarr_moviefile_scenename') # Original release name (empty if unknown)
-radarr_moviefile_sourcepath = os.environ.get('radarr_moviefile_sourcepath') # Full path to the imported movie file
-radarr_moviefile_sourcefolder = os.environ.get('radarr_moviefile_sourcefolder') # Full path to the folder the movie file was imported from
-radarr_deletedrelativepaths = os.environ.get('radarr_deletedrelativepaths') # |-delimited list of files that were deleted to import this file
-radarr_deletedpaths = os.environ.get('radarr_deletedpaths') # |-delimited list of full paths to files that were deleted to import this file
+radarr_eventtype = os.environ.get('radarr_eventtype') or '' # Download
+radarr_download_id = os.environ.get('radarr_download_id') or '' # Hash of the torrent/NZB file (used to uniquely identify the download in the download client)
+radarr_download_client = os.environ.get('radarr_download_client') or '' # Download client
+radarr_isupgrade = os.environ.get('radarr_isupgrade') or '' # True when an existing file is upgraded, False otherwise
+radarr_movie_id = os.environ.get('radarr_movie_id') or '' # Internal ID of the movie
+radarr_movie_imdbid = os.environ.get('radarr_movie_imdbid') or '' # IMDb ID for the movie (empty if unknown)
+radarr_movie_in_cinemas_date = os.environ.get('radarr_movie_in_cinemas_date') or '' # Cinema release date (empty if unknown)
+radarr_movie_path = os.environ.get('radarr_movie_path') or '' # Full path to the movie
+radarr_movie_physical_release_date = os.environ.get('radarr_movie_physical_release_date') or '' # Physical release date (empty if unknown)
+radarr_movie_title = os.environ.get('radarr_movie_title') or '' # Title of the movie
+radarr_movie_tmdbid = os.environ.get('radarr_movie_tmdbid') or '' # TMDb ID for the movie
+radarr_movie_year = os.environ.get('radarr_movie_year') or '' # Release year of the movie
+radarr_moviefile_id = os.environ.get('radarr_moviefile_id') or '' # Internal ID of the movie file
+radarr_moviefile_relativepath = os.environ.get('radarr_moviefile_relativepath') or '' # Path to the movie file, relative to the movie path
+radarr_moviefile_path = os.environ.get('radarr_moviefile_path') or '' # Full path to the movie file
+radarr_moviefile_quality = os.environ.get('radarr_moviefile_quality') or '' # Quality name of the release, as detected by Radarr
+radarr_moviefile_qualityversion = os.environ.get('radarr_moviefile_qualityversion') or '' # 1 is the default, 2 is for proper, and 3+ could be used for anime versions
+radarr_moviefile_releasegroup = os.environ.get('radarr_moviefile_releasegroup') or '' # Release group (empty if unknown)
+radarr_moviefile_scenename = os.environ.get('radarr_moviefile_scenename') or '' # Original release name (empty if unknown)
+radarr_moviefile_sourcepath = os.environ.get('radarr_moviefile_sourcepath') or '' # Full path to the imported movie file
+radarr_moviefile_sourcefolder = os.environ.get('radarr_moviefile_sourcefolder') or '' # Full path to the folder the movie file was imported from
+radarr_deletedrelativepaths = os.environ.get('radarr_deletedrelativepaths') or '' # |-delimited list of files that were deleted to import this file
+radarr_deletedpaths = os.environ.get('radarr_deletedpaths') or '' # |-delimited list of full paths to files that were deleted to import this file
 
 # Custom variables
 action = 'Upgraded' if radarr_isupgrade == 'True' else 'Downloaded'
+original_filename = os.path.basename(radarr_moviefile_sourcepath) if radarr_moviefile_sourcepath else ''
 
 # Mail variables
 mail_host = 'smtp.gmail.com'
@@ -48,7 +49,7 @@ Download client: {radarr_download_client}
 Download id: {radarr_download_id}
 Path: {radarr_movie_path}
 File: {radarr_moviefile_path}
-Original file: {os.path.basename(radarr_moviefile_sourcepath)}
+Original file: {original_filename}
 '''
 
 # Setup message

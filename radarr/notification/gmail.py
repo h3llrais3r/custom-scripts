@@ -29,6 +29,7 @@ radarr_deletedrelativepaths = os.environ.get('radarr_deletedrelativepaths') or '
 radarr_deletedpaths = os.environ.get('radarr_deletedpaths') or '' # |-delimited list of full paths to files that were deleted to import this file
 
 # Custom variables
+test_message = radarr_eventtype == 'Test'
 action = 'Upgraded' if radarr_isupgrade == 'True' else 'Downloaded'
 original_filename = os.path.basename(radarr_moviefile_sourcepath) if radarr_moviefile_sourcepath else ''
 
@@ -39,6 +40,7 @@ mail_sender_address = 'xxx@gmail.com'
 mail_sender_pass = 'xxx'
 mail_receiver_address = 'xxx@gmail.com'
 mail_subject = f'Radarr - {action} {radarr_movie_title} ({radarr_movie_year}) - {radarr_moviefile_quality}'
+mail_subject_test = 'Radarr - Test notification'
 mail_content = f'''
 Title: {radarr_movie_title}
 Year: {radarr_movie_year}
@@ -57,7 +59,7 @@ message = MIMEMultipart()
 message['From'] = mail_sender_address
 message['To'] = mail_receiver_address
 message['Subject'] = mail_subject
-message.attach(MIMEText(mail_content, 'plain'))
+message.attach(MIMEText('Test' if test_message else mail_content, 'plain'))
 
 # Send mail
 session = smtplib.SMTP(mail_host, mail_port)

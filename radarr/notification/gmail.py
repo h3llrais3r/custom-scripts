@@ -47,6 +47,8 @@ Quality: {radarr_moviefile_quality}
 Download client: {radarr_download_client}
 Download id: {radarr_download_id}
 Path: {radarr_movie_path}
+File: {radarr_moviefile_path}
+Original file: {os.path.basename(radarr_moviefile_sourcepath)}
 '''
 
 # Setup message

@@ -96,6 +96,7 @@ if Lidarr_EventType == 'Grab':
     Quality: {Lidarr_Release_Quality}
     '''
 elif Lidarr_EventType == 'AlbumDownload':
+    files = '\n'.join(f'- {x}' for x in Lidarr_AddedTrackPaths.split('|'))
     subject = f'Lidarr - Downloaded {Lidarr_Artist_Name} {Lidarr_Album_Title}'
     content = f'''
     Artist: {Lidarr_Artist_Name}
@@ -106,7 +107,7 @@ elif Lidarr_EventType == 'AlbumDownload':
     Download id: {Lidarr_Download_Id}
     Path: {Lidarr_Artist_Path}
     Files:
-    {'\n'.join(f'- {x}' for x in Lidarr_AddedTrackPaths.split('|'))}
+    {files}
     '''
 elif Lidarr_EventType == 'Rename':
     subject = f'Lidarr - Renamed {Lidarr_Artist_Name}'

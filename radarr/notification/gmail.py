@@ -23,7 +23,7 @@ radarr_release_releasegroup = os.environ.get('radarr_release_releasegroup') # Re
 radarr_release_size = os.environ.get('radarr_release_size') # Size of the release, as reported by the indexer
 radarr_release_title = os.environ.get('radarr_release_title') # Torrent/NZB title
 
-# Radarr variables for On Download/On Upgrade
+# Radarr variables for On Import/On Upgrade
 radarr_eventtype = os.environ.get('radarr_eventtype') # Download
 radarr_download_id = os.environ.get('radarr_download_id') # Hash of the torrent/NZB file (used to uniquely identify the download in the download client)
 radarr_download_client = os.environ.get('radarr_download_client') # Download client
@@ -64,7 +64,7 @@ radarr_moviefile_paths = os.environ.get('radarr_moviefile_paths') # |-delimited 
 radarr_moviefile_previousrelativepaths = os.environ.get('radarr_moviefile_previousrelativepaths') # |-delimited list of previous relative path(s)
 radarr_moviefile_previouspaths = os.environ.get('radarr_moviefile_previouspaths') # |-delimited list of previous path(s)
 
-# Radarr variables for On Health Check
+# Radarr variables for On Health Issue
 radarr_eventype = os.environ.get('radarr_eventtype') # HealthIssue
 radarr_health_issue_level = os.environ.get('radarr_health_issue_level') # Type of health issue (Ok, Notice, Warning, or Error)
 radarr_health_issue_message = os.environ.get('radarr_health_issue_message') # Message from the health issue

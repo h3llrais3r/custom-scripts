@@ -100,18 +100,19 @@ elif Lidarr_EventType == 'AlbumDownload':
     content = f'''
     Artist: {Lidarr_Artist_Name}
     Album: {Lidarr_Album_Title}
-    Artist id: {Lidarr_Artist_Id} https://musicbrainz.org/artist/{Lidarr_Artist_Id}
-    Album id: {Lidarr_Album_Id} https://musicbrainz.org/release-group/{Lidarr_Album_Id}
+    Artist id: {Lidarr_Artist_MBId} https://musicbrainz.org/artist/{Lidarr_Artist_MBId}
+    Album id: {Lidarr_Album_MBId} https://musicbrainz.org/release-group/{Lidarr_Album_MBId}
     Download client: {Lidarr_Download_Client}
     Download id: {Lidarr_Download_Id}
     Path: {Lidarr_Artist_Path}
-    Files: {Lidarr_AddedTrackPaths}
+    Files:
+    {'\n'.join(f'- {x}' for x in Lidarr_AddedTrackPaths.split('|'))}
     '''
 elif Lidarr_EventType == 'Rename':
     subject = f'Lidarr - Renamed {Lidarr_Artist_Name}'
     content = f'''
     Artist: {Lidarr_Artist_Name}
-    Artist id: {Lidarr_Artist_Id} https://musicbrainz.org/artist/{Lidarr_Artist_Id}
+    Artist id: {Lidarr_Artist_MBId} https://musicbrainz.org/artist/{Lidarr_Artist_MBId}
     Path: {Lidarr_Artist_Path}
     '''
 elif Lidarr_EventType == 'TrackRetag':
@@ -119,9 +120,8 @@ elif Lidarr_EventType == 'TrackRetag':
     content = f'''
     Artist: {Lidarr_Artist_Name}
     Album: {Lidarr_Album_Title}
-    Artist id: {Lidarr_Artist_Id} https://musicbrainz.org/artist/{Lidarr_Artist_Id}
-    Album id: {Lidarr_Album_Id} https://musicbrainz.org/release-group/{Lidarr_Album_Id}
-    Track id: {Lidarr_TrackFile_Id} https://musicbrainz.org/track/{Lidarr_TrackFile_Id}
+    Artist id: {Lidarr_Artist_MBId} https://musicbrainz.org/artist/{Lidarr_Artist_MBId}
+    Album id: {Lidarr_Album_MBId} https://musicbrainz.org/release-group/{Lidarr_Album_MBId}
     File: {Lidarr_TrackFile_Path}
     '''
 elif Lidarr_EventType == 'HealthIssue':

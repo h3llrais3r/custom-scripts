@@ -1,6 +1,5 @@
 import os
 import smtplib
-import textwrap
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
@@ -153,7 +152,7 @@ message = MIMEMultipart()
 message['From'] = mail_sender_address
 message['To'] = mail_receiver_address
 message['Subject'] = subject
-message.attach(MIMEText(textwrap.dedent(content), 'plain'))
+message.attach(MIMEText('\n'.join([l.lstrip() for l in content.split('\n')]), 'plain')) # Trim all leading spaces from multiline format
 
 # Send mail
 session = smtplib.SMTP(mail_host, mail_port)

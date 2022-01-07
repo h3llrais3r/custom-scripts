@@ -116,7 +116,7 @@ elif Lidarr_EventType == 'Rename':
     Path: {Lidarr_Artist_Path}
     '''
 elif Lidarr_EventType == 'TrackRetag':
-    subject = f'Lidarr - Retagged {Lidarr_Artist_Name} {Lidarr_Album_Title} track {Lidarr_TrackFile_TrackCount}'
+    subject = f'Lidarr - Retagged {Lidarr_Artist_Name} {Lidarr_Album_Title}'
     content = f'''
     Artist: {Lidarr_Artist_Name}
     Album: {Lidarr_Album_Title}
@@ -125,7 +125,7 @@ elif Lidarr_EventType == 'TrackRetag':
     File: {Lidarr_TrackFile_Path}
     '''
 elif Lidarr_EventType == 'HealthIssue':
-    subject = f'Lidarr - Health issue - {Lidarr_Health_Issue_Level}'
+    subject = f'Lidarr - Health issue'
     content = f'''
     Level: {Lidarr_Health_Issue_Level}
     Message: {Lidarr_Health_Issue_Message}

@@ -86,8 +86,8 @@ if radarr_eventtype == 'Grab':
     content = f'''
     Title: {radarr_movie_title}
     Year: {radarr_movie_year}
-    Imdbid: {radarr_movie_imdbid} https://www.imdb.com/title/{radarr_movie_imdbid}
-    Tmdbid: {radarr_movie_tmdbid} https://www.themoviedb.org/movie/{radarr_movie_tmdbid}
+    Imdbid: {radarr_movie_imdbid} (https://www.imdb.com/title/{radarr_movie_imdbid})
+    Tmdbid: {radarr_movie_tmdbid} (https://www.themoviedb.org/movie/{radarr_movie_tmdbid})
     Download client: {radarr_download_client}
     Download id: {radarr_download_id}
     Indexer: {radarr_release_indexer}
@@ -100,8 +100,8 @@ elif radarr_eventtype == 'Download':
     content = f'''
     Title: {radarr_movie_title}
     Year: {radarr_movie_year}
-    Imdbid: {radarr_movie_imdbid} https://www.imdb.com/title/{radarr_movie_imdbid}
-    Tmdbid: {radarr_movie_tmdbid} https://www.themoviedb.org/movie/{radarr_movie_tmdbid}
+    Imdbid: {radarr_movie_imdbid} (https://www.imdb.com/title/{radarr_movie_imdbid})
+    Tmdbid: {radarr_movie_tmdbid} (https://www.themoviedb.org/movie/{radarr_movie_tmdbid})
     Quality: {radarr_moviefile_quality}
     Download client: {radarr_download_client}
     Download id: {radarr_download_id}
@@ -114,8 +114,8 @@ elif radarr_eventtype == 'Rename':
     content = f'''
     Title: {radarr_movie_title}
     Year: {radarr_movie_year}
-    Imdbid: {radarr_movie_imdbid} https://www.imdb.com/title/{radarr_movie_imdbid}
-    Tmdbid: {radarr_movie_tmdbid} https://www.themoviedb.org/movie/{radarr_movie_tmdbid}
+    Imdbid: {radarr_movie_imdbid} (https://www.imdb.com/title/{radarr_movie_imdbid})
+    Tmdbid: {radarr_movie_tmdbid} (https://www.themoviedb.org/movie/{radarr_movie_tmdbid})
     Path: {radarr_movie_path}
     '''
 elif radarr_eventtype == 'HealthIssue':

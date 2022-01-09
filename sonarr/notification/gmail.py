@@ -70,8 +70,8 @@ sonarr_series_tvmazeid = os.environ.get('') # TVMaze ID for the series
 sonarr_series_imdbid = os.environ.get('') # IMDB ID for the series (empty if unknown)
 sonarr_series_type = os.environ.get('') # Type of the series (Anime, Daily, or Standard)
 
-# Sonarr variables for On File Delete
-sonarr_eventtype = os.environ.get('sonarr_eventtype') # EpisodeDeleted
+# Sonarr variables for On Episode File Delete
+sonarr_eventtype = os.environ.get('sonarr_eventtype') # EpisodeFileDelete
 sonarr_series_id = os.environ.get('sonarr_series_id') # Internal ID of the series
 sonarr_series_title = os.environ.get('sonarr_series_title') # Title of the series
 sonarr_series_path = os.environ.get('sonarr_series_path') # Full path to the series
@@ -95,7 +95,7 @@ sonarr_episodefile_releasegroup = os.environ.get('sonarr_episodefile_releasegrou
 sonarr_episodefile_scenename = os.environ.get('sonarr_episodefile_scenename') # Original release name (empty if unknown)
 
 # Sonarr variables for On Series Delete
-sonarr_eventtype = os.environ.get('sonarr_eventtype') # SeriesDeleted
+sonarr_eventtype = os.environ.get('sonarr_eventtype') # SeriesDelete
 sonarr_series_id = os.environ.get('sonarr_series_id') # Internal ID of the series
 sonarr_series_title = os.environ.get('sonarr_series_title') # Title of the series
 sonarr_series_path = os.environ.get('sonarr_series_path') # Full path to the series
@@ -162,7 +162,7 @@ elif sonarr_eventtype == 'Rename':
     Tvmazeid: {sonarr_series_tvmazeid} (https://www.tvmaze.com/shows/{sonarr_series_tvmazeid})
     Path: {sonarr_series_path}
     '''
-elif sonarr_eventtype == 'EpisodeDeleted':
+elif sonarr_eventtype == 'EpisodeFileDelete':
     series_details = f'S{sonarr_episodefile_seasonnumber.zfill(2)}' + 'E' + '-'.join([f'{x.zfill(2)}' for x in sonarr_episodefile_episodenumbers.split(',')])
     subject = f'Sonarr - Deleted episode {sonarr_series_title} {series_details}'
     content = f'''
@@ -176,7 +176,7 @@ elif sonarr_eventtype == 'EpisodeDeleted':
     Path: {sonarr_series_path}
     File: {sonarr_episodefile_path}
     '''
-elif sonarr_eventtype == 'SeriesDeleted':
+elif sonarr_eventtype == 'SeriesDelete':
     subject = f'Sonarr - Deleted {sonarr_series_title}'
     content = f'''
     Type: {sonarr_series_type}

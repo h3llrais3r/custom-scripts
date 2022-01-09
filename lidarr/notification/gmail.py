@@ -136,7 +136,7 @@ elif Lidarr_EventType == 'Test':
     subject = 'Lidarr - Test message'
     content = ''
 else:
-    subject = 'Lidarr - Unknown event'
+    subject = f'Lidarr - Unknown event - {Lidarr_EventType}'
     content = ''
 
 # Mail variables

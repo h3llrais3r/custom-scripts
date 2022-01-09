@@ -198,7 +198,7 @@ elif sonarr_eventtype == 'Test':
     subject = 'Sonarr - Test message'
     content = ''
 else:
-    subject = 'Sonarr - Unknown event'
+    subject = f'Sonarr - Unknown event - {sonarr_eventtype}'
     content = ''
 
 # Mail variables

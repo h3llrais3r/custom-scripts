@@ -137,7 +137,7 @@ elif radarr_eventtype == 'Test':
     subject = 'Radarr - Test message'
     content = ''
 else:
-    subject = 'Radarr - Unknown event'
+    subject = f'Radarr - Unknown event - {radarr_eventtype}'
     content = ''
 
 # Mail variables

@@ -139,9 +139,8 @@ elif sonarr_eventtype == 'Download':
     content = f'''
     Type: {sonarr_series_type}
     Title: {sonarr_series_title}
-    Season: {sonarr_release_seasonnumber}
-    Episode(s): {sonarr_episodefile_seasonnumber}
-    Absolute episode(s): {sonarr_episodefile_episodenumbers}
+    Season: {sonarr_episodefile_seasonnumber}
+    Episode(s): {sonarr_episodefile_episodenumbers}
     Imdbid: {sonarr_series_imdbid} (https://www.imdb.com/title/{sonarr_series_imdbid})
     Tvdbid: {sonarr_series_tvdbid} (https://thetvdb.com?tab=series&id={sonarr_series_tvdbid})
     Tvmazeid: {sonarr_series_tvmazeid} (https://www.tvmaze.com/shows/{sonarr_series_tvmazeid})

@@ -52,7 +52,9 @@ function Start-Services ($Services) {
     Write-Log "----------------------------------------"
     Write-Log "Starting services at $(Get-Date)"
     Write-Log "----------------------------------------"
+    Write-Log ""
     Write-Log "Services: $($Services -Join ', ')"
+    Write-Log ""
     foreach ($service in $Services) {
         if (Get-Service $service -ErrorAction SilentlyContinue) {
             Write-Log "Starting service $($service)"

@@ -32,10 +32,12 @@ function Stop-Services ($Services) {
     Write-Log "----------------------------------------"
     Write-Log "Stopping services at $(Get-Date)"
     Write-Log "----------------------------------------"
+    Write-Log ""
     Write-Log "Services: $($Services -Join ', ')"
+    Write-Log ""
     foreach ($service in $Services) {
         if (Get-Service $service -ErrorAction SilentlyContinue) {
-            Write-Log "Stopping service $($service)"
+            Write-Log "Stopping service $($service)..."
             $message = Stop-Service $service
             Write-Log $message
         }
@@ -57,7 +59,7 @@ function Start-Services ($Services) {
     Write-Log ""
     foreach ($service in $Services) {
         if (Get-Service $service -ErrorAction SilentlyContinue) {
-            Write-Log "Starting service $($service)"
+            Write-Log "Starting service $($service)..."
             $message = Start-Service $service
             Write-Log $message
         }

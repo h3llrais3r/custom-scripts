@@ -16,7 +16,6 @@ function Manage-Services ($Action, $ServicesToManage) {
         $services = $ServicesToManage
     }
     # Execute action
-    Write-Log "---------------------------------------------"
     if ($Action -eq "stop") {
         Stop-Services $services
     }
@@ -27,11 +26,12 @@ function Manage-Services ($Action, $ServicesToManage) {
         Stop-Services $services
         Start-Services $services
     }
-    Write-Log "---------------------------------------------"
 }
 
 function Stop-Services ($Services) {
+    Write-Log "----------------------------------------"
     Write-Log "Stopping services at $(Get-Date)"
+    Write-Log "----------------------------------------"
     Write-Log "Services: $($Services -Join ', ')"
     foreach ($service in $Services) {
         if (Get-Service $service -ErrorAction SilentlyContinue) {
@@ -43,11 +43,15 @@ function Stop-Services ($Services) {
             Write-Log "No service found with name '$service'"
         }
     }
+    Write-Log "---------------------------------------------"
     Write-Log "Done stopping services at $(Get-Date)"
+    Write-Log "---------------------------------------------"
 }
 
 function Start-Services ($Services) {
+    Write-Log "----------------------------------------"
     Write-Log "Starting services at $(Get-Date)"
+    Write-Log "----------------------------------------"
     Write-Log "Services: $($Services -Join ', ')"
     foreach ($service in $Services) {
         if (Get-Service $service -ErrorAction SilentlyContinue) {
@@ -59,7 +63,9 @@ function Start-Services ($Services) {
             Write-Log "No service found with name '$service'"
         }
     }
+    Write-Log "---------------------------------------------"
     Write-Log "Done starting services at $(Get-Date)"
+    Write-Log "---------------------------------------------"
 }
 
 function Write-Log ($Message) {

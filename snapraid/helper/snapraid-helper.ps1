@@ -277,7 +277,7 @@ Function Send-Email ($fSubject,$fSuccess,$EmailBody){
 			if (Test-Path "$EmailBodyTxt") { 
 				$file = Get-Item "$EmailBodyTxt"
 				if ($file.length -ge $config["LogFileMaxSizeZIP"]) {
-					Write-zip -Path "$EmailBodyTxt" -OutputPath "$EmailBodyZip"  -level 9 -Quiet
+					Compress-Archive -Path "$EmailBodyTxt" -DestinationPath "$EmailBodyZip" -Force
 				}
 				else {
 					$EmailBodyZip = $EmailBodyTxt
@@ -861,11 +861,13 @@ if (Test-Path "$LogFile") {
 				}
 				$i = $i-1
 			}
-			Write-zip "$LogFile" -level 9
+			Compress-Archive "$LogFile" "$LogFile.zip" -Force
 			Rename-Item "$LogFile.zip" "$LogFile.1.zip"
+			Remove-Item "$LogFile"
+			New-Item "$LogFile" -ItemType File
 		}
 		Remove-Item "$LogFile"
-		New-Item "$LogFile" -type file
+		New-Item "$LogFile" -ItemType File
 	}
 }
 

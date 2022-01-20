@@ -11,8 +11,8 @@
 #   4) otherwise, it will call sync.
 #   5) when sync finishes, it sends an email with the output to user.
 #
-# $Author: therealjmc
-# $Version: 3.3 (2016/06/16)
+# $Author: therealjmc, h3llrais3r
+# $Version: 3.4 (2022/01/20)
 #
 # Originally inspired by bash script written by sidney for linux/bash
 # Based on the powershell script written by lrissman at gmail dot com
@@ -20,6 +20,9 @@
 #######################################################################
 ###################### CHANGELOG ######################################
 #######################################################################
+#
+# Version 3.4 (2022/01/20)
+# Add option to fix zero sub-second timestamps by running 'touch' command before 'sync'
 #
 # Version 3.3 (2016/06/16)
 # Cleanup of example ini file (Thanks @ Marco)
@@ -515,7 +518,7 @@ Function RunSnapraid ($sargument){
 			# If enabled bring services back online
 			ServiceManagement "start"
 			$CurrentDate = Get-Date
-			$message = "ERROR: SnapRAID $sargument Job FAILED on $CurrentDate with exit code $LastExitCode"
+			$message = "ERROR: SnapRAID $($sargument.ToUpper()) Job FAILED on $CurrentDate with exit code $LastExitCode"
 			WriteExtendedLogFile $message
 			$message2 = "Including detailed SnapRAID Log"
 			WriteExtendedLogFile $message2
@@ -927,6 +930,10 @@ If ($Argument1 -eq "syncandcheck" -and $SomethingDone -ne 1) {
 		}
 		# If enabled take services offline
 		ServiceManagement "stop"
+		if ($config["FixZeroSubSecondTimestamp"] -eq 1) {
+			$argument = "touch"
+			RunSnapraid $argument
+		}
 		$argument = "sync"
 		RunSnapraid $argument
 	}
@@ -958,6 +965,10 @@ ElseIf ($Argument1 -eq "syncandscrub" -and $SomethingDone -ne 1) {
 		}
 		# If enabled take services offline
 		ServiceManagement "stop"
+		if ($config["FixZeroSubSecondTimestamp"] -eq 1) {
+			$argument = "touch"
+			RunSnapraid $argument
+		}
 		$argument = "sync"
 		RunSnapraid $argument
 	}
@@ -993,6 +1004,10 @@ ElseIf ($Argument1 -eq "syncandfix" -and $SomethingDone -ne 1) {
 		}
 		# If enabled take services offline
 		ServiceManagement "stop"
+		if ($config["FixZeroSubSecondTimestamp"] -eq 1) {
+			$argument = "touch"
+			RunSnapraid $argument
+		}
 		$argument = "sync"
 		RunSnapraid $argument
 	}
@@ -1024,6 +1039,10 @@ ElseIf ($Argument1 -eq "syncandfullscrub" -and $SomethingDone -ne 1) {
 		}
 		# If enabled take services offline
 		ServiceManagement "stop"
+		if ($config["FixZeroSubSecondTimestamp"] -eq 1) {
+			$argument = "touch"
+			RunSnapraid $argument
+		}
 		$argument = "sync"
 		RunSnapraid $argument
 	}
@@ -1071,12 +1090,16 @@ If ($SomethingDone -ne 1){
 		$argument = "diff"
 		RunSnapraid $argument
 		If ($global:Diffchanges -eq 1){
-			if ($config["SkipParityFilesAtStart"] -eq 1 -and $global:PreProcessHasRun -eq 0){ 
+			if ($config["SkipParityFilesAtStart"] -eq 1 -and $global:PreProcessHasRun -eq 0) { 
 				Start-Pre-Process
 				Check-Parity-Files
 			}
 			# If enabled take services offline
 			ServiceManagement "stop"
+			if ($config["FixZeroSubSecondTimestamp"] -eq 1) {
+				$argument = "touch"
+				RunSnapraid $argument
+			}
 			$argument = "sync"
 			RunSnapraid $argument
 			# If enabled bring services back online

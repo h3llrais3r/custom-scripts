@@ -2,7 +2,7 @@
 $defaultActions = @("stop", "start", "restart")
 
 # Default list of all services to manage if you don't want to specify them when launching the script
-$defaultServices = @("sabnzbd", "qbittorrent", "sonarr", "sonarr-anime", "radarr", "lidarr")
+$defaultServices = @("jackett", "sabnzbd", "qbittorrent", "sonarr", "sonarr-anime", "radarr", "lidarr", "medusa", "autosubliminal", "duplicati")
 
 function Manage-Services ($Action, $ServicesToManage) {
     # Check action

@@ -64,6 +64,16 @@ radarr_moviefile_paths = os.environ.get('radarr_moviefile_paths') # |-delimited 
 radarr_moviefile_previousrelativepaths = os.environ.get('radarr_moviefile_previousrelativepaths') # |-delimited list of previous relative path(s)
 radarr_moviefile_previouspaths = os.environ.get('radarr_moviefile_previouspaths') # |-delimited list of previous path(s)
 
+# Radarr variables for On Movie Delete
+radarr_eventtype = os.environ.get('radarr_eventtype') # MovieDelete
+radarr_movie_id = os.environ.get('radarr_movie_id') # Internal ID of the movie
+radarr_movie_title = os.environ.get('radarr_movie_title') # Title of the movie
+radarr_movie_year = os.environ.get('radarr_movie_year') # Release year of the movie
+radarr_movie_path = os.environ.get('radarr_movie_path') # Full path to the movie
+radarr_movie_imdbid = os.environ.get('radarr_movie_imdbid') # IMDb ID for the movie (empty if unknown)
+radarr_movie_tmdbid = os.environ.get('radarr_movie_tmdbid') # TMDb ID for the movie
+# TODO: update variables once they are available in wiki
+
 # Radarr variables for On Health Issue
 radarr_eventype = os.environ.get('radarr_eventtype') # HealthIssue
 radarr_health_issue_level = os.environ.get('radarr_health_issue_level') # Type of health issue (Ok, Notice, Warning, or Error)
@@ -111,6 +121,15 @@ elif radarr_eventtype == 'Download':
     '''
 elif radarr_eventtype == 'Rename':
     subject = f'Radarr - Renamed {radarr_movie_title} ({radarr_movie_year})'
+    content = f'''
+    Title: {radarr_movie_title}
+    Year: {radarr_movie_year}
+    Imdbid: {radarr_movie_imdbid} (https://www.imdb.com/title/{radarr_movie_imdbid})
+    Tmdbid: {radarr_movie_tmdbid} (https://www.themoviedb.org/movie/{radarr_movie_tmdbid})
+    Path: {radarr_movie_path}
+    '''
+elif radarr_eventtype == 'MovieDelete':
+    subject = f'Radarr - Deleted {radarr_movie_title} ({radarr_movie_year})'
     content = f'''
     Title: {radarr_movie_title}
     Year: {radarr_movie_year}

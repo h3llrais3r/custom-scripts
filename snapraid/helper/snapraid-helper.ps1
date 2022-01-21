@@ -835,13 +835,13 @@ if (Test-Path $SnapRAIDLogfile){
 
 if ($config["EnableDebugOutput"] -eq 1) {
 	foreach ($element in $Config){
-		echo $element
-		echo "TmpOutput = $TmpOutput"
-		echo "EmailBody = $EmailBody"
-		echo "EmailBodyTmp = $EmailBodyTmp"
-		echo "EmailBodyTxt = $EmailBodyTxt"
-		echo "EmailBodyZip = $EmailBodyZip"
-		echo "SnapRAIDLogfile = $SnapRAIDLogfile"
+		Write-Output $element
+		Write-Output "TmpOutput = $TmpOutput"
+		Write-Output "EmailBody = $EmailBody"
+		Write-Output "EmailBodyTmp = $EmailBodyTmp"
+		Write-Output "EmailBodyTxt = $EmailBodyTxt"
+		Write-Output "EmailBodyZip = $EmailBodyZip"
+		Write-Output "SnapRAIDLogfile = $SnapRAIDLogfile"
 	}
 }
 

@@ -6,8 +6,9 @@ from email.mime.text import MIMEText
 
 # Read config file if present
 config = ConfigParser()
-if os.path.exists(os.path.join(os.path.dirname(__file__), "..", "..", "common", "config.ini")):
-    config.read()
+config_file = os.path.join(os.path.dirname(__file__), "..", "..", "common", "config.ini")
+if os.path.exists(config_file):
+    config.read(config_file)
 
 # Variables (from https://wiki.servarr.com/lidarr/custom-scripts)
 

@@ -167,11 +167,11 @@ else:
     content = ''
 
 # Mail variables
-mail_host = config.get('mail_host') or 'smtp.gmail.com'
-mail_port = config.getint('mail_port') or 587
-mail_sender_address = config.get('mail_sender_address') or 'xxx@gmail.com'
-mail_sender_pass = config.get('mail_sender_pass') or 'xxx'
-mail_receiver_address = config.get('mail_receiver_address') or 'xxx@gmail.com'
+mail_host = config.get('mail', 'host') or 'smtp.gmail.com'
+mail_port = config.getint('mail', 'port') or 587
+mail_sender_address = config.get('mail', 'sender_address') or 'xxx@gmail.com'
+mail_sender_pass = config.get('mail', 'sender_pass') or 'xxx'
+mail_receiver_address = config.get('mail', 'receiver_address') or 'xxx@gmail.com'
 
 # Setup message
 message = MIMEMultipart()

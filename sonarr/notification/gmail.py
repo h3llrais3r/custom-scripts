@@ -1,7 +1,13 @@
 import os
 import smtplib
+from configparser import ConfigParser
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+
+# Read config file if present
+config = ConfigParser()
+if os.path.exists(os.path.join(os.path.dirname(__file__), "..", "..", "common", "config.ini")):
+    config.read()
 
 # Variables (from https://wiki.servarr.com/sonarr/custom-scripts)
 
@@ -201,11 +207,11 @@ else:
     content = ''
 
 # Mail variables
-mail_host = 'smtp.gmail.com'
-mail_port = 587
-mail_sender_address = 'xxx@gmail.com'
-mail_sender_pass = 'xxx'
-mail_receiver_address = 'xxx@gmail.com'
+mail_host = config.get('mail_host') or 'smtp.gmail.com'
+mail_port = config.getint('mail_port') or 587
+mail_sender_address = config.get('mail_sender_address') or 'xxx@gmail.com'
+mail_sender_pass = config.get('mail_sender_pass') or 'xxx'
+mail_receiver_address = config.get('mail_receiver_address') or 'xxx@gmail.com'
 
 # Setup message
 message = MIMEMultipart()

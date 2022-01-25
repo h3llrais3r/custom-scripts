@@ -1,5 +1,5 @@
 # Default list of supported actions
-$defaultActions = @("stop", "start", "restart")
+$defaultActions = @("stop", "start", "restart", "disable", "enable_automatic", "enable_manual")
 
 # Default list of all services to manage if you don't want to specify them when launching the script
 $defaultServices = @("jackett", "sabnzbd", "qbittorrent", "sonarr", "sonarr-anime", "radarr", "lidarr", "medusa", "autosubliminal", "duplicati")
@@ -25,6 +25,15 @@ function Manage-Services ($Action, $ServicesToManage) {
     elseif ($Action -eq "restart") {
         Stop-Services $services
         Start-Services $services
+    }
+    elseif ($Action -eq "disable") {
+        Update-Services-StartupType $services "Disabled"
+    }
+    elseif ($Action -eq "enable_automatic") {
+        Update-Services-StartupType $services "Automatic"
+    }
+    elseif ($Action -eq "enable_manual") {
+        Update-Services-StartupType $services "Manual"
     }
 }
 
@@ -69,6 +78,28 @@ function Start-Services ($Services) {
     }
     Write-Log "---------------------------------------------"
     Write-Log "Done starting services at $(Get-Date)"
+    Write-Log "---------------------------------------------"
+}
+
+function Update-Services-StartupType ($Services, $StartupType) {
+    Write-Log "----------------------------------------"
+    Write-Log "Updating services startup type at $(Get-Date)"
+    Write-Log "----------------------------------------"
+    Write-Log ""
+    Write-Log "Services: $($Services -Join ', ')"
+    Write-Log ""
+    foreach ($service in $Services) {
+        if (Get-Service $service -ErrorAction SilentlyContinue) {
+            Write-Log "Updating service startup type $($service) to $($StartupType)..."
+            $message = Set-Service $service -StartupType $StartupType
+            Write-Log $message
+        }
+        else {
+            Write-Log "No service found with name '$service'"
+        }
+    }
+    Write-Log "---------------------------------------------"
+    Write-Log "Done updating services startup type at $(Get-Date)"
     Write-Log "---------------------------------------------"
 }
 

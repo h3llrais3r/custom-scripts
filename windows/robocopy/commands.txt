@@ -1,0 +1,5 @@
+Mirror copy (/MIR = /E /PURGE) from source to destination (run in 'cmd' with 'administrative rights'):
+robocopy <src> <dest> /MIR /SEC /SECFIX /COPYALL /DCOPY:DAT /R:0 /W:0 /LOG:"copylog.txt" /TEE /NP
+
+Copy (no /MIR, only /E) from source to destination without removing files in destination that do not exist in source (run in 'cmd' with 'administrative rights'):
+robocopy <src> <dest> /E /SEC /SECFIX /COPYALL /DCOPY:DAT /R:0 /W:0 /LOG:"copylog.txt" /TEE /NP

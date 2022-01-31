@@ -10,18 +10,8 @@
             <allowsharing>true</allowsharing>
         </source>
         <source>
-            <name>Movies 2</name>
-            <path pathversion="1">smb://192.168.0.100/Movies-2/</path>
-            <allowsharing>true</allowsharing>
-        </source>
-        <source>
             <name>TV Shows 1</name>
             <path pathversion="1">smb://192.168.0.100/TV-Shows-1/</path>
-            <allowsharing>true</allowsharing>
-        </source>
-        <source>
-            <name>TV Shows 2</name>
-            <path pathversion="1">smb://192.168.0.100/TV-Shows-2/</path>
             <allowsharing>true</allowsharing>
         </source>
         <source>
@@ -33,16 +23,16 @@
     <music>
         <default pathversion="1"></default>
         <source>
-            <name>Music</name>
-            <path pathversion="1">smb://192.168.0.100/Music/</path>
+            <name>Music 1</name>
+            <path pathversion="1">smb://192.168.0.100/Music-1/</path>
             <allowsharing>true</allowsharing>
         </source>
     </music>
     <pictures>
-        <default pathversion="1">Pictures</default>
+        <default pathversion="1"></default>
         <source>
-            <name>Pictures</name>
-            <path pathversion="1">smb://192.168.0.100/Pictures/</path>
+            <name>Pictures 1</name>
+            <path pathversion="1">smb://192.168.0.100/Pictures-1/</path>
             <allowsharing>true</allowsharing>
         </source>
     </pictures>

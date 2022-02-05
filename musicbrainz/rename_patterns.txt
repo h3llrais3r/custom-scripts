@@ -1,0 +1,12 @@
+original file name pattern:
+--------------------------
+$if2(%albumartist%,%artist%)/$if($ne(%albumartist%,),%album%/)$if($gt(%totaldiscs%,1),%discnumber%-,)$if($ne(%albumartist%,),$num(%tracknumber%,2) ,)$if(%_multiartist%,%artist% - ,)%title%
+
+filename pattern without multiartist:
+-------------------------------------
+$if2(%albumartist%,%artist%)/$if($ne(%albumartist%,),%album%/)$if($gt(%totaldiscs%,1),%discnumber%-,)$if($ne(%albumartist%,),$num(%tracknumber%,2) ,)%title%
+
+filename pattern with album year without multiartist:
+-----------------------------------------------------
+$if2(%albumartist%,%artist%)/$if($ne(%albumartist%,),%album% \($if(%date%,$left(%date%,4),0000)\)/)$if($gt(%totaldiscs%,1),%discnumber%-,)$if($ne(%albumartist%,),$num(%tracknumber%,2) ,)%title%
+

@@ -1,0 +1,5 @@
+config.sys:
+DEVICE=cdrom.SYS /D:cd0001
+
+autoexec.bat:
+MSCDEX.EXE /D:cd0001 /L:D

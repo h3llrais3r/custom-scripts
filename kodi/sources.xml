@@ -10,6 +10,11 @@
             <allowsharing>true</allowsharing>
         </source>
         <source>
+            <name>Movies Kids 1</name>
+            <path pathversion="1">smb://192.168.0.100/Movies-Kids-1/</path>
+            <allowsharing>true</allowsharing>
+        </source>
+        <source>
             <name>TV Shows 1</name>
             <path pathversion="1">smb://192.168.0.100/TV-Shows-1/</path>
             <allowsharing>true</allowsharing>

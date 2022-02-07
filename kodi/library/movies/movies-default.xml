@@ -1,10 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <node type="filter">
 	<label>Speelfilms</label>
-    <icon>DefaultMovies.png</icon>
+	<icon>DefaultGenre.png</icon>
 	<content>movies</content>
     <match>all</match>
-	<rule field="genre" operator="isnot">
-		<value>Animation</value>
+	<rule field="path" operator="doesnotcontain">
+		<value>smb://192.168.0.100/Movies-Kids</value>
 	</rule>
+	doesnotcontain
 </node>

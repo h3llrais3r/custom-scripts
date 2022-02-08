@@ -7,5 +7,4 @@
 	<rule field="path" operator="doesnotcontain">
 		<value>smb://192.168.0.100/Movies-Kids</value>
 	</rule>
-	doesnotcontain
 </node>

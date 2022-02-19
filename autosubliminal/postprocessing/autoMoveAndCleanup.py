@@ -160,10 +160,23 @@ def _cleanup(root_path, video_path):
                 # Move 1 folder up
                 video_folder = _norm_path(os.path.dirname(video_folder))
             try:
-                # Remove the folder of the video inside the root folder
-                _log_message('Cleaning up video folder: %s' % folder_to_clean, log_level=logging.DEBUG)
-                shutil.rmtree(folder_to_clean, onerror=_set_rw_and_remove)
-                _log_message('Removed video folder: %s' % folder_to_clean)
+                # Check if the folder does not contain other video files before cleaning up
+                video_files_found = False
+                _, ext = os.path.splitext(norm_video_path)
+                for dirname, dirnames, filenames in os.walk(video_folder):
+                    for filename in filenames:
+                        byte_size = os.path.getsize(os.path.join(dirname, filename))
+                        if filename.endswith(ext) and byte_size > (50 * 1024 * 1024): # only consider video files > 50 MB
+                            video_files_found = True
+                if video_files_found:
+                    # Skip if other video files are found
+                    _log_message('Other video files found in video folder')
+                    _log_message('Skipping cleanup')
+                else:
+                     # Remove the folder of the video inside the root folder
+                    _log_message('Cleaning up video folder: %s' % folder_to_clean, log_level=logging.DEBUG)
+                    shutil.rmtree(folder_to_clean, onerror=_set_rw_and_remove)
+                    _log_message('Removed video folder: %s' % folder_to_clean)
             except Exception as e:
                 _log_message('Error while cleaning up video folder', e, logging.ERROR)
         else:

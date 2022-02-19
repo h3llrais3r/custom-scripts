@@ -166,7 +166,8 @@ def _cleanup(root_path, video_path):
                 for dirname, dirnames, filenames in os.walk(video_folder):
                     for filename in filenames:
                         byte_size = os.path.getsize(os.path.join(dirname, filename))
-                        if filename.endswith(ext) and byte_size > (50 * 1024 * 1024): # only consider video files > 50 MB
+                         # Only consider video files > 50 MB that are not the file we are processing
+                        if norm_video_path != _norm_path(os.path.join(dirname, filename)) and filename.endswith(ext) and byte_size > (50 * 1024 * 1024):
                             video_files_found = True
                 if video_files_found:
                     # Skip if other video files are found

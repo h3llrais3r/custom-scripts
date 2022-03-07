@@ -163,11 +163,15 @@ def _cleanup(root_path, video_path):
                 # Check if the folder does not contain other video files before cleaning up
                 video_files_found = False
                 _, ext = os.path.splitext(norm_video_path)
+                _log_message('Checking for other video files', log_level=logging.DEBUG)
                 for dirname, dirnames, filenames in os.walk(video_folder):
                     for filename in filenames:
+                        norm_file_path = _norm_path(os.path.join(dirname, filename))
+                        _log_message('Checking file: %s' % norm_file_path, log_level=logging.DEBUG)
                         byte_size = os.path.getsize(os.path.join(dirname, filename))
                          # Only consider video files > 50 MB that are not the file we are processing
-                        if norm_video_path != _norm_path(os.path.join(dirname, filename)) and filename.endswith(ext) and byte_size > (50 * 1024 * 1024):
+                        if norm_video_path != norm_file_path and filename.endswith(ext) and byte_size > (50 * 1024 * 1024):
+                            _log_message('Other video file found: %s' % norm_file_path, log_level=logging.DEBUG)
                             video_files_found = True
                 if video_files_found:
                     # Skip if other video files are found

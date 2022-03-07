@@ -160,18 +160,18 @@ def _cleanup(root_path, video_path):
                 # Move 1 folder up
                 video_folder = _norm_path(os.path.dirname(video_folder))
             try:
-                # Check if the folder does not contain other video files before cleaning up
+                # Check if the folder to clean does not contain other video files before cleaning up
                 video_files_found = False
                 _, ext = os.path.splitext(norm_video_path)
-                _log_message('Checking for other video files', log_level=logging.DEBUG)
-                for dirname, dirnames, filenames in os.walk(video_folder):
+                _log_message('Checking for other video files before cleaning up', log_level=logging.DEBUG)
+                for dirname, dirnames, filenames in os.walk(folder_to_clean):
                     for filename in filenames:
                         norm_file_path = _norm_path(os.path.join(dirname, filename))
                         _log_message('Checking file: %s' % norm_file_path, log_level=logging.DEBUG)
                         byte_size = os.path.getsize(os.path.join(dirname, filename))
                          # Only consider video files > 50 MB that are not the file we are processing
                         if norm_video_path != norm_file_path and filename.endswith(ext) and byte_size > (50 * 1024 * 1024):
-                            _log_message('Other video file found: %s' % norm_file_path, log_level=logging.DEBUG)
+                            _log_message('File detected as video file', log_level=logging.DEBUG)
                             video_files_found = True
                 if video_files_found:
                     # Skip if other video files are found
@@ -217,8 +217,6 @@ def _print(message, log_level):
     # Only print message according to log level
     if log_level >= logger.level:
         try:
-            if DEBUG:
-                print('DEBUG - Print message')
             if PY2:
                 # Encode unicode back to native string with the provided encoding
                 print(message.encode(ENCODING))
@@ -227,18 +225,12 @@ def _print(message, log_level):
                 print(message.encode(ENCODING).decode(SYS_ENCODING))
         except Exception:
             # This should not occur, but let's try to print anyway with fallback to utf-8
-            if DEBUG:
-                print('DEBUG - Print message failed, try utf-8 encoding to system encoding')
             try:
                 print(message.encode('utf-8').decode(SYS_ENCODING))
             except Exception:
-                if DEBUG:
-                    print('DEBUG - Print message failed, try utf-8 encoding with replace')
                 try:
                     print(message.encode('utf-8', errors='replace'))
                 except Exception:
-                    if DEBUG:
-                        print('DEBUG - Print message failed, try utf-8 encoding with ignore')
                     print(message.encode('utf-8', errors='ignore'))
 
 

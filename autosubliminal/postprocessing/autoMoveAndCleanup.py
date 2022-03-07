@@ -179,6 +179,7 @@ def _cleanup(root_path, video_path):
                     _log_message('Skipping cleanup')
                 else:
                      # Remove the folder of the video inside the root folder
+                    _log_message('No other video files found in video folder')
                     _log_message('Cleaning up video folder: %s' % folder_to_clean, log_level=logging.DEBUG)
                     shutil.rmtree(folder_to_clean, onerror=_set_rw_and_remove)
                     _log_message('Removed video folder: %s' % folder_to_clean)

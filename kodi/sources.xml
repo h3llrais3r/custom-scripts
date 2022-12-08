@@ -4,37 +4,15 @@
     </programs>
     <video>
         <default pathversion="1"></default>
-        <source>
-            <name>Movies 1</name>
-            <path pathversion="1">smb://192.168.0.100/Movies-1/</path>
-            <allowsharing>true</allowsharing>
-        </source>
-        <source>
-            <name>Movies Kids 1</name>
-            <path pathversion="1">smb://192.168.0.100/Movies-Kids-1/</path>
-            <allowsharing>true</allowsharing>
-        </source>
-        <source>
-            <name>TV Shows 1</name>
-            <path pathversion="1">smb://192.168.0.100/TV-Shows-1/</path>
-            <allowsharing>true</allowsharing>
-        </source>
-        <source>
-            <name>Anime 1</name>
-            <path pathversion="1">smb://192.168.0.100/Anime-1/</path>
-            <allowsharing>true</allowsharing>
-        </source>
+        <!-- managed by jellyfin -->
     </video>
     <music>
         <default pathversion="1"></default>
-        <source>
-            <name>Music 1</name>
-            <path pathversion="1">smb://192.168.0.100/Music-1/</path>
-            <allowsharing>true</allowsharing>
-        </source>
+        <!-- managed by jellyfin -->
     </music>
     <pictures>
         <default pathversion="1"></default>
+        <!-- not managed by jellyfin -->
         <source>
             <name>Pictures 1</name>
             <path pathversion="1">smb://192.168.0.100/Pictures-1/</path>

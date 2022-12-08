@@ -1,0 +1,15 @@
+<onaccesswakeup>
+    <netinittimeout>20</netinittimeout>
+    <netsettletime>500</netsettletime>
+    <wakeup>
+        <!-- SERVER -->
+        <host>192.168.0.100</host>
+        <mac>D0:50:99:33:31:AF</mac>
+        <pingport>0</pingport>
+        <pingmode>0</pingmode>
+        <timeout>300</timeout>
+        <waitonline>40</waitonline>
+        <waitonline2>40</waitonline2>
+        <waitservices>5</waitservices>
+    </wakeup>
+</onaccesswakeup>

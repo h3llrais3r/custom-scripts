@@ -1,5 +1,13 @@
-<!-- Custom advanced settings -->
+<!-- Custom advanced settings - for chromecast devices -->
 <advancedsettings>
+    <!-- Path substitution settings-->
+    <pathsubstitution>
+        <!-- For chromecast, host thumbnails on server to save disk space on chromecast itself -->
+        <substitute>
+            <from>special://userdata/Thumbnails/</from>
+            <to>smb://192.168.0.100/Chromecast/instances/1/kodi/thumbnails/</to>
+        </substitute>
+    </pathsubstitution>
     <!-- Mysql db settings -->
     <!-- Replaced by jellyfin plugin, so no longer need to map the databases to the shared mysql instance -->
     <!--

@@ -5,7 +5,7 @@
         <!-- For chromecast, host thumbnails on server to save disk space on chromecast itself -->
         <substitute>
             <from>special://userdata/Thumbnails/</from>
-            <to>smb://192.168.0.100/Chromecast/instances/1/kodi/thumbnails/</to>
+            <to>smb://192.168.0.100/Chromecast/instance/1/kodi/userdata/Thumbnails/</to>
         </substitute>
     </pathsubstitution>
     <!-- Mysql db settings -->

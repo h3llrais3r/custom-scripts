@@ -4,7 +4,7 @@
 	<icon>DefaultGenre.png</icon>
 	<content>tvshows</content>
     <match>all</match>
-	<rule field="path" operator="contains">
-		<value>smb://192.168.0.100/Anime</value>
+	<rule field="tag" operator="is">
+		<value>Anime</value>
 	</rule>
 </node>

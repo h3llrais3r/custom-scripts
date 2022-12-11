@@ -4,7 +4,7 @@
 	<icon>DefaultGenre.png</icon>
 	<content>movies</content>
     <match>all</match>
-	<rule field="path" operator="contains">
-		<value>smb://192.168.0.100/Movies-Kids</value>
+	<rule field="tag" operator="is">
+		<value>Movies Kids</value>
 	</rule>
 </node>

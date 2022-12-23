@@ -1,0 +1,41 @@
+alias: Jellyfin webhook playback notification
+trigger:
+  - platform: webhook
+    webhook_id: jellyfin-webhook-playback-notification
+condition:
+  - >-
+    {{trigger.json.ItemType == 'Movie' or trigger.json.ItemType == 'Episode' or
+    trigger.json.ItemType == 'Audio'}}
+action:
+  - service: notify.notify
+    data:
+      title: >-
+        {% if trigger.json.ItemType == 'Movie' %}Film{% elif
+        trigger.json.ItemType =='Episode' %}Serie{% else %}Muziek{% endif %}
+        wordt afgespeeld op {{trigger.json.DeviceName}}
+      message: >-
+        {% if trigger.json.ItemType == 'Movie' %} {{trigger.json.Name}} {% elif
+        trigger.json.ItemType == 'Episode' %} {{trigger.json.SeriesName}} -
+        S{{trigger.json.SeasonNumber00}}E{{trigger.json.EpisodeNumber00}} {%
+        else %} {{trigger.json.Artist}} - {{trigger.json.Album}} {% endif %}
+      data:
+        image: >-
+          {% if trigger.json.ItemType == 'Audio' %}
+          https://coverartarchive.org/release/{{trigger.json.Provider_musicbrainzalbum}}/front-500
+          {% else %} {{trigger.json.Thumbnail}} {% endif %}
+        url: "{{trigger.json.ItemUrl}}"
+        actions:
+          - action: URI
+            title: >-
+              Bekijk op {% if trigger.json.ItemType == 'Movie' %}IMDB{% elif
+              trigger.json.ItemType == 'Episode' %}TVDB{% else %}Musicbrainz{%
+              endif %}
+            uri: >-
+              {% if trigger.json.ItemType == 'Movie' %}
+              https://www.imdb.com/title/{{trigger.json.Provider_imdb}} {% elif
+              trigger.json.ItemType == 'Episode' %}
+              http://www.thetvdb.com/?tab=series&id={{
+              trigger.json.Provider_tvdb}} {% else %}
+              https://musicbrainz.org/release/{{trigger.json.Provider_musicbrainzalbum}}
+              {% endif %}
+mode: single

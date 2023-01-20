@@ -294,7 +294,7 @@ Function Send-Email ($fSubject,$fSuccess,$EmailBody){
 			If (Test-Path $EmailBodyZip) {
 				If ((Get-Item $EmailBodyZip).length -le $config["MaxAttachSize"]){
 					If (Test-Path $EmailBodyZip) {
-						$att = new-object Net.Mail.Attachment($EmailBodyZip)
+						$att = New-Object Net.Mail.Attachment($EmailBodyZip)
 						$MailMessage.Attachments.Add($att)
 					}
 				}
@@ -321,7 +321,7 @@ Function Send-Email ($fSubject,$fSuccess,$EmailBody){
 			If (Test-Path $EmailBodyZip) {
 				If ((Get-Item $EmailBodyZip).length -le $config["MaxAttachSize"]){
 					If (Test-Path $EmailBodyZip) {
-						$att = new-object Net.Mail.Attachment($EmailBodyZip)
+						$att = New-Object Net.Mail.Attachment($EmailBodyZip)
 						$MailMessage.Attachments.Add($att)
 					}
 				}
@@ -659,7 +659,7 @@ else {
 $LogFile=$config["LogPath"] + $config["LogFileName"]
 
 #Email Configs
-$EmailConfigs = "SubjectPrefix","EmailTo","EmailFrom","Body","SMTPHost","SMTPSSLEnable","SMTPAuthEnable","EmailBodyFile","EmailBodyFileZip","EmailEnable","SMTPPort","EmailOnSuccess","EmailOnError","IncludeExtendedInfo","IncludeExtendedInfoZip","LogFileMaxSizeZIP","MaxAttachSize","ShortenLogFile"
+$EmailConfigs = "SubjectPrefix","EmailTo","EmailFrom","EmailFromName","Body","SMTPHost","SMTPSSLEnable","SMTPAuthEnable","EmailBodyFile","EmailBodyFileZip","EmailEnable","SMTPPort","EmailOnSuccess","EmailOnError","IncludeExtendedInfo","IncludeExtendedInfoZip","LogFileMaxSizeZIP","MaxAttachSize","ShortenLogFile"
 #If email is enabled, validate email configs are not null
 if ($config["EmailEnable"] -eq 1){
 	foreach ($element in $EmailConfigs){
@@ -770,7 +770,7 @@ if ($config["EmailEnable"] -eq 1) {
 	$MailMessage.IsBodyHtml = $false
 	$SMTPClient.Host = $config["SMTPHost"]
 	$SMTPClient.Port = $config["SMTPPort"]
-	$MailMessage.From = $config["EmailFrom"]
+	$MailMessage.From = New-Object System.Net.Mail.MailAddress($config["EmailFrom"], $config["EmailFromName"])
 	$MailMessage.To.add($config["EmailTo"])
 	if ($config["SMTPSSLEnable"] -eq 1) {
 		$SMTPClient.EnableSsl = $true
@@ -779,7 +779,7 @@ if ($config["EmailEnable"] -eq 1) {
 		$SMTPClient.EnableSsl = $false
 	}
 	if ($config["SMTPAuthEnable"] -eq 1) {
-		$SMTPClient.Credentials = new-Object System.Net.NetworkCredential($config["SMTPUID"],$config["SMTPPass"]); 
+		$SMTPClient.Credentials = New-Object System.Net.NetworkCredential($config["SMTPUID"],$config["SMTPPass"]); 
 	}
 }
 $TmpOutput=$config["TmpOutputPath"] + $config["TmpOutputfile"]

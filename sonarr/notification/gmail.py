@@ -3,6 +3,7 @@ import smtplib
 from configparser import ConfigParser
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from email.utils import formataddr
 
 # Read config file if present
 config = ConfigParser()
@@ -210,13 +211,14 @@ else:
 # Mail variables
 mail_host = config.get('mail', 'host') or 'smtp.gmail.com'
 mail_port = config.getint('mail', 'port') or 587
+mail_sender_name = config.get('mail', 'sender_name') or 'xxx'
 mail_sender_address = config.get('mail', 'sender_address') or 'xxx@gmail.com'
 mail_sender_pass = config.get('mail', 'sender_pass') or 'xxx'
 mail_receiver_address = config.get('mail', 'receiver_address') or 'xxx@gmail.com'
 
 # Setup message
 message = MIMEMultipart()
-message['From'] = mail_sender_address
+message['From'] = formataddr((mail_sender_name, mail_sender_address))
 message['To'] = mail_receiver_address
 message['Subject'] = subject
 message.attach(MIMEText('\n'.join([l.lstrip() for l in content.split('\n')]), 'plain')) # Trim all leading spaces from multiline format

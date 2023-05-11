@@ -1,0 +1,12 @@
+<keymap>
+    <global>
+        <joystick profile="game.controller.default">
+            <up>Up</up>
+            <down>Down</down>
+            <left>Left</left>
+            <right>Right</right>
+            <a>Select</a>
+            <b>Back</b>
+        </joystick>
+    </global>
+</keymap>

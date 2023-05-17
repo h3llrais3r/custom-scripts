@@ -74,9 +74,9 @@ def run():
     # If not, execute move and cleanup
     if library_path:
         _log_message('Skipping as video is already located in the video library: %s' % library_path)
-    elif _move(destination_path, video_path, subtitle_path):
+    elif _move(root_path, destination_path, video_path, subtitle_path):
         # Move additional subtitles
-        _move_additional_subtitles(destination_path, video_path)
+        _move_additional_subtitles(root_path, destination_path, video_path)
         # Cleanup
         _cleanup(root_path, video_path)
 
@@ -97,41 +97,47 @@ def _to_unicode(value, encoding):
         return value
 
 
-def _move(destination_path, video_path, subtitle_path):
+def _move(root_path, destination_path, video_path, subtitle_path):
     try:
-        _log_message('Moving video to destination folder', log_level=logging.DEBUG)
-        destination = os.path.join(destination_path)
+        _log_message('Moving video to destination', log_level=logging.DEBUG)
         video = os.path.join(video_path)
-        _log_message('Destination: %s' % destination, log_level=logging.DEBUG)
+        # Keep folder structure when moving to destination
+        destination = os.path.join(video_path.replace(root_path, destination_path))
         _log_message('Video: %s' % video, log_level=logging.DEBUG)
+        _log_message('Destination: %s' % destination, log_level=logging.DEBUG)
         shutil.move(video, destination)
-        _log_message('Moved video to destination folder')
+        _log_message('Moved video to destination: %s' % destination)
         if subtitle_path:
-            _log_message('Moving subtitle to destination folder', log_level=logging.DEBUG)
+            _log_message('Moving subtitle to destination', log_level=logging.DEBUG)
             subtitle = os.path.join(subtitle_path)
+            # Keep folder structure when moving to destination
+            destination = os.path.join(subtitle_path.replace(root_path, destination_path))
             _log_message('Subtitle: %s' % subtitle, log_level=logging.DEBUG)
+            _log_message('Destination: %s' % destination, log_level=logging.DEBUG)
             shutil.move(subtitle, destination)
-            _log_message('Moved subtitle to destination folder')
+            _log_message('Moved subtitle to destination: %s' % destination)
         return True
     except Exception as e:
         _log_message('Error while moving files', exception=e, log_level=logging.ERROR)
         return False
 
 
-def _move_additional_subtitles(destination_path, episode_path):
+def _move_additional_subtitles(root_path, destination_path, video_path):
     """
     Move additional subtitles if there are any found at the same location.
     """
     try:
-        path_name = os.path.splitext(os.path.normpath(episode_path))[0]
+        path_name = os.path.splitext(os.path.normpath(video_path))[0]
         subtitles = glob.glob(path_name + '*' + '.srt')
         if subtitles:
             _log_message('Moving additional subtitles', log_level=logging.DEBUG)
-            destination = os.path.join(destination_path)
             for subtitle in subtitles:
+                # Keep folder structure when moving to destination
+                destination = os.path.join(subtitle.replace(root_path, destination_path))
                 _log_message('Additional subtitle: %s' % subtitle, log_level=logging.DEBUG)
+                _log_message('Destination: %s' % destination, log_level=logging.DEBUG)
                 shutil.move(subtitle, destination)
-                _log_message('Moved additional found subtitle to the destination folder: %s' % subtitle)
+                _log_message('Moved additional found subtitle to destination: %s' % destination)
     except Exception as e:
         _log_message('Error while moving additional subtitles', exception=e, log_level=logging.ERROR)
 

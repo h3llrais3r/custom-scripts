@@ -105,6 +105,7 @@ def _move(root_path, destination_path, video_path, subtitle_path):
         destination = os.path.join(video_path.replace(root_path, destination_path))
         _log_message('Video: %s' % video, log_level=logging.DEBUG)
         _log_message('Destination: %s' % destination, log_level=logging.DEBUG)
+        os.makedirs(destination, exist_ok=True) # make sure destination folder structure exists
         shutil.move(video, destination)
         _log_message('Moved video to destination: %s' % destination)
         if subtitle_path:
@@ -114,6 +115,7 @@ def _move(root_path, destination_path, video_path, subtitle_path):
             destination = os.path.join(subtitle_path.replace(root_path, destination_path))
             _log_message('Subtitle: %s' % subtitle, log_level=logging.DEBUG)
             _log_message('Destination: %s' % destination, log_level=logging.DEBUG)
+            os.makedirs(destination, exist_ok=True) # make sure destination folder structure exists
             shutil.move(subtitle, destination)
             _log_message('Moved subtitle to destination: %s' % destination)
         return True
@@ -136,6 +138,7 @@ def _move_additional_subtitles(root_path, destination_path, video_path):
                 destination = os.path.join(subtitle.replace(root_path, destination_path))
                 _log_message('Additional subtitle: %s' % subtitle, log_level=logging.DEBUG)
                 _log_message('Destination: %s' % destination, log_level=logging.DEBUG)
+                os.makedirs(destination, exist_ok=True) # make sure destination folder structure exists
                 shutil.move(subtitle, destination)
                 _log_message('Moved additional found subtitle to destination: %s' % destination)
     except Exception as e:

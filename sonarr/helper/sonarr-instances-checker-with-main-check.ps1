@@ -69,7 +69,7 @@ Write-Log 'START ====================='
 $instances | ForEach-Object {
     Write-Log "Check $($_.Name) $($_.IP):$($_.Port)"
 
-    $MainInstancePortOpen = ( Test-NetConnection $mainInstance.IP -Port $main.Port -WarningAction SilentlyContinue ).TcpTestSucceeded
+    $MainInstancePortOpen = ( Test-NetConnection $mainInstance.IP -Port $mainInstance.Port -WarningAction SilentlyContinue ).TcpTestSucceeded
     $PortOpen = ( Test-NetConnection $_.IP -Port $_.Port -WarningAction SilentlyContinue ).TcpTestSucceeded
 
     if ($MainInstancePortOpen)

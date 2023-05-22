@@ -65,15 +65,17 @@ function Write-Log
 
 Write-Log 'START ====================='
 
+$MainInstancePortOpen = ( Test-NetConnection $mainInstance.IP -Port $mainInstance.Port -WarningAction SilentlyContinue ).TcpTestSucceeded
 
-$instances | ForEach-Object {
-    Write-Log "Check $($_.Name) $($_.IP):$($_.Port)"
+if ($MainInstancePortOpen)
+{
+    Write-Log "Main instance $($mainInstance.Name) $($mainInstance.IP):$($mainInstance.Port) is running!"
+    
+    $instances | ForEach-Object {
+        Write-Log "Check $($_.Name) $($_.IP):$($_.Port)"
 
-    $MainInstancePortOpen = ( Test-NetConnection $mainInstance.IP -Port $mainInstance.Port -WarningAction SilentlyContinue ).TcpTestSucceeded
-    $PortOpen = ( Test-NetConnection $_.IP -Port $_.Port -WarningAction SilentlyContinue ).TcpTestSucceeded
+        $PortOpen = ( Test-NetConnection $_.IP -Port $_.Port -WarningAction SilentlyContinue ).TcpTestSucceeded
 
-    if ($MainInstancePortOpen)
-    {
         if (!$PortOpen)
         {
             Write-Log "Port $($_.Port) is closed, restart $($startType) $($_.Name)!"
@@ -98,10 +100,10 @@ $instances | ForEach-Object {
             Write-Log "Port $($_.Port) is open!"
         }
     }
-    else
-    {
-        Write-Log "Main instance not running, skipping startup check."
-    }
+}
+else
+{
+    Write-Log "Main instance not running, skipping startup check!"
 }
 
 Write-Log 'END ====================='

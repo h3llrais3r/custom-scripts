@@ -12,7 +12,7 @@ let state = {
     STOPPED: "stopped"
 };
 
-let mqttStateTopic = null; // set at startup by reading the Mqtt.GetConfig result
+let mqttCoverStateTopic = null; // set at startup by reading the Mqtt.GetConfig result
 let previousState = null;
 let currentState = null;
 let timerOpening = null;
@@ -109,51 +109,52 @@ function handleCoverState(newstate) {
     if (config.DEBUG) {
         print("Setting and publishing mqtt state: " + newstate);
     }
-    MQTT.publish(mqttStateTopic, newstate, 0, true); // publish with retain=true to keep the state in homeassistant when homeassistant is restarted
+    MQTT.publish(mqttCoverStateTopic, newstate, 0, true); // publish with retain=true to keep the state in homeassistant when homeassistant is restarted
     previousState = currentState || newstate; // set current state as previous state (or new state if there is no current state yet)
     currentState = newstate; // set new state as current state
 }
 
 // Set mqtt state topic
 function setMqttStateTopic() {
-    Shelly.call(
-        "MQTT.GetConfig",
-        {},
-        function (result, error_code, error_message, user_data) {
-            if (error_code === 0) {
-                // result: {"enable":true,"server":"...","client_id":"...","user":"...","topic_prefix":"...","rpc_ntf":true,"status_ntf":true,"use_client_cert":false,"enable_rpc":true,"enable_control":true}            
-                mqttStateTopic = result.topic_prefix + '/state';
-                if (config.DEBUG) {
-                    print("Mqtt state topic: " + mqttStateTopic);
-                }
+    Shelly.call("MQTT.GetConfig", {}, function (result, error_code, error_message) {
+        if (error_code === 0) {
+            // result: {"enable":true,"server":"...","client_id":"...","user":"...","topic_prefix":"...","rpc_ntf":true,"status_ntf":true,"use_client_cert":false,"enable_rpc":true,"enable_control":true}            
+            mqttCoverStateTopic = result.topic_prefix + '/state';
+            if (config.DEBUG) {
+                print("Mqtt state topic: " + mqttCoverStateTopic);
             }
-        },
-        null
-    );
+        } else {
+            print("MQTT.GetConfig error: " + error_message);
+        }
+    });
 }
 
 // Determine the current status to handle the current cover state (door must be closed or fully open when started)
 function setInitialCoverState() {
-    Shelly.call(
-        "Input.GetStatus",
-        { id: 0 },
-        function (result, error_code, error_message, user_data) {
-            if (error_code === 0) {
-                // result: {"id":0,"state":true}
-                if (result.state === true) {
-                    handleCoverState(state.CLOSED);
-                } else {
-                    handleCoverState(state.OPEN);
-                }
+    Shelly.call("Input.GetStatus", { id: 0 }, function (result, error_code, error_message) {
+        if (error_code === 0) {
+            // result: {"id":0,"state":true}
+            if (result.state === true) {
+                handleCoverState(state.CLOSED);
+            } else {
+                handleCoverState(state.OPEN);
             }
-        },
-        null
-    );
+        } else {
+            print("Input.GetStatus error: " + error_message);
+        }
+    });
 }
 
-// Event handler to react on changes of the input sensor
-Shelly.addEventHandler(
-    function (event, user_data) {
+// Add mqtt connect handler
+function addMqttConnectHandler() {
+    // Set initial cover state when mqtt connection is established
+    MQTT.setConnectHandler(setInitialCoverState);
+}
+
+// Add shelly event handler
+function addEventHandler() {
+    // Add event handler to react on changes of the input sensor
+    Shelly.addEventHandler(function (event) {
         if (config.DEBUG) {
             print("Event: " + JSON.stringify(event));
         }
@@ -172,10 +173,11 @@ Shelly.addEventHandler(
                 handleSwitchOn();
             }
         }
-    },
-    null
-);
+    });
+}
 
+// Start script
 setMqttStateTopic();
 setInitialCoverState();
-MQTT.setConnectHandler(setInitialCoverState); // set initial cover state when mqtt connection is established
+addMqttConnectHandler();
+addEventHandler();

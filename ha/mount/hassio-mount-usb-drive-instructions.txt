@@ -1,0 +1,23 @@
+ADDITIONAL DISK TO HASSIO (HOME ASSISTANT OS)
+---------------------------------------------
+
+-> based on https://community.home-assistant.io/t/solved-mount-usb-drive-in-hassio-to-be-used-on-the-media-folder-with-udev-customization/258406
+-> gist for usb: https://gist.github.com/eklex/c5fac345de5be9d9bc420510617c86b5
+-> gist for internal sata: https://gist.github.com/Deckoz2302/489e3600bb9facbb3be65bd738e27d1c (https://community.home-assistant.io/t/solved-mount-usb-drive-in-hassio-to-be-used-on-the-media-folder-with-udev-customization/258406/104)
+-> gist for ntfs support: https://gist.github.com/zeehio/7c67d531236e39496c39b3c5c3b3f268
+
+-> solution: https://community.home-assistant.io/t/solved-mount-usb-drive-in-hassio-to-be-used-on-the-media-folder-with-udev-customization/258406/68
+
+- copy udev rules for mounting external disks:
+	- format usb stick as fat32
+	- name it CONFIG
+	- create folder udev
+	- put 80-mount-usb-to-media-by-label.rules inside folder
+	- connect to HA
+	- reboot
+	- go to http://hass.local/hassio/system/
+	- select on host tab: import from usb
+	- check if host logs if configuration is updated
+	- disconnect usb stick
+	- connect usb which we want to mount (ATTENTION: must be ext4!)
+	- usb is mounted with name of usb partition (f.e. frigate)

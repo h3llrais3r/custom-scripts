@@ -1,0 +1,73 @@
+#
+# udev rule
+#   Mount internal drive to the media directory using the partition name as mount point
+#
+# Description:
+#   Created for Home Assistant OS, this rule mounts an internal drive (SATA/NVME)
+#   into the Hassio media directory (/mnt/data/supervisor/media).
+#   When a internal drive is connected to the board, the rule creates one directory
+#   per partition under the media directory. The newly created partition is named
+#   as the following
+#   name format is used: "int-{block-name}" where the block name is sd[a-z][0-9].
+#
+# Note 1:
+#   The rule name is always prefixed with a number. In this case, the rule uses 81.
+#   This represents the order of the rule when multiple rules exists in udev.
+#   Low numbers run first, high numbers run last. However, low numbers do not have all
+#   the facilities than high numbers may have.
+#   For this rule to run properly, use numbers equal or greater than 81.
+#
+# Note 2:
+#   This rule will skip mounting an internal drive unless they are labeled 'frigate'.
+#   https://github.com/home-assistant/operating-system/blob/dev/Documentation/configuration.md
+#
+# Source of inspiration:
+#   https://www.axllent.org/docs/auto-mounting-usb-storage/
+#
+# Useful links:
+#   https://wiki.archlinux.org/index.php/Udev
+#
+# udev commands:
+#   - Restart udev to reload new rules:
+#       udevadm control --reload-rules
+#   - List device attributes of sdb1:
+#       udevadm info --attribute-walk --name=/dev/sdb1
+#   - List environment variables of sdb1:
+#       udevadm info /dev/sdb1
+#   - Trigger add/remove event for sdb1:
+#       udevadm trigger --verbose --action=add --sysname-match=sdb1
+#       udevadm trigger --verbose --action=remove --sysname-match=sdb1
+#
+
+
+# Filter on block devices, exit otherwise
+# CAUTION: Change to 'sd[b-z][0-9]' if booting from a USB drive (e.g.: sda)
+KERNEL!="sd[a-z][0-9]", GOTO="abort_rule"
+
+# Skip USB devices
+ENV{ID_PATH}=="*-usb-*", GOTO="abort_rule"
+
+# Import the partition info into the environment variables
+IMPORT{program}="/usr/sbin/blkid -o udev -p %N"
+
+# Exit if partition is not a filesystem
+ENV{ID_FS_USAGE}!="filesystem", GOTO="abort_rule"
+
+# Exit if this is not labeled 'frigate' 
+ENV{ID_FS_LABEL}!="frigate", GOTO="abort_rule"
+
+# Get the partition name if present, otherwise create one
+ENV{ID_FS_LABEL}!="", ENV{dir_name}="%E{ID_FS_LABEL}"
+ENV{ID_FS_LABEL}=="", ENV{dir_name}="usb-%k"
+
+# Determine the mount point
+ENV{mount_point}="/mnt/data/supervisor/media/%E{dir_name}"
+
+# Mount the device on 'add' action
+ACTION=="add", RUN{program}+="/usr/bin/mkdir -p %E{mount_point}", RUN{program}+="/usr/bin/systemd-mount --no-block --automount=no --collect $devnode %E{mount_point}"
+
+# Umount the device on 'remove' action
+ACTION=="remove", ENV{dir_name}!="", RUN{program}+="/usr/bin/systemd-umount %E{mount_point}", RUN{program}+="/usr/bin/rmdir %E{mount_point}"
+
+# Exit
+LABEL="abort_rule"

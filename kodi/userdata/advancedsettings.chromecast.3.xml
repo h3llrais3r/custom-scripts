@@ -1,0 +1,43 @@
+<!-- Custom advanced settings - for chromecast devices -->
+<advancedsettings>
+    <!-- Path substitution settings-->
+    <pathsubstitution>
+        <!-- For chromecast, host thumbnails on server to save disk space on chromecast itself -->
+        <substitute>
+            <from>special://profile/Thumbnails/</from>
+            <to>smb://192.168.0.100/Chromecast/instance/3/kodi/userdata/Thumbnails/</to>
+        </substitute>
+    </pathsubstitution>
+    <!-- Mysql db settings -->
+    <!-- Replaced by jellyfin plugin, so no longer need to map the databases to the shared mysql instance -->
+    <!--
+    <videodatabase>
+        <type>mysql</type>
+        <host>192.168.0.100</host>
+        <port>3306</port>
+        <user>kodi</user>
+        <pass>kodi</pass>
+    </videodatabase>
+    <musicdatabase>
+        <type>mysql</type>
+        <host>192.168.0.100</host>
+        <port>3306</port>
+        <user>kodi</user>
+        <pass>kodi</pass>
+    </musicdatabase>
+    -->
+    <!-- Video library settings -->
+    <videolibrary>
+        <!-- Default set to false to prevent kodi from removing items from the database while updating  -->
+        <!-- Set to false to prevent cleaning when network drive is not available -->
+        <cleanonupdate>false</cleanonupdate>
+    </videolibrary>
+    <!-- Tv show mapping settings -->
+    <!-- TV show matching for continuous numbering with multi episode support (for anime) -->
+    <!-- Currently not used anymore - we just keep it here in case we need an example again -->
+    <!--
+    <tvshowmatching action="prepend">
+        <regexp>One_Piece()[/\._ \-]([0-9]+)(-[0-9]+)?[/\._ \-]</regexp>
+    </tvshowmatching>
+    -->
+</advancedsettings>

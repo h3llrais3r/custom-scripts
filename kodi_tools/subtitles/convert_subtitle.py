@@ -40,4 +40,4 @@ for file in os.listdir(folder_path):
         file_path = os.path.join(folder_path, file)
         file_enc = detect_encoding(file_path)
         print('Converting subtitle: ' + file)
-        convert_subtitle(file, file.replace('.srt', '.new.srt'), file_enc)
+        convert_subtitle(file_path, file_path.replace('.srt', '.new.srt'), file_enc)

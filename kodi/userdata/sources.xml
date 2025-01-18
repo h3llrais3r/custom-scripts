@@ -18,6 +18,11 @@
             <path pathversion="1">smb://192.168.0.100/Pictures-1/</path>
             <allowsharing>true</allowsharing>
         </source>
+        <source>
+            <name>Pictures 2</name>
+            <path pathversion="1">smb://192.168.0.100/Pictures-2/</path>
+            <allowsharing>true</allowsharing>
+        </source>
     </pictures>
     <files>
         <default pathversion="1"></default>

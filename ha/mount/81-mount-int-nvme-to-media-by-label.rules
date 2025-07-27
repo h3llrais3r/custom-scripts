@@ -1,0 +1,69 @@
+#
+# udev rule
+#   Mount internal nvme drive to the media directory using the partition name as mount point
+#
+# Description:
+#   Created for Home Assistant OS, this rule mounts an internal nvme drive
+#   into the Hassio media directory (/mnt/data/supervisor/media).
+#   When a internal nvme drive is connected to the board, the rule creates one directory
+#   per partition under the media directory. The newly created partition is named
+#   as the following
+#   name format is used: "int-{block-name}" where the block name is sd[a-z][0-9].
+#
+# Note 1:
+#   The rule name is always prefixed with a number. In this case, the rule uses 81.
+#   This represents the order of the rule when multiple rules exists in udev.
+#   Low numbers run first, high numbers run last. However, low numbers do not have all
+#   the facilities than high numbers may have.
+#   For this rule to run properly, use numbers equal or greater than 81.
+#
+# Source of inspiration:
+#   https://www.axllent.org/docs/auto-mounting-usb-storage/
+#
+# Useful links:
+#   https://wiki.archlinux.org/index.php/Udev
+#
+# udev commands:
+#   - Restart udev to reload new rules:
+#       udevadm control --reload-rules
+#   - List device attributes of sdb1:
+#       udevadm info --attribute-walk --name=/dev/sdb1
+#   - List environment variables of sdb1:
+#       udevadm info /dev/sdb1
+#   - Trigger add/remove event for sdb1:
+#       udevadm trigger --verbose --action=add --sysname-match=sdb1
+#       udevadm trigger --verbose --action=remove --sysname-match=sdb1
+#
+
+# Filter on nvme devices, exit otherwise
+KERNEL!="nvme[0-9]n[0-9]p[1-9]", GOTO="abort_rule"
+
+# Skip USB devices
+ENV{ID_PATH}=="*-usb-*", GOTO="abort_rule"
+
+# Import the partition info into the environment variables
+IMPORT{program}="/usr/sbin/blkid -o udev -p %N"
+
+# Exit if partition is not a filesystem
+ENV{ID_FS_USAGE}!="filesystem", GOTO="abort_rule"
+
+# Exit if partition has no name
+ENV{ID_FS_LABEL}=="", GOTO="abort_rule"
+
+# Exit if partition name is linked to haos itself (hassos-* labels)
+ENV{ID_FS_LABEL}=="hassos-*", GOTO="abort_rule"
+
+# Get the partition name
+ENV{dir_name}="%E{ID_FS_LABEL}"
+
+# Determine the mount point
+ENV{mount_point}="/mnt/data/supervisor/media/%E{dir_name}"
+
+# Mount the device on 'add' action
+ACTION=="add", RUN{program}+="/usr/bin/mkdir -p %E{mount_point}", RUN{program}+="/usr/bin/systemd-mount --no-block --automount=no --collect $devnode %E{mount_point}"
+
+# Umount the device on 'remove' action
+ACTION=="remove", ENV{dir_name}!="", RUN{program}+="/usr/bin/systemd-umount %E{mount_point}", RUN{program}+="/usr/bin/rmdir %E{mount_point}"
+
+# Exit
+LABEL="abort_rule"

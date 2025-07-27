@@ -1,14 +1,14 @@
 #
 # udev rule
-#   Mount internal drive to the media directory using the partition name as mount point
+#   Mount virtual disk to the media directory using the partition name as mount point
 #
 # Description:
-#   Created for Home Assistant OS, this rule mounts an internal drive (SATA/NVME)
+#   Created for Home Assistant OS, this rule mounts an virtual drive
 #   into the Hassio media directory (/mnt/data/supervisor/media).
-#   When a internal drive is connected to the board, the rule creates one directory
+#   When a virtual drive is connected to the board, the rule creates one directory
 #   per partition under the media directory. The newly created partition is named
 #   as the following
-#   name format is used: "int-{block-name}" where the block name is sd[a-z][0-9].
+#   name format is used: "int-{block-name}" where the block name is vd[a-z][0-9].
 #
 # Note 1:
 #   The rule name is always prefixed with a number. In this case, the rule uses 81.
@@ -16,10 +16,6 @@
 #   Low numbers run first, high numbers run last. However, low numbers do not have all
 #   the facilities than high numbers may have.
 #   For this rule to run properly, use numbers equal or greater than 81.
-#
-# Note 2:
-#   This rule will skip mounting an internal drive unless they are labeled 'frigate'.
-#   https://github.com/home-assistant/operating-system/blob/dev/Documentation/configuration.md
 #
 # Source of inspiration:
 #   https://www.axllent.org/docs/auto-mounting-usb-storage/
@@ -39,10 +35,8 @@
 #       udevadm trigger --verbose --action=remove --sysname-match=sdb1
 #
 
-
-# Filter on block devices, exit otherwise
-# CAUTION: Change to 'sd[b-z][0-9]' if booting from a USB drive (e.g.: sda)
-KERNEL!="sd[a-z][0-9]", GOTO="abort_rule"
+# Filter on virtual devices, exit otherwise
+KERNEL!="vd[a-z][0-9]", GOTO="abort_rule"
 
 # Skip USB devices
 ENV{ID_PATH}=="*-usb-*", GOTO="abort_rule"
@@ -53,12 +47,14 @@ IMPORT{program}="/usr/sbin/blkid -o udev -p %N"
 # Exit if partition is not a filesystem
 ENV{ID_FS_USAGE}!="filesystem", GOTO="abort_rule"
 
-# Exit if this is not labeled 'frigate' 
-ENV{ID_FS_LABEL}!="frigate", GOTO="abort_rule"
+# Exit if partition has no name
+ENV{ID_FS_LABEL}=="", GOTO="abort_rule"
 
-# Get the partition name if present, otherwise create one
-ENV{ID_FS_LABEL}!="", ENV{dir_name}="%E{ID_FS_LABEL}"
-ENV{ID_FS_LABEL}=="", ENV{dir_name}="usb-%k"
+# Exit if partition name is linked to haos itself (hassos-* labels)
+ENV{ID_FS_LABEL}=="hassos-*", GOTO="abort_rule"
+
+# Get the partition name
+ENV{dir_name}="%E{ID_FS_LABEL}"
 
 # Determine the mount point
 ENV{mount_point}="/mnt/data/supervisor/media/%E{dir_name}"

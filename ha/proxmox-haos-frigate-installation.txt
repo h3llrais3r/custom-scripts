@@ -1,0 +1,110 @@
+Setup Frigate in HAOS VM on Proxmox
+-----------------------------------
+
+The goal is to have a separate machine running some cpu intensive services
+This to prevent the main HAOS machine taking the load and the risk of getting slow
+Since the maintenance should be minimal, HAOS is used as it has a good update system with notifications
+In order to be able to install other things in the future, proxmox is used as a light shell
+With proxmox it is possible to add extra services later without the need for additional hardware
+
+Install proxmox
+---------------
+
+See https://www.proxmox.com/en/products/proxmox-virtual-environment/get-started
+Download iso
+Copy to usb drive (rufus)
+Install proxmox from usb drive
+
+Configure proxmox for dchp with reservation
+-------------------------------------------
+
+Connect to proxmox in browser by initial ip address & port (f.e. 192.168.0.201:8006)
+Change from static ip to dhcp by editing the following file in the proxmox shell: nano /etc/network/interfaces
+Changes: 
+- change from 'static' to 'dhcp'
+- remove 'address' and 'gateway' line
+Should look like this:
+`
+auto vmbr0
+iface vmbr0 inet dhcp
+        bridge-ports enp1s0
+        bridge-stp off
+        bridge-fd 0
+`
+Reboot promox and check if it get the reserved ip address from your router
+Connect to proxmox in server with new ip address & port
+
+Create HAOS VM
+--------------
+
+Use proxmox helper scripts: https://community-scripts.github.io/ProxmoxVE/
+Use: https://community-scripts.github.io/ProxmoxVE/scripts?id=haos-vm
+After creation (or use advanced settings during install), adapt following settings:
+- memory -> 8GB (8192MB)
+- cpu -> 4 cores
+
+Create frigate disk for HAOS
+----------------------------
+
+Attach a physical drive to the machine running proxmox
+For usage with frigate, it must be formatted as ext4 with the label 'frigate'
+The complete disk will be used, so only 1 partition is needed which expands the full disk
+
+Below is how it is done for a Lexar NM790 nvme drive
+----------------------------------------------------
+
+Identify the disk in proxmox: /dev/nvme0n1
+Open promox shell and find the disk: fdisk -l
+Create partition on drive: fdisk /dev/nvme0n1
+Follow steps to create a partition, don't forget to write the partition (w command)
+Format the partition as ext4 with label 'frigate': mkfs.ext4 -L frigate /dev/nvme0n1p1
+
+Passtrough the disk to HAOS VM
+------------------------------
+Stop HAOS VM
+Open proxmox shell and find the disk by id (use the id for /nvme0n1): ls -l /dev/disk/by-id/
+Add passthrough for disk to vm id (100 is used for haos): qm set 100 -virtio2 /dev/disk/by-id/nvme-Lexar_SSD_NM790_2TB_QA6104R0119250P270
+Restart HAOS VM
+New disk should now be attached to HAOS VM (check hardware output for HAOS in proxmox)
+
+Add udev rule to HAOS VM
+------------------------
+
+Use CONFIG usb disk and "ha os import" to import the config from usb (see hassio-mount-usb-drive-instructions.txt)
+Reboot HAOS VM and check if 'frigate' folder is appearing in 'My Media" source
+
+Add GPU passthrough for openvino usage in frigate
+-------------------------------------------------
+
+Use GUI to add PCI Device to HAOS (via Hardware)
+Select 'Raw Device' and select the GPU (typically the first in the list, having something like 'graphics' in the name)
+If you don't know it, you can find it by running the following command in the promox pve shell: lspci -tv
+Restart HAOS to enable the GPU passthrough
+
+Add Coral TPU USB passthrough for usage in frigate
+--------------------------------------------------
+
+Best performance is with passing through the complete usb controller (not the port)
+If there is only 1 usb controller on the host, this means that no other VM's can use any usb devices anymore!
+Use GUI to add PCI Device to HAOS (via Hardware)
+Select 'Raw Device' and select the USB controller
+If you don't know it, you can find it by running the following command in the promox pve shell: lspci -tv
+Restart HAOS to enable the GPU passthrough
+
+Alternatively, if you con't care about performance, you can passthrough either the USB device or port
+Use GUI to add USB Device to HAOS (via Hardware)
+
+Change hostname in homeassistant
+--------------------------------
+
+To prevent duplicate device hostnames, rename the hostname in home assistant UI via Settings - System - Network (f.e. homeassistant-addons)
+
+Install frigate addon
+---------------------
+
+See https://github.com/blakeblackshear/frigate-hass-addons
+
+Install frigate integration
+---------------------------
+
+Install 'Frigate' via HACS

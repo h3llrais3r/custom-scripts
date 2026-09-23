@@ -4,15 +4,12 @@
     </programs>
     <video>
         <default pathversion="1"></default>
-        <!-- managed by jellyfin -->
     </video>
     <music>
         <default pathversion="1"></default>
-        <!-- managed by jellyfin -->
     </music>
     <pictures>
         <default pathversion="1"></default>
-        <!-- not managed by jellyfin -->
         <source>
             <name>Pictures 1</name>
             <path pathversion="1">smb://192.168.0.100/Pictures-1/</path>
@@ -27,4 +24,7 @@
     <files>
         <default pathversion="1"></default>
     </files>
+	<games>
+        <default pathversion="1"></default>
+    </games>
 </sources>

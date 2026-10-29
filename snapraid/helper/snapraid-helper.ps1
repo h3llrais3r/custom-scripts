@@ -414,7 +414,7 @@ Function ServiceManagement ($startstop){
 			$message = "Stopping Services $CurrentDate"
 			WriteLogFile $message
 			foreach ($service in $ServiceList) {
-				$message = Stop-Service $service
+				$message = Stop-Service $service -Force
 				WriteLogFile $message
 			}
 			# timestamp the job
